@@ -1,0 +1,19 @@
+<div ng-app="shopApp" ng-controller="ShopController">
+  <ul>
+    <li ng-repeat="item in items">{{ item.name }} - {{ item.price }}</li>
+  </ul>
+
+  <form name="regForm">
+    <input name="email" type="email" ng-model="email" placeholder="Email">
+    <button>Register</button>
+  </form>
+</div>
+
+<script>
+  angular.module('shopApp', []).controller('ShopController', function ($scope) {
+    $scope.items = [
+      { name: 'Notebook', price: 120 },
+      { name: 'Pen', price: 10 }
+    ];
+  });
+</script>

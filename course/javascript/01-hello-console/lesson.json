@@ -1,0 +1,45 @@
+{
+  "title": "Hello, console",
+  "minutes": 10,
+  "summary": "Print messages with console.log and meet strings and numbers.",
+  "docs": [
+    { "title": "MDN: console.log()", "url": "https://developer.mozilla.org/en-US/docs/Web/API/console/log_static" },
+    { "title": "MDN: What is JavaScript?", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "console.log(4 + 6);",
+      "language": "js",
+      "answer": "10",
+      "explain": "Numbers are added before printing, so the output is `10`, not `4 + 6`."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print? Write both lines, separated by a space.",
+      "code": "console.log('A');\nconsole.log('B');",
+      "language": "js",
+      "answer": "A B",
+      "accept": ["A\nB"],
+      "explain": "Lines run in order, so `A` is printed first and then `B`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which line prints the text Hi?",
+      "options": ["console.log(Hi);", "console.log('Hi');", "console.log['Hi'];", "console.log 'Hi';"],
+      "answer": 1,
+      "explain": "Text needs quotes, and `console.log` needs round brackets. Without quotes, `Hi` would be treated as a name that does not exist."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "hello.js",
+    "task": "In `hello.js`, print two lines with `console.log`:\n\n1. `Hello, MEAN!`\n2. The result of `6 * 7` (let JavaScript do the multiplication).",
+    "hints": [
+      "You need two `console.log(...)` instructions, one after the other.",
+      "The first one prints text, so put the words in quotes. The second one prints a calculation, so put `6 * 7` inside the brackets with no quotes.",
+      "// Line 1: text in quotes\nconsole.log('Hello, MEAN!');\n// Line 2: JavaScript calculates 42\nconsole.log(6 * 7);"
+    ]
+  }
+}

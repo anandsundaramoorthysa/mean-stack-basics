@@ -1,0 +1,56 @@
+{
+  "title": "Classes",
+  "minutes": 18,
+  "summary": "Describe a kind of object once with a class, then create many objects and extend it with inheritance.",
+  "docs": [
+    { "title": "MDN: Classes", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes" },
+    { "title": "MDN: Using classes", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which keyword creates a new object from a class?",
+      "options": ["make", "new", "create", "class"],
+      "answer": 1,
+      "explain": "`new Student('Asha')` runs the constructor and gives back a fresh object. The `class` keyword only defines the blueprint."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "class Dog {\n  constructor(name) {\n    this.name = name;\n  }\n  speak() {\n    return this.name + ' says woof';\n  }\n}\nconsole.log(new Dog('Tommy').speak());",
+      "language": "js",
+      "answer": "Tommy says woof",
+      "explain": "The constructor stores `'Tommy'` in `this.name`. Inside `speak`, `this` is that same object."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that makes `area()` return the wrong answer.",
+      "code": "class Box {\n  constructor(size) {\n    size = size;\n  }\n  area() {\n    return this.size * this.size;\n  }\n}",
+      "answerLines": [3],
+      "explain": "Line 3 only assigns the parameter to itself. To store the value on the object you must write `this.size = size;`, otherwise `this.size` stays `undefined`."
+    },
+    {
+      "type": "fill",
+      "q": "Make `Topper` inherit from `Student` and call the parent constructor.",
+      "template": "class Topper ___ Student {\n  constructor(name) {\n    ___(name);\n  }\n}",
+      "blanks": [["extends"], ["super"]],
+      "explain": "`extends` links the child class to its parent. `super(...)` runs the parent constructor and must come before you use `this`."
+    },
+    {
+      "type": "order",
+      "q": "Put the parts of a class in the usual order.",
+      "lines": ["class Car {", "  constructor(brand) {", "    this.brand = brand;", "  }", "  describe() {", "    return 'A ' + this.brand;", "  }", "}"],
+      "explain": "A class holds the constructor first, then the methods. Methods are written without the word `function`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "classes.js",
+    "task": "In `classes.js`, finish two classes:\n\n- `Student` has a `constructor(name)` that stores `name` and an empty `marks` array. The method `addMark(mark)` pushes a mark. The method `average()` returns the average of the marks, or `0` when there are none. The method `describe()` returns `Name: average`, for example `Asha: 80`.\n- `Topper` extends `Student`. Its `describe()` returns the parent's text followed by ` (topper)`, for example `Asha: 80 (topper)`. Use `super`.",
+    "hints": [
+      "Inside methods, use `this.marks` and `this.name` to reach the data of the current object.",
+      "average() can add all marks with a loop or reduce, then divide by `this.marks.length`. In Topper, call `super.describe()` to get the parent's text.",
+      "class Student {\n  constructor(name) {\n    this.name = name;\n    this.marks = [];\n  }\n  addMark(mark) {\n    this.marks.push(mark);\n  }\n  average() {\n    if (this.marks.length === 0) return 0;\n    return this.marks.reduce((sum, m) => sum + m, 0) / this.marks.length;\n  }\n  describe() {\n    return this.name + ': ' + this.average();\n  }\n}\n\nclass Topper extends Student {\n  describe() {\n    return super.describe() + ' (topper)';\n  }\n}"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "title": "Expressions and data binding",
+  "minutes": 12,
+  "summary": "Show values with {{ }} expressions and keep an input and the page in sync with ng-model.",
+  "docs": [
+    { "title": "AngularJS: Expressions", "url": "https://docs.angularjs.org/guide/expression" },
+    { "title": "AngularJS: Data binding", "url": "https://docs.angularjs.org/guide/databinding" },
+    { "title": "AngularJS: ngModel", "url": "https://docs.angularjs.org/api/ng/directive/ngModel" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "With `$scope.price = 20` and `$scope.qty = 3`, what does this template show?",
+      "code": "<p>Total: {{ price * qty }}</p>",
+      "language": "html",
+      "answer": "Total: 60",
+      "explain": "Everything between the double braces is an expression, and AngularJS evaluates it against the scope. 20 times 3 is 60."
+    },
+    {
+      "type": "mcq",
+      "q": "What does two-way binding mean?",
+      "options": ["The page loads twice", "A change in the model updates the view, and a change in the view updates the model", "Data can only be shown, never edited", "Two controllers share one file"],
+      "answer": 1,
+      "explain": "With `ng-model` on an input, typing changes the scope value, and changing the scope value updates the input. Both directions stay in sync."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the input so that what the user types is stored in `city`.",
+      "template": "<input type=\"text\" ___=\"city\">",
+      "blanks": [["ng-model", "data-ng-model"]],
+      "explain": "`ng-model=\"city\"` binds the input to the scope property `city`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which of these is a valid AngularJS expression inside `{{ }}`?",
+      "options": ["for (i = 0; i < 3; i++) {}", "name.toUpperCase()", "if (age > 18) { return 'adult'; }", "var x = 5;"],
+      "answer": 1,
+      "explain": "Expressions are small: property access, calls and arithmetic. Loops, `if` statements and `var` declarations are not allowed. Use directives such as `ng-repeat` and `ng-if` for that."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "index.html",
+    "task": "Complete `index.html`.\n\n- Bind the text input to `name` using `ng-model`.\n- Show the name in the first paragraph with `{{ name }}`.\n- Show the total in the second paragraph with an expression that multiplies `price` and `quantity`.",
+    "hints": [
+      "ng-model goes on the input tag as an attribute. Expressions go between double curly braces in the paragraphs.",
+      "Use ng-model=\"name\" on the input, then {{ name }} in the first <p>. The total is one expression with the * operator.",
+      "<input type=\"text\" placeholder=\"Your name\" ng-model=\"name\">\n<p>Hello, {{ name }}</p>\n<p>Total: {{ price * quantity }}</p>"
+    ],
+    "checks": [
+      { "name": "The input uses ng-model=\"name\"", "hint": "Add ng-model=\"name\" to the <input> tag.", "regex": "<input[^>]*\\b(data-)?ng-model\\s*=\\s*[\"']name[\"']" },
+      { "name": "{{ name }} is displayed", "hint": "Write {{ name }} inside the first paragraph.", "regex": "\\{\\{\\s*name\\s*\\}\\}" },
+      { "name": "The total multiplies price and quantity", "hint": "Write {{ price * quantity }} in the second paragraph.", "regex": "\\{\\{\\s*(price\\s*\\*\\s*quantity|quantity\\s*\\*\\s*price)\\s*\\}\\}" }
+    ]
+  }
+}

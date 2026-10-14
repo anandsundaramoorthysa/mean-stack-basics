@@ -1,0 +1,60 @@
+{
+  "title": "Grid basics",
+  "minutes": 15,
+  "summary": "Create rows and columns with display: grid, grid-template-columns, the fr unit and gap.",
+  "docs": [
+    { "title": "MDN: Grids", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Grids" },
+    { "title": "MDN: grid-template-columns", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns" },
+    { "title": "MDN: repeat()", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is the main difference between flexbox and grid?",
+      "options": ["Grid only works for images", "Flexbox lays out in one dimension, grid in two (rows and columns)", "Grid is older", "Flexbox cannot use gap"],
+      "answer": 1,
+      "explain": "Flexbox arranges items along one line. Grid defines both columns and rows, so you can place items in cells."
+    },
+    {
+      "type": "predict",
+      "q": "How many columns does this create? Type a number.",
+      "code": ".grid {\n  display: grid;\n  grid-template-columns: 1fr 2fr 1fr;\n}",
+      "language": "css",
+      "answer": "3",
+      "explain": "One track is listed per column: three values, three columns. The middle one is twice as wide as each outer one."
+    },
+    {
+      "type": "fill",
+      "q": "Write three equal columns in the shortest way.",
+      "template": "grid-template-columns: ___(3, 1fr);",
+      "blanks": [["repeat"]],
+      "explain": "`repeat(3, 1fr)` is the same as `1fr 1fr 1fr`."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `1fr` mean?",
+      "options": ["1 pixel", "One fraction of the free space in the grid", "1 frame rate", "1 font radius"],
+      "answer": 1,
+      "explain": "`fr` stands for fraction. Free space is divided among `fr` tracks in proportion to their numbers."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Turn the gallery into a grid. Work in `index.html`.\n\n- `.gallery` is `display: grid` with three equal columns using `grid-template-columns: repeat(3, 1fr)`.\n- Add a `gap` of 20px between cells.\n- `.stats` is a grid with two columns, `grid-template-columns: 1fr 2fr`.",
+    "hints": [
+      "Grid starts like flexbox: display: grid on the container.",
+      "Use grid-template-columns to list one size per column, and gap for the spacing.",
+      ".gallery {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 20px;\n}\n.stats {\n  display: grid;\n  grid-template-columns: 1fr 2fr;\n}"
+    ],
+    "checks": [
+      { "name": ".gallery is a grid", "selector": ".gallery", "style": { "prop": "display", "equals": "grid" }, "hint": "Add display: grid; to .gallery." },
+      { "name": ".gallery has three columns", "selector": ".gallery", "style": { "prop": "grid-template-columns", "regex": "^[\\d.]+px [\\d.]+px [\\d.]+px$" }, "hint": "Add grid-template-columns: repeat(3, 1fr);." },
+      { "name": ".gallery columns are equal width", "selector": ".gallery", "style": { "prop": "grid-template-columns", "regex": "^([\\d.]+px) \\1 \\1$" }, "hint": "Use repeat(3, 1fr) so each column gets the same share." },
+      { "name": ".gallery has a 20px column gap", "selector": ".gallery", "style": { "prop": "column-gap", "equals": "20px" }, "hint": "Add gap: 20px;." },
+      { "name": ".gallery has a 20px row gap", "selector": ".gallery", "style": { "prop": "row-gap", "equals": "20px" }, "hint": "gap sets both row and column gaps." },
+      { "name": ".stats is a grid with two columns", "selector": ".stats", "style": { "prop": "grid-template-columns", "regex": "^[\\d.]+px [\\d.]+px$" }, "hint": "Add display: grid; and grid-template-columns: 1fr 2fr; to .stats." },
+      { "name": "The second .stats column is wider than the first", "selector": ".stats .cell:nth-child(2)", "style": { "prop": "width", "min": 400 }, "hint": "1fr 2fr gives the second column twice the space." }
+    ]
+  }
+}

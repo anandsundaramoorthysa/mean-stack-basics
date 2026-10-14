@@ -1,0 +1,60 @@
+{
+  "title": "Transitions and transforms",
+  "minutes": 14,
+  "summary": "Move, scale and rotate elements with transform, and animate changes smoothly with transition.",
+  "docs": [
+    { "title": "MDN: Using CSS transitions", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_transitions/Using_CSS_transitions" },
+    { "title": "MDN: transform", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/transform" },
+    { "title": "MDN: transition", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/transition" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `transform: scale(1.1)` do?",
+      "options": ["Makes the element 1.1px bigger", "Draws the element 10 percent larger without moving other elements", "Changes the font only", "Repeats the element"],
+      "answer": 1,
+      "explain": "`scale` multiplies the visual size. Transforms do not change the layout, so neighbours stay where they are."
+    },
+    {
+      "type": "fill",
+      "q": "Move an element 20px to the right.",
+      "template": "transform: ___(20px);",
+      "blanks": [["translateX"]],
+      "explain": "`translateX` moves along the horizontal axis. `translateY` moves vertically. `translate(x, y)` does both."
+    },
+    {
+      "type": "mcq",
+      "q": "Where should `transition` be written so a button fades back smoothly after the mouse leaves?",
+      "options": ["Only in the :hover rule", "In the normal (non-hover) rule", "In the HTML", "Transitions cannot fade back"],
+      "answer": 1,
+      "explain": "The transition setting of the state you are moving **to** is used. Put it on the base rule and it works for hover-in and for hover-out."
+    },
+    {
+      "type": "predict",
+      "q": "How many seconds does this transition last? Type just the number of seconds.",
+      "code": ".btn { transition: background-color 0.3s ease; }",
+      "language": "css",
+      "answer": "0.3",
+      "accept": ["0.3s", ".3"],
+      "explain": "The pattern is property, duration, timing function. Here only `background-color` is animated, over 0.3 seconds."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Style the `.btn` and a rotated label. Work in `index.html`.\n\n- `.btn`: `transition` that animates `background-color` over `0.3s` (write it on the base rule).\n- `.btn:hover`: `background-color` of `darkblue` and `transform: scale(1.1)`.\n- `.tilt`: `transform: rotate(-5deg)`.\n- `.btn` must have `display: inline-block` so transforms apply cleanly.",
+    "hints": [
+      "A transition names a property and a time. A hover rule changes the end state.",
+      "Put transition on `.btn`, and the new colour and scale on `.btn:hover`. `rotate()` uses degrees.",
+      ".btn {\n  display: inline-block;\n  transition: background-color 0.3s ease;\n}\n.btn:hover {\n  background-color: darkblue;\n  transform: scale(1.1);\n}\n.tilt {\n  transform: rotate(-5deg);\n}"
+    ],
+    "checks": [
+      { "name": ".btn is inline-block", "selector": ".btn", "style": { "prop": "display", "equals": "inline-block" }, "hint": "Add display: inline-block; to .btn." },
+      { "name": ".btn animates background-color", "selector": ".btn", "style": { "prop": "transition-property", "regex": "background-color|all" }, "hint": "Add transition: background-color 0.3s ease; to .btn." },
+      { "name": ".btn transition lasts 0.3 seconds", "selector": ".btn", "style": { "prop": "transition-duration", "equals": "0.3s" }, "hint": "Use 0.3s as the duration." },
+      { "name": "A .btn:hover rule changes the background to darkblue", "source": { "regex": "\\.btn:hover\\s*\\{[^}]*background-color\\s*:\\s*darkblue", "flags": "i" }, "hint": "Add .btn:hover { background-color: darkblue; }." },
+      { "name": "A .btn:hover rule scales the button", "source": { "regex": "\\.btn:hover\\s*\\{[^}]*transform\\s*:\\s*scale\\(", "flags": "i" }, "hint": "Add transform: scale(1.1); inside .btn:hover." },
+      { "name": ".tilt is rotated", "selector": ".tilt", "style": { "prop": "transform", "regex": "^matrix\\(0\\.99\\d*, -0\\.08" }, "hint": "Add .tilt { transform: rotate(-5deg); }." }
+    ]
+  }
+}

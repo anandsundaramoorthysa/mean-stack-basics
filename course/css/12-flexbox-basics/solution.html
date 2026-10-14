@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flexbox basics</title>
+    <style>
+      .item {
+        padding: 12px;
+        border: 1px solid #888;
+      }
+      .row {
+        display: flex;
+      }
+      .row .item {
+        flex: 1;
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <div class="item">One</div>
+      <div class="item">Two</div>
+      <div class="item">Three</div>
+    </div>
+    <div class="col">
+      <div class="item">First</div>
+      <div class="item">Second</div>
+    </div>
+  </body>
+</html>

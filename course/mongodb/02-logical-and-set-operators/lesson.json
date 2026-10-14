@@ -1,0 +1,68 @@
+{
+  "title": "Logical and set operators",
+  "minutes": 14,
+  "summary": "Combine conditions with $and, $or, $in, $nin and $not.",
+  "docs": [
+    { "title": "MongoDB: $or operator", "url": "https://www.mongodb.com/docs/manual/reference/operator/query/or/" },
+    { "title": "MongoDB: $in operator", "url": "https://www.mongodb.com/docs/manual/reference/operator/query/in/" },
+    { "title": "MongoDB: $not operator", "url": "https://www.mongodb.com/docs/manual/reference/operator/query/not/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which filter finds students whose city is Salem **or** Erode?",
+      "options": [
+        "{ city: 'Salem', city: 'Erode' }",
+        "{ city: ['Salem', 'Erode'] }",
+        "{ city: { $in: ['Salem', 'Erode'] } }",
+        "{ $and: [{ city: 'Salem' }, { city: 'Erode' }] }"
+      ],
+      "answer": 2,
+      "explain": "`$in` matches any value in the list. The first option repeats a key so only 'Erode' survives. The second asks for a city that is itself an array. The fourth needs one city to be both values at once, which is impossible."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the operator so the filter finds students who live anywhere except Madurai or Salem.",
+      "template": "{ city: { $___: ['Madurai', 'Salem'] } }",
+      "blanks": [["nin"]],
+      "explain": "`$nin` means not in. It is the opposite of `$in`, and it also matches documents that lack the field."
+    },
+    {
+      "type": "predict",
+      "q": "The `exams` collection has four documents with marks 40, 55, 70 and 90 (in that order). Type the marks that this query returns, separated by spaces.",
+      "code": "db.exams.find({\n  $or: [{ marks: { $lt: 50 } }, { marks: { $gt: 80 } }]\n})",
+      "language": "js",
+      "answer": "40 90",
+      "explain": "A document matches if either condition is true. 40 is below 50 and 90 is above 80. 55 and 70 satisfy neither."
+    },
+    {
+      "type": "bug",
+      "q": "This query should find marks between 50 and 90, but it returns every student below 90. Which line causes the problem?",
+      "code": "db.students.find({\n  marks: { $gt: 50 },\n  marks: { $lt: 90 }\n})",
+      "answerLines": [2, 3],
+      "explain": "An object cannot hold the same key twice. The second `marks` (line 3) replaces the first (line 2), so the `$gt` condition is lost. Write `marks: { $gt: 50, $lt: 90 }` instead."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `{ marks: { $not: { $gt: 50 } } }` match?",
+      "options": [
+        "Only students with marks above 50",
+        "Students with marks of 50 or less, and students with no marks field",
+        "Only students with marks of 50 or less",
+        "Nothing, because $not cannot hold an operator"
+      ],
+      "answer": 1,
+      "explain": "`$not` matches every document where the inner condition is not true. A document without a `marks` field never satisfies `$gt: 50`, so it matches too."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "Find the students who live in **Madurai or Salem** and have **at least 70** marks.\n\n- Use `$in` for the two cities.\n- Use `$gte` for the marks.\n\nThe collection `students` has the fields `name`, `marks`, `city`.",
+    "hints": [
+      "You need two conditions in one filter object: one for city and one for marks.",
+      "For the city, use `$in` with an array of two names. For the marks, use `$gte: 70`.",
+      "db.students.find({ city: { $in: ['Madurai', 'Salem'] }, marks: { $gte: 70 } })"
+    ]
+  }
+}

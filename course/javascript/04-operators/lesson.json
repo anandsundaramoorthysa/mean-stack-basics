@@ -1,0 +1,60 @@
+{
+  "title": "Operators",
+  "minutes": 15,
+  "summary": "Calculate, compare and combine conditions, and know why === is safer than ==.",
+  "docs": [
+    { "title": "MDN: Expressions and operators", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_operators" },
+    { "title": "MDN: Strict equality (===)", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality" },
+    { "title": "MDN: Remainder (%)", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "console.log(17 % 5);",
+      "language": "js",
+      "answer": "2",
+      "explain": "`%` gives the remainder after division. 17 divided by 5 is 3 with 2 left over."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "console.log(5 === '5');",
+      "language": "js",
+      "answer": "false",
+      "explain": "`===` compares value and type. A number is not the same as a string, so the result is `false`. (`5 == '5'` would be `true`, which is why `==` is risky.)"
+    },
+    {
+      "type": "mcq",
+      "q": "Which expression is true only when BOTH conditions hold?",
+      "options": ["age > 18 || hasId", "age > 18 && hasId", "!(age > 18)", "age > 18 = hasId"],
+      "answer": 1,
+      "explain": "`&&` means AND: both sides must be true. `||` means OR: one side is enough. `!` flips true and false."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the code so that it checks whether `n` is divisible by 2 with nothing left over.",
+      "template": "n ___ 2 ___ 0",
+      "blanks": [["%"], ["===", "=="]],
+      "explain": "`n % 2` is the remainder after dividing by 2, and an even number leaves remainder `0`. Prefer `===`."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "console.log('3' + 4);",
+      "language": "js",
+      "answer": "34",
+      "explain": "When one side of `+` is text, JavaScript joins the values instead of adding them, so you get the text `34`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "operators.js",
+    "task": "In `operators.js`, write and export three functions:\n\n- `isEven(n)` returns `true` when `n` is even.\n- `canVote(age)` returns `true` when `age` is 18 or more.\n- `isPassing(marks, attendance)` returns `true` only when `marks` is at least 40 **and** `attendance` is at least 75.\n\nEach function must return a boolean (use `return`).",
+    "hints": [
+      "Each function is one comparison, and the third one combines two comparisons.",
+      "Use `n % 2 === 0` for even, `age >= 18` for voting and `&&` to join two comparisons.",
+      "function isEven(n) {\n  return n % 2 === 0;\n}\nfunction canVote(age) {\n  return age >= 18;\n}\nfunction isPassing(marks, attendance) {\n  return marks >= 40 && attendance >= 75;\n}\nmodule.exports = { isEven, canVote, isPassing };"
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "title": "Data types",
+  "minutes": 14,
+  "summary": "Tell strings, numbers, booleans, null and undefined apart and check them with typeof.",
+  "docs": [
+    { "title": "MDN: JavaScript data types and data structures", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Data_structures" },
+    { "title": "MDN: typeof", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "console.log(typeof 'hello');",
+      "language": "js",
+      "answer": "string",
+      "explain": "`typeof` returns the type name as text. Anything in quotes is a string."
+    },
+    {
+      "type": "mcq",
+      "q": "What is the type of the value 42.5?",
+      "options": ["decimal", "float", "number", "integer"],
+      "answer": 2,
+      "explain": "JavaScript has one number type for both whole numbers and decimals, so `typeof 42.5` and `typeof 42` are both `'number'`."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "let city;\nconsole.log(city);",
+      "language": "js",
+      "answer": "undefined",
+      "explain": "A variable declared without a value holds `undefined`, which means \"nothing has been put here yet\"."
+    },
+    {
+      "type": "mcq",
+      "q": "Which of these are booleans? Pick all that apply.",
+      "options": ["true", "'false'", "false", "0"],
+      "answer": [0, 2],
+      "explain": "Only `true` and `false` without quotes are booleans. `'false'` in quotes is a string and `0` is a number."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `typeof null` give?",
+      "options": ["'null'", "'object'", "'undefined'", "'number'"],
+      "answer": 1,
+      "explain": "This is a famous historical mistake in JavaScript: `typeof null` is `'object'`. To detect null, compare with `value === null`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "types.js",
+    "task": "In `types.js`, write and export a function `typeName(value)` that returns the type of `value` as text:\n\n- Normally the same text as `typeof value` (`'number'`, `'string'`, `'boolean'`, `'undefined'`).\n- For `null` it must return `'null'` (not `'object'`).",
+    "hints": [
+      "`typeof value` gives the answer for almost everything. `null` is the one special case.",
+      "Use an `if` statement to check `value === null` first and return `'null'`. Otherwise return `typeof value`.",
+      "function typeName(value) {\n  if (value === null) {\n    return 'null';\n  }\n  return typeof value;\n}\n\nmodule.exports = { typeName };"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "title": "Grid placement and areas",
+  "minutes": 16,
+  "summary": "Make grid items span several columns and lay out a page with named grid areas.",
+  "docs": [
+    { "title": "MDN: grid-template-areas", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas" },
+    { "title": "MDN: grid-column", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column" },
+    { "title": "MDN: grid-area", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/grid-area" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `grid-column: span 2` do to a grid item?",
+      "options": ["Moves it 2 columns to the right", "Makes it cover two columns", "Creates 2 new columns", "Hides it for 2 seconds"],
+      "answer": 1,
+      "explain": "`span 2` means the item occupies two column tracks, starting wherever the browser would place it."
+    },
+    {
+      "type": "mcq",
+      "q": "In `grid-template-areas`, what does a repeated name in a row mean?",
+      "options": ["It is an error", "The area spans those cells", "The cells are empty", "The names are swapped"],
+      "answer": 1,
+      "explain": "`\"header header\"` makes the area called header span both columns of that row."
+    },
+    {
+      "type": "fill",
+      "q": "Assign the element to the area named `sidebar`.",
+      "template": "aside { grid-___: sidebar; }",
+      "blanks": [["area"]],
+      "explain": "`grid-area: sidebar` places the element in the area with that name."
+    },
+    {
+      "type": "order",
+      "q": "Put the rule that builds a header, sidebar and main layout in order.",
+      "lines": [".page {", "  display: grid;", "  grid-template-columns: 200px 1fr;", "  grid-template-areas:", "    \"header header\"", "    \"sidebar main\";", "}"],
+      "explain": "First turn the container into a grid, define the columns, then draw the layout row by row with `grid-template-areas`. Each string is a row."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Place items in a four-column grid and a page layout. Work in `index.html`.\n\n- `.feature` spans two columns using `grid-column: span 2`.\n- `.page` is a grid with `grid-template-columns: 200px 1fr`, and `grid-template-areas` of `\"header header\"` over `\"sidebar main\"`.\n- Assign `header`, `.sidebar` and `.main` to the areas named `header`, `sidebar` and `main` with `grid-area`.",
+    "hints": [
+      "Spanning uses grid-column: span N on the item. Areas are named in the container and assigned with grid-area on each child.",
+      "Each string inside grid-template-areas is a row. Names must match the grid-area values exactly.",
+      ".feature {\n  grid-column: span 2;\n}\n.page {\n  display: grid;\n  grid-template-columns: 200px 1fr;\n  grid-template-areas:\n    \"header header\"\n    \"sidebar main\";\n}\n.page header { grid-area: header; }\n.sidebar { grid-area: sidebar; }\n.main { grid-area: main; }"
+    ],
+    "checks": [
+      { "name": ".feature spans two columns", "selector": ".feature", "style": { "prop": "grid-column-start", "equals": "span 2" }, "hint": "Add .feature { grid-column: span 2; }." },
+      { "name": ".feature is wider than a normal cell", "selector": ".feature", "style": { "prop": "width", "min": 300 }, "hint": "Check .grid has four columns and .feature spans two of them." },
+      { "name": ".page is a grid", "selector": ".page", "style": { "prop": "display", "equals": "grid" }, "hint": "Add display: grid; to .page." },
+      { "name": ".page defines areas named header, sidebar and main", "source": { "regex": "grid-template-areas\\s*:[^;]*header[^;]*sidebar[^;]*main", "flags": "i" }, "hint": "Write grid-template-areas with the names header, sidebar and main in the rows." },
+      { "name": "The header is placed in the header area", "selector": ".page header", "style": { "prop": "grid-row-start", "equals": "header" }, "hint": "Add grid-area: header; to the header." },
+      { "name": ".sidebar is placed in the sidebar area", "selector": ".sidebar", "style": { "prop": "grid-row-start", "equals": "sidebar" }, "hint": "Add .sidebar { grid-area: sidebar; }." },
+      { "name": ".main is placed in the main area", "selector": ".main", "style": { "prop": "grid-row-start", "equals": "main" }, "hint": "Add .main { grid-area: main; }." },
+      { "name": "The sidebar sits to the left of the main area", "selector": ".sidebar", "style": { "prop": "width", "equals": "180px" }, "hint": "The first column should be 200px (180px of content plus 10px padding each side): grid-template-columns: 200px 1fr;." }
+    ]
+  }
+}

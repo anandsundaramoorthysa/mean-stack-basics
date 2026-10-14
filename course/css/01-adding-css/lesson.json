@@ -1,0 +1,56 @@
+{
+  "title": "Adding CSS to a page",
+  "minutes": 12,
+  "summary": "Style a page with an inline style and with a style element, and read the shape of a CSS rule.",
+  "docs": [
+    { "title": "MDN: Getting started with CSS", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Getting_started" },
+    { "title": "MDN: The color property", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/color" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which part of a CSS rule says **what** to style?",
+      "options": ["The declaration block", "The selector", "The property value", "The semicolon"],
+      "answer": 1,
+      "explain": "The selector (for example `p`) picks the elements. The declarations inside the braces say how to style them."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the rule so every paragraph becomes green.",
+      "template": "p { ___: green; }",
+      "blanks": [["color"]],
+      "explain": "`color` sets the text colour. A declaration is `property: value;`."
+    },
+    {
+      "type": "mcq",
+      "q": "You want one stylesheet shared by ten pages. What is the best way?",
+      "options": ["Copy a style element into every page", "Use inline style attributes", "Put the rules in a .css file and link it from each page", "Write the rules in the body"],
+      "answer": 2,
+      "explain": "A separate .css file, loaded with `<link rel=\"stylesheet\" href=\"style.css\">`, is written once and reused by every page."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line with the mistake.",
+      "code": "h1 {\n  color: red\n  font-size: 32px;\n}",
+      "answerLines": [2],
+      "explain": "Every declaration ends with a semicolon. Without it the browser cannot see where `color: red` stops, so it ignores both lines."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Style the page in two ways. Work in `index.html`.\n\n- Give the `<h1>` an inline `style` attribute that makes its colour red.\n- In the `<style>` element write a rule for `p` that makes paragraph text blue and `font-size` 18px.",
+    "hints": [
+      "An inline style is an attribute on the tag itself, for example `<h1 style=\"...\">`.",
+      "Inside the style element write `p { ... }` and put two declarations between the braces, each ending with a semicolon.",
+      "<h1 style=\"color: red;\">Welcome</h1>\n\n/* inside the style element */\np {\n  color: blue;\n  font-size: 18px;\n}"
+    ],
+    "checks": [
+      { "name": "The h1 has an inline style attribute", "selector": "h1", "attr": { "name": "style", "present": true }, "hint": "Add style=\"...\" to the opening h1 tag." },
+      { "name": "The h1 text is red", "selector": "h1", "style": { "prop": "color", "equals": "red" }, "hint": "Write color: red; inside the inline style." },
+      { "name": "Paragraph text is blue", "selector": "p", "scope": "all", "style": { "prop": "color", "equals": "blue" }, "hint": "In the style element add p { color: blue; }." },
+      { "name": "Paragraph font size is 18px", "selector": "p", "scope": "all", "style": { "prop": "font-size", "equals": "18px" }, "hint": "Add font-size: 18px; to the p rule." },
+      { "name": "The rule is written in a style element", "source": { "regex": "<style>[\\s\\S]*p\\s*\\{[\\s\\S]*\\}[\\s\\S]*</style>", "flags": "i" }, "hint": "Write the p rule between <style> and </style>." }
+    ]
+  }
+}

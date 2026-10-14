@@ -1,0 +1,128 @@
+{
+  "title": "Classes, ids and attributes",
+  "minutes": 15,
+  "summary": "Label elements with class, id and data-* attributes, set the page language, and use div and span.",
+  "docs": [
+    {
+      "title": "MDN: Global attributes",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes"
+    },
+    {
+      "title": "MDN: The class attribute",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/class"
+    },
+    {
+      "title": "MDN: The id attribute",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/id"
+    },
+    {
+      "title": "MDN: Using data attributes",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/How_to/Use_data_attributes"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which statement about `id` is true?",
+      "options": [
+        "Many elements may share one id",
+        "An id must be unique on the page",
+        "An id can only be a number",
+        "An id is shown to visitors"
+      ],
+      "answer": 1,
+      "explain": "An id identifies one element, so reusing it breaks links and scripts. Use `class` for groups."
+    },
+    {
+      "type": "fill",
+      "q": "Store a price on the element with a custom data attribute.",
+      "template": "<div ___-price=\"499\">Notebook</div>",
+      "blanks": [
+        [
+          "data"
+        ]
+      ],
+      "explain": "Custom attributes must start with `data-`, for example `data-price`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which element is right for highlighting two words **inside** a sentence?",
+      "options": [
+        "<div>",
+        "<span>",
+        "<section>",
+        "<p>"
+      ],
+      "answer": 1,
+      "explain": "`span` is inline, so it stays within the line. `div` and `p` start on a new line."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that breaks the rule about ids.",
+      "code": "<h1 id=\"title\">Menu</h1>\n<p id=\"intro\">Welcome</p>\n<p id=\"intro\">Today's special</p>",
+      "answerLines": [
+        3
+      ],
+      "explain": "The id `intro` is used twice. Change one to a class, or give it a different id."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Mark up the shop page in `index.html`.\n\n- Add `lang=\"en\"` to the `<html>` element.\n- Give the intro paragraph `id=\"intro\"`.\n- Make two `<div>` elements with `class=\"card\"`, each with a `data-price` attribute.\n- Make the second card also have the class `featured`.\n- In the intro paragraph wrap the word `fresh` in `<span class=\"highlight\">`.",
+    "hints": [
+      "Edit the starter: change the html tag, then add the id and the span in the paragraph, then add the two divs.",
+      "A second class is added with a space: class=\"card featured\". data-price needs a value like \"499\".",
+      "<html lang=\"en\">\n...\n<p id=\"intro\">Everything is <span class=\"highlight\">fresh</span> today.</p>\n<div class=\"card\" data-price=\"499\">Notebook</div>\n<div class=\"card featured\" data-price=\"1299\">Backpack</div>"
+    ],
+    "checks": [
+      {
+        "name": "The html element has lang=\"en\"",
+        "hint": "Write <html lang=\"en\">.",
+        "selector": "html",
+        "attr": {
+          "name": "lang",
+          "equals": "en"
+        }
+      },
+      {
+        "name": "There is exactly one element with id \"intro\"",
+        "hint": "Give the paragraph id=\"intro\" and use that id only once.",
+        "selector": "#intro",
+        "count": 1
+      },
+      {
+        "name": "The word \"fresh\" is in a span.highlight inside the intro",
+        "hint": "Use <span class=\"highlight\">fresh</span> inside the paragraph.",
+        "selector": "#intro span.highlight",
+        "text": {
+          "equals": "fresh"
+        }
+      },
+      {
+        "name": "There are at least two div.card elements",
+        "hint": "Add two <div class=\"card\"> elements.",
+        "selector": "div.card",
+        "count": {
+          "min": 2
+        }
+      },
+      {
+        "name": "Every card has a data-price",
+        "hint": "Add data-price=\"...\" to each card.",
+        "selector": "div.card",
+        "scope": "all",
+        "attr": {
+          "name": "data-price",
+          "regex": "^\\d+$"
+        }
+      },
+      {
+        "name": "Exactly one card also has the class \"featured\"",
+        "hint": "Use class=\"card featured\" on the second card only.",
+        "selector": "div.card.featured",
+        "count": 1
+      }
+    ]
+  }
+}

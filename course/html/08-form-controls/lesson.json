@@ -1,0 +1,136 @@
+{
+  "title": "More form controls",
+  "minutes": 16,
+  "summary": "Use select, textarea, radio buttons, checkboxes, fieldset and legend.",
+  "docs": [
+    {
+      "title": "MDN: Native form controls",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Basic_native_form_controls"
+    },
+    {
+      "title": "MDN: The select element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/select"
+    },
+    {
+      "title": "MDN: The fieldset element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/fieldset"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "How do you make radio buttons act as one group where only one can be chosen?",
+      "options": [
+        "Give them the same id",
+        "Give them the same name",
+        "Put them in a table",
+        "Give them the same value"
+      ],
+      "answer": 1,
+      "explain": "Radios with the same `name` belong to one group. Ids must always be different from each other."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the element that gives a group of controls its caption.",
+      "template": "<fieldset>\n  <___>Level</___>\n  ...\n</fieldset>",
+      "blanks": [
+        [
+          "legend"
+        ],
+        [
+          "legend"
+        ]
+      ],
+      "explain": "`<legend>` is the caption of a `<fieldset>`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which elements can you use for a **multi-line** message box and a **drop-down**?",
+      "options": [
+        "input and select",
+        "textarea and select",
+        "textarea and option",
+        "input and textarea"
+      ],
+      "answer": 1,
+      "explain": "`textarea` is for long text and `select` with `option` items is the drop-down. `option` alone cannot show a list."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that stops these two radios working as a group.",
+      "code": "<input type=\"radio\" id=\"a\" name=\"size\" value=\"s\">\n<label for=\"a\">Small</label>\n<input type=\"radio\" id=\"b\" name=\"sizes\" value=\"l\">\n<label for=\"b\">Large</label>",
+      "answerLines": [
+        3
+      ],
+      "explain": "The second radio uses `sizes` instead of `size`, so the browser treats it as another group and both can be selected."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Complete the feedback form in `index.html`.\n\n- A `<fieldset>` with a `<legend>` that says `Level`, holding three radio buttons that share `name=\"level\"`, each with a `value`.\n- A checkbox with `name=\"newsletter\"`.\n- A `<select id=\"course\">` with at least 3 `<option>` items.\n- A `<textarea id=\"comments\">` with a `rows` attribute.\n- Every control has a `<label for=\"...\">` (at least 6 labels).",
+    "hints": [
+      "Do the radio group first: three inputs, one name, three labels.",
+      "A label needs for=\"id\" matching the control. select and textarea use the same pattern as input.",
+      "<fieldset>\n  <legend>Level</legend>\n  <input type=\"radio\" id=\"l1\" name=\"level\" value=\"beginner\">\n  <label for=\"l1\">Beginner</label>\n  ...\n</fieldset>\n<input type=\"checkbox\" id=\"news\" name=\"newsletter\">\n<label for=\"news\">Send me news</label>\n<label for=\"course\">Course</label>\n<select id=\"course\" name=\"course\"><option>CS</option><option>EE</option><option>ME</option></select>\n<label for=\"comments\">Comments</label>\n<textarea id=\"comments\" name=\"comments\" rows=\"4\"></textarea>"
+    ],
+    "checks": [
+      {
+        "name": "A fieldset has the legend \"Level\"",
+        "hint": "Add <fieldset> with <legend>Level</legend> inside it.",
+        "selector": "fieldset > legend",
+        "text": {
+          "equals": "Level"
+        }
+      },
+      {
+        "name": "At least 3 radios inside the fieldset share name \"level\"",
+        "hint": "Give every radio name=\"level\".",
+        "selector": "fieldset input[type=\"radio\"][name=\"level\"]",
+        "count": {
+          "min": 3
+        }
+      },
+      {
+        "name": "Every radio has a value",
+        "hint": "Add a different value=\"...\" to each radio.",
+        "selector": "input[type=\"radio\"]",
+        "scope": "all",
+        "attr": {
+          "name": "value",
+          "regex": "\\S"
+        }
+      },
+      {
+        "name": "A newsletter checkbox exists",
+        "hint": "Add <input type=\"checkbox\" name=\"newsletter\">.",
+        "selector": "input[type=\"checkbox\"][name=\"newsletter\"]"
+      },
+      {
+        "name": "The select #course has at least 3 options",
+        "hint": "Add three <option> elements inside <select id=\"course\">.",
+        "selector": "select#course > option",
+        "count": {
+          "min": 3
+        }
+      },
+      {
+        "name": "The textarea #comments has a rows attribute",
+        "hint": "Add rows=\"4\" to the textarea.",
+        "selector": "textarea#comments",
+        "attr": {
+          "name": "rows",
+          "regex": "^\\d+$"
+        }
+      },
+      {
+        "name": "There are at least 6 labels with a for attribute",
+        "hint": "Give each control (3 radios, checkbox, select, textarea) its own label.",
+        "selector": "label[for]",
+        "count": {
+          "min": 6
+        }
+      }
+    ]
+  }
+}

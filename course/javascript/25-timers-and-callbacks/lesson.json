@@ -1,0 +1,64 @@
+{
+  "title": "Timers and callbacks",
+  "minutes": 16,
+  "summary": "Run code later with setTimeout, repeat it with setInterval, and pass functions as callbacks.",
+  "docs": [
+    { "title": "MDN: setTimeout()", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout" },
+    { "title": "MDN: setInterval()", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/setInterval" },
+    { "title": "MDN: Callback function", "url": "https://developer.mozilla.org/en-US/docs/Glossary/Callback_function" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "In what order does this program print? Write the three words separated by spaces.",
+      "code": "console.log('A');\nsetTimeout(() => console.log('B'), 0);\nconsole.log('C');",
+      "language": "js",
+      "answer": "A C B",
+      "accept": ["A\nC\nB"],
+      "explain": "Even with a delay of 0, the callback waits until the current code has finished. So `A` and `C` print first, then `B`."
+    },
+    {
+      "type": "mcq",
+      "q": "What is the difference between setTimeout and setInterval?",
+      "options": [
+        "setTimeout runs its function once, setInterval runs it again and again",
+        "setTimeout is faster",
+        "setInterval runs once, setTimeout repeats",
+        "There is no difference"
+      ],
+      "answer": 0,
+      "explain": "`setTimeout` fires one time after the delay. `setInterval` keeps firing every delay until you stop it with `clearInterval`."
+    },
+    {
+      "type": "fill",
+      "q": "Stop a repeating timer stored in `id`.",
+      "template": "const id = setInterval(tick, 1000);\n___(id);",
+      "blanks": [["clearInterval"]],
+      "explain": "Both timer functions return an id. Give that id to `clearInterval` (or `clearTimeout`) to cancel."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line where the function runs immediately instead of after 2 seconds.",
+      "code": "function greet() {\n  console.log('Hello');\n}\nsetTimeout(greet(), 2000);",
+      "answerLines": [4],
+      "explain": "`greet()` is called on the spot and its result (undefined) is handed to the timer. Pass the function without brackets: `setTimeout(greet, 2000)`."
+    },
+    {
+      "type": "mcq",
+      "q": "The delay given to setTimeout is measured in:",
+      "options": ["seconds", "milliseconds", "minutes", "frames"],
+      "answer": 1,
+      "explain": "Delays are in milliseconds. 1000 ms is one second."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "timers.js",
+    "task": "In `timers.js` finish two functions that take callbacks:\n\n- `remindLater(message, ms, callback)` calls `callback(message)` once, after `ms` milliseconds (not immediately).\n- `countdown(from, intervalMs, onTick, onDone)` calls `onTick(n)` for `from`, `from - 1`, ... down to `1`, one tick every `intervalMs` milliseconds, then calls `onDone()` once and stops the timer.",
+    "hints": [
+      "`setTimeout(function, delay)` calls the function later. Inside it, call `callback(message)`.",
+      "Use `setInterval`, keep a variable `n` that starts at `from`, call `onTick(n)` and then decrease it. When `n` reaches 0, call `clearInterval` with the timer id and then `onDone()`.",
+      "function remindLater(message, ms, callback) {\n  setTimeout(() => callback(message), ms);\n}\n\nfunction countdown(from, intervalMs, onTick, onDone) {\n  let n = from;\n  const id = setInterval(() => {\n    if (n === 0) {\n      clearInterval(id);\n      onDone();\n      return;\n    }\n    onTick(n);\n    n = n - 1;\n  }, intervalMs);\n}"
+    ]
+  }
+}

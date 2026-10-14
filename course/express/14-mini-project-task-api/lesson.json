@@ -1,0 +1,61 @@
+{
+  "title": "Mini project: a task API",
+  "minutes": 40,
+  "summary": "Put everything together by building a complete tasks API with validation, filters and JSON errors.",
+  "docs": [
+    { "title": "Express: Routing", "url": "https://expressjs.com/en/guide/routing.html" },
+    { "title": "Express: Error handling", "url": "https://expressjs.com/en/guide/error-handling.html" },
+    { "title": "Express 5 API reference", "url": "https://expressjs.com/en/5x/api.html" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "A client sends PATCH /tasks/2 with `{ \"done\": \"yes\" }`, but done must be true or false. What is the best answer?",
+      "options": [
+        "400 with an error message",
+        "404",
+        "201",
+        "200 and ignore the value"
+      ],
+      "answer": 0,
+      "explain": "The task exists, but the value is invalid. That is a client mistake, so 400 with a helpful message."
+    },
+    {
+      "type": "order",
+      "q": "Put these in the order they should appear in app.js.",
+      "lines": [
+        "app.use(express.json());",
+        "app.get('/tasks', (req, res) => { /* list */ });",
+        "app.use((req, res) => { /* 404 */ });",
+        "app.use((err, req, res, next) => { /* errors */ });"
+      ],
+      "explain": "Body parsing first, then routes, then the catch-all 404, and the error handler last."
+    },
+    {
+      "type": "predict",
+      "q": "The tasks have done values true, false, true. How many does this return for GET /tasks?done=true?",
+      "code": "const done = req.query.done === 'true';\nconst list = tasks.filter((t) => t.done === done);\nres.json(list.length);",
+      "language": "javascript",
+      "answer": "2",
+      "explain": "Query values are strings, so `req.query.done === 'true'` turns the text into a boolean. Two tasks have done set to true."
+    },
+    {
+      "type": "mcq",
+      "q": "Which status is correct after DELETE /tasks/2 removes the task successfully?",
+      "options": ["204", "201", "400", "302"],
+      "answer": 0,
+      "explain": "204 No Content: it worked and there is nothing to send back."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "Build the tasks API in `app.js`. `express.json()`, the `tasks` array (empty) and `nextId` are ready. A task looks like `{ id, title, done }`.\n\n- `GET /tasks` lists all tasks. `?done=true` or `?done=false` keeps only finished or unfinished tasks.\n- `POST /tasks` with `{ \"title\": \"...\" }` creates a task with `done: false` and answers `201`. A missing, non-string or blank title answers `400` with `{ \"error\": \"...\" }`.\n- `GET /tasks/:id` sends the task. Unknown id answers `404` with an `error`. An id that is not a number answers `400`.\n- `PATCH /tasks/:id` changes `title` and/or `done` for the fields that are present and sends the updated task. `done` must be a boolean and `title` a non-blank string, otherwise `400`. Unknown id answers `404`.\n- `DELETE /tasks/:id` removes the task and answers `204`. Unknown id answers `404`.\n- Any other path answers `404` with `{ \"error\": \"Not found\" }`.\n- Add an error handler so that invalid JSON in a request answers `400` with an `error` message (use `err.status || 500`).\n\nLeave `module.exports = app;` at the bottom.",
+    "hints": [
+      "Write a small helper that reads and checks the id, for example `const id = Number(req.params.id)` and `tasks.find(...)`, then use the same pattern in GET, PATCH and DELETE. Put the 404 catch-all and the four-argument error handler after all routes.",
+      "For PATCH, read `const { title, done } = req.body ?? {}`. Only validate a field when it is not `undefined`: `if (done !== undefined && typeof done !== 'boolean') return res.status(400)...`. Then assign the fields that were sent.",
+      "const findTask = (req) => tasks.find((t) => t.id === Number(req.params.id));\n\napp.get('/tasks', (req, res) => {\n  let list = tasks;\n  if (req.query.done === 'true') list = list.filter((t) => t.done);\n  if (req.query.done === 'false') list = list.filter((t) => !t.done);\n  res.json(list);\n});\n\napp.post('/tasks', (req, res) => {\n  const { title } = req.body ?? {};\n  if (typeof title !== 'string' || title.trim() === '') {\n    return res.status(400).json({ error: 'title is required' });\n  }\n  const task = { id: nextId++, title: title.trim(), done: false };\n  tasks.push(task);\n  res.status(201).json(task);\n});\n\napp.get('/tasks/:id', (req, res) => {\n  if (Number.isNaN(Number(req.params.id))) return res.status(400).json({ error: 'id must be a number' });\n  const task = findTask(req);\n  if (!task) return res.status(404).json({ error: 'Task not found' });\n  res.json(task);\n});\n\napp.patch('/tasks/:id', (req, res) => {\n  const task = findTask(req);\n  if (!task) return res.status(404).json({ error: 'Task not found' });\n  const { title, done } = req.body ?? {};\n  if (title !== undefined && (typeof title !== 'string' || title.trim() === '')) {\n    return res.status(400).json({ error: 'title must be a non-empty string' });\n  }\n  if (done !== undefined && typeof done !== 'boolean') {\n    return res.status(400).json({ error: 'done must be true or false' });\n  }\n  if (title !== undefined) task.title = title.trim();\n  if (done !== undefined) task.done = done;\n  res.json(task);\n});\n\napp.delete('/tasks/:id', (req, res) => {\n  const task = findTask(req);\n  if (!task) return res.status(404).json({ error: 'Task not found' });\n  tasks.splice(tasks.indexOf(task), 1);\n  res.sendStatus(204);\n});\n\napp.use((req, res) => res.status(404).json({ error: 'Not found' }));\n\napp.use((err, req, res, next) => {\n  res.status(err.status || 500).json({ error: err.message });\n});"
+    ],
+    "timeoutMs": 12000
+  }
+}

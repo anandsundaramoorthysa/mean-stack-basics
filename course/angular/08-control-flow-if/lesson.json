@@ -1,0 +1,99 @@
+{
+  "title": "Control flow: @if",
+  "minutes": 12,
+  "summary": "Show or hide parts of a template with @if, @else if and @else.",
+  "docs": [
+    {
+      "title": "Angular: Control flow",
+      "url": "https://angular.dev/guide/templates/control-flow"
+    },
+    {
+      "title": "Angular: Conditionals with @if",
+      "url": "https://angular.dev/guide/templates/control-flow#conditionally-display-content-with-if-else-if-and-else"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which template shows the paragraph only when `loggedIn` is true?",
+      "options": [
+        "<p @if=\"loggedIn\">Hi</p>",
+        "@if (loggedIn) { <p>Hi</p> }",
+        "<p [if]=\"loggedIn\">Hi</p>",
+        "if (loggedIn) <p>Hi</p>"
+      ],
+      "answer": 1,
+      "explain": "The built-in control flow uses an `@if (condition) { ... }` block in the template."
+    },
+    {
+      "type": "order",
+      "q": "Put the lines in order to build an if, else-if, else chain.",
+      "lines": [
+        "@if (score >= 75) {",
+        "<p>Distinction</p>",
+        "} @else if (score >= 40) {",
+        "<p>Pass</p>",
+        "} @else {",
+        "<p>Fail</p>",
+        "}"
+      ],
+      "explain": "Start with @if, then any number of @else if blocks, and finish with one @else. Each block's content sits between its braces."
+    },
+    {
+      "type": "mcq",
+      "q": "With a signal `user = signal(null)`, how do you check it in the condition?",
+      "options": [
+        "@if (user) {",
+        "@if (user()) {",
+        "@if (user.value) {",
+        "@if user() {"
+      ],
+      "answer": 1,
+      "explain": "A signal must be called to read it, so the condition is `user()`. The condition also needs parentheses."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the fallback block.",
+      "template": "@if (online) { <p>Connected</p> } ___ { <p>Offline</p> }",
+      "blanks": [
+        [
+          "@else"
+        ]
+      ],
+      "explain": "`@else` follows the closing brace of the `@if` block."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "result.component.ts",
+    "task": "Finish the template in `result.component.ts` using the control flow blocks.\n\n- `@if (marks >= 75)` shows `<p>Distinction</p>`.\n- `@else if (marks >= 40)` shows `<p>Pass</p>`.\n- `@else` shows `<p>Fail</p>`.\n- Do not use the old `*ngIf`.",
+    "hints": [
+      "You need one `@if` block, one `@else if` block and one `@else` block, joined together.",
+      "The pattern is `@if (condition) { ...html... } @else if (condition) { ... } @else { ... }`.",
+      "@if (marks >= 75) {\n  <p>Distinction</p>\n} @else if (marks >= 40) {\n  <p>Pass</p>\n} @else {\n  <p>Fail</p>\n}"
+    ],
+    "checks": [
+      {
+        "name": "@if (marks >= 75) shows Distinction",
+        "hint": "Write @if (marks >= 75) { <p>Distinction</p> }",
+        "regex": "@if\\s*\\(\\s*marks\\s*>=\\s*75\\s*\\)\\s*\\{\\s*<p>\\s*Distinction\\s*</p>\\s*\\}"
+      },
+      {
+        "name": "@else if (marks >= 40) shows Pass",
+        "hint": "Continue with } @else if (marks >= 40) { <p>Pass</p> }",
+        "regex": "\\}\\s*@else\\s+if\\s*\\(\\s*marks\\s*>=\\s*40\\s*\\)\\s*\\{\\s*<p>\\s*Pass\\s*</p>\\s*\\}"
+      },
+      {
+        "name": "@else shows Fail",
+        "hint": "Finish with } @else { <p>Fail</p> }",
+        "regex": "\\}\\s*@else\\s*\\{\\s*<p>\\s*Fail\\s*</p>\\s*\\}"
+      },
+      {
+        "name": "The old *ngIf is not used",
+        "hint": "Remove *ngIf. Use @if instead.",
+        "regex": "\\*ngIf",
+        "not": true
+      }
+    ]
+  }
+}

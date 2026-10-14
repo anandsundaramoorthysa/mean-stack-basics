@@ -1,0 +1,49 @@
+{
+  "title": "Moving to Angular",
+  "minutes": 12,
+  "summary": "Map each AngularJS idea you learned to its modern Angular counterpart.",
+  "docs": [
+    { "title": "Angular: Components", "url": "https://angular.dev/guide/components" },
+    { "title": "Angular: Control flow", "url": "https://angular.dev/guide/templates/control-flow" },
+    { "title": "Angular: Signals", "url": "https://angular.dev/guide/signals" },
+    { "title": "Angular: Dependency injection", "url": "https://angular.dev/guide/di" },
+    { "title": "AngularJS: Version support status", "url": "https://docs.angularjs.org/misc/version-support-status" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which modern Angular feature replaces an AngularJS controller together with its HTML?",
+      "options": ["A pipe", "A component", "A filter", "A route"],
+      "answer": 1,
+      "explain": "A component is a class plus a template, so it covers what `ng-controller` and its markup did, and it gets its own tag."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the modern template that replaces `<li ng-repeat=\"s in students\">`.",
+      "template": "@___ (s of students; track s.id) { <li>{{ s.name }}</li> }",
+      "blanks": [["for"]],
+      "explain": "The built-in control flow block is `@for (item of items; track item.id)`. The `track` expression tells Angular how to recognise each item."
+    },
+    {
+      "type": "mcq",
+      "q": "In AngularJS you wrote `$scope.count = 0`. How do you hold the same value in a modern component?",
+      "options": ["A global variable", "A class field, or a signal such as `count = signal(0)`", "An ng-init attribute", "A filter"],
+      "answer": 1,
+      "explain": "Data lives in fields of the component class. A signal wraps a value so Angular knows exactly which parts of the page to update when it changes."
+    },
+    {
+      "type": "mcq",
+      "q": "Which AngularJS idea maps to an `@Injectable()` class obtained with `inject()` or a constructor parameter?",
+      "options": ["ng-model", "A service or factory", "ng-app", "The $valid flag"],
+      "answer": 1,
+      "explain": "Dependency injection survived. Your factory becomes an injectable class, and `inject(StudentService)` replaces naming it in the function parameters."
+    },
+    {
+      "type": "mcq",
+      "q": "Which are true about the move away from AngularJS? Pick all that apply.",
+      "options": ["Templates still use `{{ }}` interpolation", "`ng-if` becomes `@if`", "AngularJS code runs unchanged in modern Angular", "Filters become pipes"],
+      "answer": [0, 1, 3],
+      "explain": "Interpolation, conditions and formatting all continue in new forms: `{{ }}`, `@if` and pipes. AngularJS code does not run unchanged. Migration is a rewrite, often done step by step."
+    }
+  ]
+}

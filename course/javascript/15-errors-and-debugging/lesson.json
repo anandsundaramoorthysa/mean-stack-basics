@@ -1,0 +1,58 @@
+{
+  "title": "Errors and debugging",
+  "minutes": 18,
+  "summary": "Read error messages, handle failures with try/catch, raise your own errors with throw, and debug with console.",
+  "docs": [
+    { "title": "MDN: try...catch", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch" },
+    { "title": "MDN: throw", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw" },
+    { "title": "MDN: Error", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "An error says `ReferenceError: total is not defined`. What does it usually mean?",
+      "options": ["total is zero", "The name total was never declared, or is misspelled or out of scope", "total is the wrong type", "The computer is out of memory"],
+      "answer": 1,
+      "explain": "A ReferenceError means JavaScript met a name it does not know. Check spelling, capital letters and whether the variable is declared where you use it."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print? Write both lines separated by a space.",
+      "code": "try {\n  JSON.parse('{oops');\n  console.log('ok');\n} catch (e) {\n  console.log('failed');\n}\nconsole.log('done');",
+      "language": "js",
+      "answer": "failed done",
+      "accept": ["failed\ndone"],
+      "explain": "`JSON.parse` throws on bad text, so the rest of the `try` block is skipped (no `ok`) and the `catch` block runs. The program then continues normally."
+    },
+    {
+      "type": "order",
+      "q": "Put the lines in order to build a function that refuses a negative age.",
+      "lines": ["function setAge(age) {", "  if (age < 0) {", "    throw new Error('Age cannot be negative');", "  }", "  return age;", "}"],
+      "explain": "The check comes first. `throw` stops the function at once, so `return age` is reached only for valid ages."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the code to print the error's message.",
+      "template": "try { risky(); } catch (err) { console.log(err.___); }",
+      "blanks": [["message"]],
+      "explain": "An Error object has a `message` property with the text that was given to `new Error(...)`, and a `name` such as `TypeError`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which line is the best first step when a function returns a wrong value and you do not know why?",
+      "options": ["Rewrite the whole function", "Print the inputs and intermediate values with console.log", "Delete the test", "Restart the computer"],
+      "answer": 1,
+      "explain": "Printing values at key points shows where reality first differs from what you expected. Then you fix that one spot."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "errors.js",
+    "task": "In `errors.js`, write and export two functions:\n\n- `safeParse(text)` runs `JSON.parse(text)` inside `try/catch`. It returns the parsed value, or `null` if the text is not valid JSON.\n- `withdraw(balance, amount)` returns `balance - amount`. If `amount` is greater than `balance` it must `throw new Error('Insufficient funds')`. If `amount` is not greater than 0 it must `throw new Error('Amount must be positive')`.",
+    "hints": [
+      "safeParse needs a try block containing the risky call and a catch block that gives the fallback. withdraw needs two `if` checks that throw.",
+      "`return JSON.parse(text);` goes in `try`, and `return null;` goes in `catch`. Check the amount rules before doing the subtraction.",
+      "function safeParse(text) {\n  try {\n    return JSON.parse(text);\n  } catch (error) {\n    return null;\n  }\n}\nfunction withdraw(balance, amount) {\n  if (amount <= 0) {\n    throw new Error('Amount must be positive');\n  }\n  if (amount > balance) {\n    throw new Error('Insufficient funds');\n  }\n  return balance - amount;\n}\nmodule.exports = { safeParse, withdraw };"
+    ]
+  }
+}

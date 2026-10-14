@@ -1,0 +1,60 @@
+{
+  "title": "Inheritance and custom properties",
+  "minutes": 15,
+  "summary": "Let children inherit styles from parents, and store reusable values in CSS variables.",
+  "docs": [
+    { "title": "MDN: Using CSS custom properties (variables)", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties" },
+    { "title": "MDN: Inheritance", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Inheritance" },
+    { "title": "MDN: var()", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/var" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "You set `body { color: navy; }`. What colour is a paragraph with no colour rule of its own?",
+      "options": ["black", "navy", "the browser default blue", "transparent"],
+      "answer": 1,
+      "explain": "`color` is an inherited property, so children use the parent's value unless a rule says otherwise."
+    },
+    {
+      "type": "mcq",
+      "q": "Which of these is **not** inherited by default?",
+      "options": ["color", "font-family", "border", "line-height"],
+      "answer": 2,
+      "explain": "Text properties tend to inherit. Box properties such as `border`, `margin` and `padding` do not, otherwise every child would get its parent's border."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the line that uses the variable.",
+      "template": "h1 { color: ___(--brand); }",
+      "blanks": [["var"]],
+      "explain": "Define the variable with two dashes, for example `--brand: #0057b8;`, and read it with `var(--brand)`."
+    },
+    {
+      "type": "mcq",
+      "q": "Why is `:root` a good place to define variables?",
+      "options": ["It runs faster", "It matches the html element, so every element can use them", "Variables only work there", "It protects them from change"],
+      "answer": 1,
+      "explain": "`:root` is the top element. Custom properties are inherited, so everything on the page can read variables defined there."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Use inheritance and variables. Work in `index.html`.\n\n- In `:root` define `--brand: #0057b8;` and `--space: 16px;`.\n- Give `body` a `color` of `darkslategray`. Do **not** style `p` directly: it should inherit.\n- Make `h1` use `color: var(--brand)`.\n- Make `.btn` use `background-color: var(--brand)` and `padding: var(--space)`.",
+    "hints": [
+      "Custom property names start with two dashes. Define them inside `:root { ... }`.",
+      "Set `color` on body only. For the others, write `var(--name)` in place of a value.",
+      ":root {\n  --brand: #0057b8;\n  --space: 16px;\n}\nbody {\n  color: darkslategray;\n}\nh1 {\n  color: var(--brand);\n}\n.btn {\n  background-color: var(--brand);\n  padding: var(--space);\n}"
+    ],
+    "checks": [
+      { "name": "--brand is defined", "source": { "regex": "--brand\\s*:\\s*#0057b8", "flags": "i" }, "hint": "Inside :root write --brand: #0057b8;." },
+      { "name": "--space is defined", "source": { "regex": "--space\\s*:\\s*16px" }, "hint": "Inside :root write --space: 16px;." },
+      { "name": "No rule targets p directly", "source": { "regex": "^(?![\\s\\S]*[}\\s,;]p\\s*[{,])[\\s\\S]*$" }, "hint": "Remove any p rule. The paragraph should get its colour from body by inheritance." },
+      { "name": "The paragraph inherits darkslategray from body", "selector": "p", "style": { "prop": "color", "equals": "darkslategray" }, "hint": "Add body { color: darkslategray; } and do not add a rule for p." },
+      { "name": "The h1 uses the brand colour through var()", "source": { "regex": "h1\\s*\\{[^}]*var\\(\\s*--brand\\s*\\)" }, "hint": "Write h1 { color: var(--brand); }." },
+      { "name": "The h1 is the brand colour", "selector": "h1", "style": { "prop": "color", "equals": "rgb(0, 87, 184)" }, "hint": "Make sure --brand is #0057b8 and the h1 uses it." },
+      { "name": ".btn uses the brand background", "selector": ".btn", "style": { "prop": "background-color", "equals": "rgb(0, 87, 184)" }, "hint": "Add .btn { background-color: var(--brand); }." },
+      { "name": ".btn padding comes from --space", "selector": ".btn", "style": { "prop": "padding-top", "equals": "16px" }, "hint": "Add padding: var(--space); to .btn." }
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "title": "Flexbox basics",
+  "minutes": 15,
+  "summary": "Lay out children in a row or a column with display: flex, and let them share the space.",
+  "docs": [
+    { "title": "MDN: Flexbox", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox" },
+    { "title": "MDN: flex-direction", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction" },
+    { "title": "MDN: flex", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/flex" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which element do you give `display: flex` to?",
+      "options": ["The children, one by one", "The parent (the container)", "Only the body", "The text"],
+      "answer": 1,
+      "explain": "Flexbox is switched on in the container. Its direct children become flex items and are laid out along a line."
+    },
+    {
+      "type": "fill",
+      "q": "Stack the flex items vertically.",
+      "template": ".menu { display: flex; flex-direction: ___; }",
+      "blanks": [["column"]],
+      "explain": "The default is `row`. `column` places the items top to bottom."
+    },
+    {
+      "type": "mcq",
+      "q": "Three flex items each have `flex: 1`. What happens?",
+      "options": ["They are all 1px wide", "They share the free space equally", "Only the first grows", "They stack vertically"],
+      "answer": 1,
+      "explain": "`flex: 1` means grow to take an equal share of the leftover space."
+    },
+    {
+      "type": "bug",
+      "q": "The HTML is `<div class=\"row\"><p class=\"item\">A</p><p class=\"item\">B</p></div>`. The author wants A and B side by side, but they stack. Click the faulty line.",
+      "code": ".row {\n  width: 100%;\n}\n.item {\n  display: flex;\n}",
+      "answerLines": [5],
+      "explain": "`display: flex` belongs on the parent (`.row`), not on the items. Putting it on the items only changes how their own contents are laid out."
+    },
+    {
+      "type": "mcq",
+      "q": "In a row flex container, which direction is the **main axis**?",
+      "options": ["top to bottom", "left to right", "diagonal", "front to back"],
+      "answer": 1,
+      "explain": "For `flex-direction: row`, the main axis runs horizontally. In `column` it runs vertically. Alignment properties work relative to the axis."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Build two layouts with flexbox. Work in `index.html`.\n\n- `.row` becomes a flex container so its three `.item` children sit side by side.\n- Each `.row .item` gets `flex: 1` so they share the width equally.\n- `.col` becomes a flex container with `flex-direction: column`.",
+    "hints": [
+      "Flexbox starts with one declaration on the parent, `display: flex`.",
+      "The items need `flex: 1` (a rule for `.row .item`), and the column container needs `flex-direction`.",
+      ".row {\n  display: flex;\n}\n.row .item {\n  flex: 1;\n}\n.col {\n  display: flex;\n  flex-direction: column;\n}"
+    ],
+    "checks": [
+      { "name": ".row is a flex container", "selector": ".row", "style": { "prop": "display", "equals": "flex" }, "hint": "Add display: flex; to .row." },
+      { "name": ".row items grow equally", "selector": ".row .item", "scope": "all", "style": { "prop": "flex-grow", "equals": "1" }, "hint": "Add .row .item { flex: 1; }." },
+      { "name": ".col is a flex container", "selector": ".col", "style": { "prop": "display", "equals": "flex" }, "hint": "Add display: flex; to .col." },
+      { "name": ".col stacks its items in a column", "selector": ".col", "style": { "prop": "flex-direction", "equals": "column" }, "hint": "Add flex-direction: column; to .col." }
+    ]
+  }
+}

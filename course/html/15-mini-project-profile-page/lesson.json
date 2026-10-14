@@ -1,0 +1,193 @@
+{
+  "title": "Mini project: a profile page",
+  "minutes": 30,
+  "summary": "Combine what you have learned to build a complete, accessible personal profile page.",
+  "docs": [
+    {
+      "title": "MDN: Structuring a page of content",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Structuring_a_page_of_content"
+    },
+    {
+      "title": "MDN: HTML elements reference",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "order",
+      "q": "Put these build steps in a sensible order.",
+      "lines": [
+        "Write the page skeleton",
+        "Add header, main and footer",
+        "Fill each section with content",
+        "Link the nav to the sections",
+        "Check the page with Tab and a validator"
+      ],
+      "explain": "Work from the outside in: skeleton first, then the big regions, then details, then connections, and finally checks."
+    },
+    {
+      "type": "mcq",
+      "q": "The nav link is `<a href=\"#skills\">`. What must the Skills section have?",
+      "options": [
+        "class=\"skills\"",
+        "name=\"skills\"",
+        "id=\"skills\"",
+        "href=\"skills\""
+      ],
+      "answer": 2,
+      "explain": "An in-page link jumps to the element whose `id` equals the text after `#`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which pair gives a data table both a title and header cells?",
+      "options": [
+        "<h1> and <td>",
+        "<caption> and <th>",
+        "<legend> and <tr>",
+        "<title> and <tbody>"
+      ],
+      "answer": 1,
+      "explain": "`caption` titles the table and `th` marks header cells."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Build a profile page in `index.html`. Replace the placeholder comments with real content.\n\n- `<html lang=\"en\">`, a `<title>` and a `<header>` with an `<h1>` (your name) and a `<nav>` with 3 links to `#about`, `#skills` and `#contact`.\n- A `<main>` with sections whose ids are `about`, `skills`, `projects` and `contact`, each with an `<h2>`.\n- About: a paragraph and an `<img>` with `alt`, `width` and `height`.\n- Skills: a `<ul>` with 3 or more items.\n- Projects: a table with a `<caption>`, 2 `<th scope=\"col\">` and 2 body rows.\n- Contact: a form with a labelled email input (required), a labelled `<textarea>` and a submit button.\n- An external link with `target=\"_blank\"` and `rel=\"noopener\"`.\n- A `<footer>` with `&copy;`.",
+    "hints": [
+      "Start with the landmarks and the four section ids, then fill in one section at a time.",
+      "Reuse your earlier exercises: the nav links match the ids, labels use for and id, the table has caption, thead and tbody.",
+      "<header>\n  <h1>Asha Kumar</h1>\n  <nav><a href=\"#about\">About</a> <a href=\"#skills\">Skills</a> <a href=\"#contact\">Contact</a></nav>\n</header>\n<main>\n  <section id=\"about\"><h2>About</h2><p>...</p><img src=\"me.jpg\" alt=\"Asha smiling\" width=\"200\" height=\"200\"></section>\n  <section id=\"skills\"><h2>Skills</h2><ul><li>HTML</li><li>CSS</li><li>JavaScript</li></ul></section>\n  <section id=\"projects\"><h2>Projects</h2><table>...</table></section>\n  <section id=\"contact\"><h2>Contact</h2><form>...</form></section>\n</main>\n<footer><p>&copy; 2026 Asha Kumar</p></footer>"
+    ],
+    "checks": [
+      {
+        "name": "The page has a title and lang=\"en\"",
+        "hint": "Add <html lang=\"en\"> and a <title> in the head.",
+        "selector": "html[lang=\"en\"] > head > title",
+        "text": {
+          "regex": "\\S"
+        }
+      },
+      {
+        "name": "The header has an h1 and a nav with 3 links to #about, #skills and #contact",
+        "hint": "Add header > h1 and nav with links to the section ids.",
+        "selector": "body > header nav a[href=\"#about\"], body > header nav a[href=\"#skills\"], body > header nav a[href=\"#contact\"]",
+        "count": 3
+      },
+      {
+        "name": "The header contains an h1 with your name",
+        "hint": "Put your name in an h1 inside the header.",
+        "selector": "body > header h1",
+        "text": {
+          "regex": "\\S"
+        }
+      },
+      {
+        "name": "main has sections with ids about, skills, projects and contact",
+        "hint": "Give each <section> one of the four ids.",
+        "selector": "main > section#about, main > section#skills, main > section#projects, main > section#contact",
+        "count": 4
+      },
+      {
+        "name": "Every section has an h2",
+        "hint": "Start every section with an <h2>.",
+        "selector": "main > section > h2",
+        "count": {
+          "min": 4
+        }
+      },
+      {
+        "name": "The about section has an image with alt, width and height",
+        "hint": "Add <img src=\"...\" alt=\"...\" width=\"...\" height=\"...\">.",
+        "selector": "#about img[alt][width][height]"
+      },
+      {
+        "name": "The image alt text is not empty",
+        "hint": "Describe the picture in the alt.",
+        "selector": "#about img",
+        "attr": {
+          "name": "alt",
+          "regex": "\\S"
+        }
+      },
+      {
+        "name": "The skills section has a list of at least 3 items",
+        "hint": "Add a <ul> with three <li> in #skills.",
+        "selector": "#skills ul > li",
+        "count": {
+          "min": 3
+        }
+      },
+      {
+        "name": "The projects table has a caption and 2 header cells",
+        "hint": "Add <caption> and two <th scope=\"col\"> in #projects.",
+        "selector": "#projects table > caption",
+        "count": 1
+      },
+      {
+        "name": "The table has two scoped header cells",
+        "hint": "Give both <th> elements scope=\"col\".",
+        "selector": "#projects th[scope=\"col\"]",
+        "count": {
+          "min": 2
+        }
+      },
+      {
+        "name": "The table body has at least 2 rows",
+        "hint": "Add two <tr> rows with <td> cells (use <tbody>).",
+        "selector": "#projects tbody tr",
+        "count": {
+          "min": 2
+        }
+      },
+      {
+        "name": "The contact form has a required email input",
+        "hint": "Add <input id=\"email\" name=\"email\" type=\"email\" required> inside the form.",
+        "selector": "#contact form input#email[type=\"email\"][required]"
+      },
+      {
+        "name": "The email input has a label",
+        "hint": "Add <label for=\"email\">Email</label> that matches the input id.",
+        "selector": "#contact form label[for=\"email\"]",
+        "text": { "regex": "\\S" }
+      },
+      {
+        "name": "The contact form has a textarea",
+        "hint": "Add <label for=\"message\"> and <textarea id=\"message\">.",
+        "selector": "#contact form textarea#message"
+      },
+      {
+        "name": "The textarea has a label",
+        "hint": "Add <label for=\"message\">Message</label>.",
+        "selector": "#contact form label[for=\"message\"]",
+        "text": { "regex": "\\S" }
+      },
+      {
+        "name": "The form has a submit button",
+        "hint": "Add <button type=\"submit\">Send</button>.",
+        "selector": "#contact form button[type=\"submit\"]"
+      },
+      {
+        "name": "An external link opens in a new tab safely",
+        "hint": "Add a link starting with https:// that has target=\"_blank\" and rel=\"noopener\".",
+        "selector": "a[href^=\"https://\"][target=\"_blank\"][rel~=\"noopener\"]"
+      },
+      {
+        "name": "The footer contains a copyright sign written as &copy;",
+        "hint": "Write <footer><p>&copy; 2026 Your Name</p></footer>.",
+        "selector": "body > footer",
+        "text": {
+          "regex": "\\u00A9"
+        }
+      },
+      {
+        "name": "The source uses &copy; for the sign",
+        "hint": "Use the entity &copy;.",
+        "source": {
+          "regex": "&copy;|&#169;",
+          "flags": "i"
+        }
+      }
+    ]
+  }
+}

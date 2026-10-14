@@ -1,0 +1,76 @@
+{
+  "title": "Testing with node:test",
+  "minutes": 18,
+  "summary": "Write tests with node:test and assert, run them with node --test, and fix a function until they pass.",
+  "docs": [
+    { "title": "Node.js API: Test runner", "url": "https://nodejs.org/api/test.html" },
+    { "title": "Node.js API: Assert", "url": "https://nodejs.org/api/assert.html" },
+    { "title": "Node.js: Using Node.js's test runner", "url": "https://nodejs.org/en/learn/test-runner/using-test-runner" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is the main benefit of an automated test?",
+      "options": [
+        "It makes the program run faster",
+        "It checks your code in seconds every time you change it, so mistakes show up early",
+        "It writes the code for you",
+        "It removes the need for functions"
+      ],
+      "answer": 1,
+      "explain": "Tests are small programs that call your code and compare the result with what you expect. Run them after every change and you notice breakage immediately."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the command that runs all tests with the built-in test runner.",
+      "template": "node ___",
+      "blanks": [["--test"]],
+      "explain": "`node --test` finds test files such as `*.test.js` (and any file inside a `test` folder) and runs them. No extra package is needed."
+    },
+    {
+      "type": "order",
+      "q": "Put the steps of fixing a bug with a test in the best order.",
+      "lines": [
+        "Write a test that describes the correct behaviour",
+        "Run node --test and see the test fail",
+        "Change the code",
+        "Run node --test again and see the test pass"
+      ],
+      "explain": "A test that has never failed might not be testing anything. Seeing it fail first proves it catches the bug, and seeing it pass afterwards proves your change fixed it."
+    },
+    {
+      "type": "mcq",
+      "q": "What happens when an assert call such as assert.equal(1 + 1, 3) fails?",
+      "options": [
+        "It prints a warning and carries on",
+        "It throws an AssertionError, and the test is marked as failed",
+        "It fixes the number",
+        "Nothing, asserts only work in browsers"
+      ],
+      "answer": 1,
+      "explain": "A failed assertion throws an error. The test runner catches it, reports which test failed and shows the expected and actual values."
+    },
+    {
+      "type": "mcq",
+      "q": "A function should give an 'A' for marks of 75 and above. Which marks are the most useful extra test cases?",
+      "options": [
+        "Only 100",
+        "74 and 75, the values on each side of the boundary",
+        "Random large numbers",
+        "Only the number 0"
+      ],
+      "answer": 1,
+      "explain": "Bugs often hide at boundaries, for example `>` written instead of `>=`. Testing the value just below and exactly on the limit catches them."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "grades.js",
+    "task": "`grades.js` has a function `gradeFor(mark)` that is supposed to turn a mark out of 100 into a letter. A set of tests (like the ones you would run with `node --test`) shows it is wrong. Fix it so it behaves like this:\n\n- 75 and above: `'A'`\n- 60 to 74: `'B'`\n- 40 to 59: `'C'`\n- below 40: `'F'`\n- A mark below 0, above 100 or not a number must throw a `RangeError` with the message `Mark must be between 0 and 100`.\n\nKeep `module.exports = { gradeFor };`.",
+    "hints": [
+      "Run the examples in your head: which boundary marks (75, 60, 40) does the current code treat wrongly?",
+      "Boundaries need `>=` (greater than or equal to), not `>`. Validate the input first: if the mark is not a number or is outside 0 to 100, throw before you grade.",
+      "function gradeFor(mark) {\n  if (typeof mark !== 'number' || Number.isNaN(mark) || mark < 0 || mark > 100) {\n    throw new RangeError('Mark must be between 0 and 100');\n  }\n  if (mark >= 75) return 'A';\n  if (mark >= 60) return 'B';\n  if (mark >= 40) return 'C';\n  return 'F';\n}\n\nmodule.exports = { gradeFor };"
+    ]
+  }
+}

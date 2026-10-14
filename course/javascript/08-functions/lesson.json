@@ -1,0 +1,57 @@
+{
+  "title": "Functions",
+  "minutes": 16,
+  "summary": "Declare functions with parameters, call them, and send results back with return.",
+  "docs": [
+    { "title": "MDN: Functions", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions" },
+    { "title": "MDN: return", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/return" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "function double(n) {\n  return n * 2;\n}\nconsole.log(double(8));",
+      "language": "js",
+      "answer": "16",
+      "explain": "The call `double(8)` runs the function with `n` set to 8 and gives back 16, which `console.log` then prints."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "function add(a, b) {\n  a + b;\n}\nconsole.log(add(2, 3));",
+      "language": "js",
+      "answer": "undefined",
+      "explain": "The function calculates `a + b` but never returns it. A function without `return` gives back `undefined`."
+    },
+    {
+      "type": "mcq",
+      "q": "In `function greet(name) { ... }`, what is `name`?",
+      "options": ["An argument", "A parameter", "A return value", "A method"],
+      "answer": 1,
+      "explain": "A **parameter** is the name in the function definition. An **argument** is the actual value you pass when calling, as in `greet('Asha')`."
+    },
+    {
+      "type": "order",
+      "q": "Put the lines in order to define and use a function.",
+      "lines": ["function square(n) {", "  return n * n;", "}", "const result = square(6);", "console.log(result);"],
+      "explain": "Define the function first, then call it. Calling a function before it is defined works for this declaration style, but beginners should define first."
+    },
+    {
+      "type": "mcq",
+      "q": "What happens to code written after a `return` statement in the same function?",
+      "options": ["It runs as normal", "It runs twice", "It never runs", "It causes a syntax error"],
+      "answer": 2,
+      "explain": "`return` ends the function immediately, so anything after it is skipped."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "functions.js",
+    "task": "In `functions.js`, write and export three functions. Each one must **return** its answer (not print it):\n\n- `square(n)` returns `n` times `n`.\n- `average(a, b)` returns the average of two numbers.\n- `fullName(first, last)` returns the two names joined by one space, for example `'Asha Rao'`.",
+    "hints": [
+      "Each function takes parameters and uses `return`. Printing with console.log gives the checker nothing to read.",
+      "square: `return n * n;`. average: add, then divide by 2. fullName: join with `' '` in the middle.",
+      "function square(n) {\n  return n * n;\n}\nfunction average(a, b) {\n  return (a + b) / 2;\n}\nfunction fullName(first, last) {\n  return first + ' ' + last;\n}\nmodule.exports = { square, average, fullName };"
+    ]
+  }
+}

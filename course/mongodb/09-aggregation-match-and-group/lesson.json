@@ -1,0 +1,68 @@
+{
+  "title": "Aggregation: $match and $group",
+  "minutes": 16,
+  "summary": "Filter documents and calculate totals, averages and counts per group with the aggregation pipeline.",
+  "docs": [
+    { "title": "MongoDB: Aggregation pipeline", "url": "https://www.mongodb.com/docs/manual/core/aggregation-pipeline/" },
+    { "title": "MongoDB: $group stage", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/" },
+    { "title": "MongoDB: $match stage", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/match/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does the `_id` field of a `$group` stage decide?",
+      "options": [
+        "The id given to each output document by the database",
+        "What the documents are grouped by",
+        "Which documents are kept",
+        "The sort order of the output"
+      ],
+      "answer": 1,
+      "explain": "Documents with the same `_id` value land in the same bucket. Use `'$city'` to get one bucket per city."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the accumulator so each group reports how many documents it holds.",
+      "template": "{ count: { $sum: ___ } }",
+      "blanks": [["1"]],
+      "explain": "Adding 1 for every document in the bucket produces a count."
+    },
+    {
+      "type": "predict",
+      "q": "Two paid orders have amounts 100 and 200, and both belong to Asha. What does `total` equal in her output document? Type the number.",
+      "code": "db.orders.aggregate([\n  { $match: { status: 'paid' } },\n  { $group: { _id: '$customer', total: { $sum: '$amount' } } }\n])",
+      "language": "js",
+      "answer": "300",
+      "explain": "`$sum: '$amount'` adds the `amount` of every document in the bucket: 100 + 200 = 300."
+    },
+    {
+      "type": "bug",
+      "q": "This pipeline should group by customer, but it puts every order into one single group. Which line is wrong?",
+      "code": "db.orders.aggregate([\n  { $group: {\n    _id: 'customer',\n    total: { $sum: '$amount' }\n  } }\n])",
+      "answerLines": [3],
+      "explain": "Without the dollar sign, `'customer'` is just a piece of text, so all documents share one bucket. Write `'$customer'` to read the field."
+    },
+    {
+      "type": "mcq",
+      "q": "Why is `$match` usually placed at the start of a pipeline?",
+      "options": [
+        "It is required to be first",
+        "It removes unneeded documents early, so later stages process less data",
+        "It sorts the data",
+        "It converts the data to numbers"
+      ],
+      "answer": 1,
+      "explain": "A pipeline is allowed to start with other stages, but filtering first is cheaper because every later stage handles fewer documents."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "From the `orders` collection (fields `customer`, `status`, `amount`), write an aggregation that, for **paid** orders only, gives one document per customer with:\n\n- `_id`: the customer name\n- `total`: the sum of `amount`\n- `average`: the average `amount`\n- `orders`: how many paid orders the customer has",
+    "hints": [
+      "Use `db.orders.aggregate([...])` with two stages: first `$match`, then `$group`.",
+      "Group by `'$customer'`. The accumulators are `$sum: '$amount'`, `$avg: '$amount'` and `$sum: 1`.",
+      "db.orders.aggregate([\n  { $match: { status: 'paid' } },\n  { $group: { _id: '$customer', total: { $sum: '$amount' }, average: { $avg: '$amount' }, orders: { $sum: 1 } } }\n])"
+    ]
+  }
+}

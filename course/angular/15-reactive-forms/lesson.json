@@ -1,0 +1,116 @@
+{
+  "title": "Reactive forms",
+  "minutes": 20,
+  "summary": "Define a form in code with FormGroup, FormControl and Validators, then connect it to the template.",
+  "docs": [
+    {
+      "title": "Angular: Reactive forms",
+      "url": "https://angular.dev/guide/forms/reactive-forms"
+    },
+    {
+      "title": "Angular: Form validation",
+      "url": "https://angular.dev/guide/forms/form-validation"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Where is the structure of a reactive form defined?",
+      "options": [
+        "Only in the HTML template",
+        "In the component class, using FormGroup and FormControl",
+        "In package.json",
+        "In the router"
+      ],
+      "answer": 1,
+      "explain": "In a reactive form the class owns the model. The template just connects to it with `[formGroup]` and `formControlName`."
+    },
+    {
+      "type": "fill",
+      "q": "Link an input to the control called `email` inside the group.",
+      "template": "<input ___=\"email\" />",
+      "blanks": [
+        [
+          "formControlName"
+        ]
+      ],
+      "explain": "`formControlName=\"email\"` finds the control named `email` in the surrounding `[formGroup]`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which validator list makes a field required and at least 6 characters long?",
+      "options": [
+        "[Validators.required, Validators.minLength(6)]",
+        "[required, min(6)]",
+        "Validators.length(6)",
+        "{ required: true, length: 6 }"
+      ],
+      "answer": 0,
+      "explain": "A control takes its start value first and then a list of validators: `new FormControl('', [Validators.required, Validators.minLength(6)])`."
+    },
+    {
+      "type": "mcq",
+      "q": "What must you add to a standalone component's `imports` to use `[formGroup]`?",
+      "options": [
+        "FormsModule",
+        "ReactiveFormsModule",
+        "HttpClient",
+        "RouterOutlet"
+      ],
+      "answer": 1,
+      "explain": "Template-driven forms use `FormsModule`; reactive forms use `ReactiveFormsModule`."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "login.component.ts",
+    "task": "Finish `login.component.ts`.\n\n- Add `ReactiveFormsModule` to the component's `imports`.\n- Create `form = new FormGroup({...})` with two controls that start as empty text.\n- `email` is required and must be an email: `[Validators.required, Validators.email]`.\n- `password` is required with `Validators.minLength(6)`.\n- The template form uses `[formGroup]=\"form\"`, inputs with `formControlName=\"email\"` and `formControlName=\"password\"`, and a button with `[disabled]=\"form.invalid\"`.",
+    "hints": [
+      "The class needs a `FormGroup` with two `FormControl`s, and the template must name them.",
+      "Each control is `new FormControl('', [validators...])`. The empty text is the start value.",
+      "form = new FormGroup({\n  email: new FormControl('', [Validators.required, Validators.email]),\n  password: new FormControl('', [Validators.required, Validators.minLength(6)]),\n});\n\n<form [formGroup]=\"form\" (ngSubmit)=\"submit()\">\n  <input formControlName=\"email\" />\n  <input type=\"password\" formControlName=\"password\" />\n  <button [disabled]=\"form.invalid\">Log in</button>\n</form>"
+    ],
+    "checks": [
+      {
+        "name": "ReactiveFormsModule is imported and listed in imports",
+        "hint": "Import it from '@angular/forms' and add imports: [ReactiveFormsModule].",
+        "regex": "imports\\s*:\\s*\\[[^\\]]*\\bReactiveFormsModule\\b"
+      },
+      {
+        "name": "form is a FormGroup",
+        "hint": "Write form = new FormGroup({ ... });",
+        "regex": "\\bform\\s*=\\s*new\\s+FormGroup\\s*\\(\\s*\\{"
+      },
+      {
+        "name": "email is required and must be an email",
+        "hint": "Write email: new FormControl('', [Validators.required, Validators.email]),",
+        "regex": "\\bemail\\s*:\\s*new\\s+FormControl\\s*(<[^>]*>)?\\s*\\(\\s*(''|\"\")\\s*,\\s*\\[(?=[^\\]]*Validators\\.required)(?=[^\\]]*Validators\\.email)[^\\]]*\\]"
+      },
+      {
+        "name": "password is required with minLength(6)",
+        "hint": "Write password: new FormControl('', [Validators.required, Validators.minLength(6)]),",
+        "regex": "\\bpassword\\s*:\\s*new\\s+FormControl\\s*(<[^>]*>)?\\s*\\(\\s*(''|\"\")\\s*,\\s*\\[(?=[^\\]]*Validators\\.required)(?=[^\\]]*Validators\\.minLength\\s*\\(\\s*6\\s*\\))[^\\]]*\\]"
+      },
+      {
+        "name": "The form element uses [formGroup]=\"form\"",
+        "hint": "Write <form [formGroup]=\"form\" ...>.",
+        "regex": "<form[^>]*\\[formGroup\\]\\s*=\\s*[\"']form[\"']"
+      },
+      {
+        "name": "An input uses formControlName=\"email\"",
+        "hint": "Write <input formControlName=\"email\" />.",
+        "regex": "<input[^>]*formControlName\\s*=\\s*[\"']email[\"']"
+      },
+      {
+        "name": "An input uses formControlName=\"password\"",
+        "hint": "Write <input type=\"password\" formControlName=\"password\" />.",
+        "regex": "<input[^>]*formControlName\\s*=\\s*[\"']password[\"']"
+      },
+      {
+        "name": "The button is disabled while form.invalid",
+        "hint": "Write <button [disabled]=\"form.invalid\">.",
+        "regex": "<button[^>]*\\[disabled\\]\\s*=\\s*[\"']form\\.invalid[\"']"
+      }
+    ]
+  }
+}

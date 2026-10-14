@@ -1,0 +1,60 @@
+{
+  "title": "Arrays",
+  "minutes": 16,
+  "summary": "Store lists of values, read them by index, change them with push and pop, and loop over them.",
+  "docs": [
+    { "title": "MDN: Array", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" },
+    { "title": "MDN: Array.prototype.push()", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push" },
+    { "title": "MDN: for...of", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const cities = ['Delhi', 'Pune', 'Kochi'];\nconsole.log(cities[1]);",
+      "language": "js",
+      "answer": "Pune",
+      "explain": "Index numbers start at 0, so index 1 is the second item."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const nums = [4, 8, 15];\nconsole.log(nums[nums.length - 1]);",
+      "language": "js",
+      "answer": "15",
+      "explain": "`length` is 3, and the last index is `length - 1`, which is 2. That item is 15."
+    },
+    {
+      "type": "mcq",
+      "q": "Which method adds an item to the END of an array?",
+      "options": ["pop", "push", "add", "append"],
+      "answer": 1,
+      "explain": "`push` adds to the end. `pop` does the opposite: it removes the last item and gives it back."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the two numbers separated by a space.",
+      "code": "const list = [1, 2];\nlist.push(3);\nconst last = list.pop();\nconsole.log(last, list.length);",
+      "language": "js",
+      "answer": "3 2",
+      "explain": "`push(3)` makes `[1, 2, 3]`, then `pop()` removes and returns 3, leaving two items."
+    },
+    {
+      "type": "mcq",
+      "q": "A `const` array can still be changed with `push`. Why?",
+      "options": ["It cannot; that would be an error", "const only stops reassigning the variable, not changing what is inside", "push creates a new variable", "const arrays are copied"],
+      "answer": 1,
+      "explain": "`const` keeps the variable pointing at the same array. The contents of that array are still allowed to change."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "arrays.js",
+    "task": "In `arrays.js`, write and export four functions:\n\n- `lastItem(list)` returns the last item, or `undefined` for an empty array.\n- `addItem(list, item)` adds `item` to the end of `list` (change the original array with `push`) and returns the new length.\n- `removeLast(list)` removes the last item from `list` with `pop` and returns it.\n- `total(numbers)` returns the sum of all numbers, using a loop. `total([])` is `0`.",
+    "hints": [
+      "Think about which operation each function needs: reading by index, push, pop, and a loop with a running total.",
+      "The last index is `list.length - 1`. `push` returns the new length by itself. For `total`, use `for (const n of numbers)`.",
+      "function lastItem(list) {\n  return list[list.length - 1];\n}\nfunction addItem(list, item) {\n  list.push(item);\n  return list.length;\n}\nfunction removeLast(list) {\n  return list.pop();\n}\nfunction total(numbers) {\n  let sum = 0;\n  for (const n of numbers) {\n    sum += n;\n  }\n  return sum;\n}\nmodule.exports = { lastItem, addItem, removeLast, total };"
+    ]
+  }
+}

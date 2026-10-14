@@ -1,0 +1,66 @@
+{
+  "title": "The box model",
+  "minutes": 15,
+  "summary": "Understand content, padding, border and margin, and set each one.",
+  "docs": [
+    { "title": "MDN: The box model", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Box_model" },
+    { "title": "MDN: padding", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/padding" },
+    { "title": "MDN: margin", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/margin" }
+  ],
+  "quiz": [
+    {
+      "type": "order",
+      "q": "Put the layers of the box model in order from the inside out.",
+      "lines": ["content", "padding", "border", "margin"],
+      "explain": "The content is surrounded by padding, then the border, then the outer margin."
+    },
+    {
+      "type": "mcq",
+      "q": "Which layer creates space **inside** the border, between the border and the text?",
+      "options": ["margin", "padding", "outline", "gap"],
+      "answer": 1,
+      "explain": "Padding is inside the border and shows the element's background. Margin is outside the border and is always transparent."
+    },
+    {
+      "type": "predict",
+      "q": "What is the computed `padding-left` in px?",
+      "code": ".box { padding: 10px 30px; }",
+      "language": "css",
+      "answer": "30px",
+      "accept": ["30", "30 px"],
+      "explain": "With two values, the first is top and bottom and the second is left and right."
+    },
+    {
+      "type": "fill",
+      "q": "Give the box a 2px solid black border.",
+      "template": ".box { border: 2px ___ black; }",
+      "blanks": [["solid"]],
+      "explain": "The border shorthand takes a width, a style and a colour. Without a style such as `solid`, no border shows."
+    },
+    {
+      "type": "mcq",
+      "q": "In the shorthand `margin: 5px 10px 15px 20px`, which side gets 20px?",
+      "options": ["top", "right", "bottom", "left"],
+      "answer": 3,
+      "explain": "Four values go clockwise from the top: top, right, bottom, left."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Give the `.card` its box. Work in `index.html`.\n\n- `padding` of 20px on all sides.\n- A `border` of 2px solid (any colour).\n- A `margin-bottom` of 30px.\n- Give `.card h2` a `margin-top` of 0.",
+    "hints": [
+      "There are four layers: content, padding, border and margin. You will set the last three.",
+      "Write a `.card` rule with `padding`, `border` and `margin-bottom`, and a separate `.card h2` rule.",
+      ".card {\n  padding: 20px;\n  border: 2px solid #333;\n  margin-bottom: 30px;\n}\n.card h2 {\n  margin-top: 0;\n}"
+    ],
+    "checks": [
+      { "name": "The card has 20px padding on top", "selector": ".card", "style": { "prop": "padding-top", "equals": "20px" }, "hint": "Add padding: 20px; to .card." },
+      { "name": "The card has 20px padding on the left", "selector": ".card", "style": { "prop": "padding-left", "equals": "20px" }, "hint": "padding: 20px; sets all four sides." },
+      { "name": "The border is 2px wide", "selector": ".card", "style": { "prop": "border-top-width", "min": 2, "max": 2 }, "hint": "Add border: 2px solid #333; to .card." },
+      { "name": "The border style is solid", "selector": ".card", "style": { "prop": "border-top-style", "equals": "solid" }, "hint": "A border needs a style: use solid." },
+      { "name": "The card has a 30px bottom margin", "selector": ".card", "style": { "prop": "margin-bottom", "equals": "30px" }, "hint": "Add margin-bottom: 30px; to .card." },
+      { "name": "The card heading has no top margin", "selector": ".card h2", "style": { "prop": "margin-top", "equals": "0px" }, "hint": "Add .card h2 { margin-top: 0; }." }
+    ]
+  }
+}

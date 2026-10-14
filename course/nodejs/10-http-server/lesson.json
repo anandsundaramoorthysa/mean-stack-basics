@@ -1,0 +1,54 @@
+{
+  "title": "An HTTP server",
+  "minutes": 18,
+  "summary": "Build a web server with http.createServer that answers by path with status codes and JSON.",
+  "docs": [
+    { "title": "Node.js API: http", "url": "https://nodejs.org/api/http.html" },
+    { "title": "Node.js: Anatomy of an HTTP transaction", "url": "https://nodejs.org/en/learn/http/anatomy-of-an-http-transaction" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "In http.createServer((req, res) => { ... }), what is req?",
+      "options": [
+        "The answer you send back",
+        "An object describing the incoming request, such as its url and method",
+        "The server itself",
+        "A promise"
+      ],
+      "answer": 1,
+      "explain": "`req` describes what the browser asked for (`req.method`, `req.url`, `req.headers`). You build the answer with `res`."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the handler so it answers with status 200 and the text Hello.",
+      "template": "res.___(200, { 'Content-Type': 'text/plain' });\nres.___('Hello');",
+      "blanks": [["writeHead"], ["end"]],
+      "explain": "`res.writeHead(status, headers)` sets the status line and headers. `res.end(body)` sends the body and finishes the response. Forgetting `end` leaves the browser waiting forever."
+    },
+    {
+      "type": "mcq",
+      "q": "Which status code means the page or resource was not found?",
+      "options": ["200", "301", "404", "500"],
+      "answer": 2,
+      "explain": "`404 Not Found`. A `200` means success, `301` is a redirect and `500` means the server itself failed."
+    },
+    {
+      "type": "bug",
+      "q": "This server should send JSON. Which line is wrong?",
+      "code": "const http = require('node:http');\n\nconst server = http.createServer((req, res) => {\n  res.writeHead(200, { 'Content-Type': 'application/json' });\n  res.end({ status: 'ok' });\n});",
+      "answerLines": [5],
+      "explain": "`res.end` needs a string or a Buffer, not an object. Convert it first: `res.end(JSON.stringify({ status: 'ok' }))`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "server.js",
+    "task": "In `server.js`, finish the server created with `http.createServer`. Answer these requests:\n\n- `GET /` replies with status `200` and the text `Welcome`.\n- `GET /health` replies with status `200`, the header `Content-Type: application/json` and the JSON body `{\"status\":\"ok\"}`.\n- Any other path replies with status `404` and the text `Not Found`.\n\nDo not call `server.listen`. The file ends with `module.exports = server;` so the checker can start it for you.",
+    "hints": [
+      "Look at `req.url` inside the handler and use `if` statements to decide what to send.",
+      "For each answer call `res.writeHead(status, headers)` and then `res.end(body)`. For JSON the body must be a string: use `JSON.stringify`.",
+      "const server = http.createServer((req, res) => {\n  if (req.url === '/') {\n    res.writeHead(200, { 'Content-Type': 'text/plain' });\n    res.end('Welcome');\n  } else if (req.url === '/health') {\n    res.writeHead(200, { 'Content-Type': 'application/json' });\n    res.end(JSON.stringify({ status: 'ok' }));\n  } else {\n    res.writeHead(404, { 'Content-Type': 'text/plain' });\n    res.end('Not Found');\n  }\n});"
+    ]
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "title": "Signals",
+  "minutes": 18,
+  "summary": "Hold changing state in signal(), derive values with computed(), and change it with set() and update().",
+  "docs": [
+    {
+      "title": "Angular: Signals",
+      "url": "https://angular.dev/guide/signals"
+    },
+    {
+      "title": "Angular: Essentials, managing dynamic data",
+      "url": "https://angular.dev/essentials/signals"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "How do you read the value of a signal called `count` in a template?",
+      "options": [
+        "{{ count }}",
+        "{{ count() }}",
+        "{{ count.value }}",
+        "{{ count.get }}"
+      ],
+      "answer": 1,
+      "explain": "A signal is a function. Calling it with parentheses returns the current value, and tells Angular that the template depends on it."
+    },
+    {
+      "type": "fill",
+      "q": "Make the signal hold the number 10.",
+      "template": "count = ___(10);",
+      "blanks": [
+        [
+          "signal"
+        ]
+      ],
+      "explain": "`signal(10)` creates a writable signal with the starting value 10."
+    },
+    {
+      "type": "predict",
+      "q": "What does the last line print?",
+      "code": "const n = signal(2);\nconst doubled = computed(() => n() * 2);\nn.set(5);\nconsole.log(doubled());",
+      "language": "ts",
+      "answer": "10",
+      "explain": "A computed signal recalculates when something it reads changes. After `n.set(5)` it gives 5 * 2 = 10."
+    },
+    {
+      "type": "mcq",
+      "q": "Which call adds one to a signal based on its old value?",
+      "options": [
+        "count = count + 1",
+        "count.update(c => c + 1)",
+        "count++",
+        "count.add(1)"
+      ],
+      "answer": 1,
+      "explain": "`update` takes a function that receives the old value and returns the new one. `set(newValue)` is for a value you already know."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "counter.component.ts",
+    "task": "Finish `counter.component.ts`.\n\n- Import `signal` and `computed` from `@angular/core`.\n- Create `count = signal(0)`.\n- Create `doubled = computed(...)` that returns `this.count() * 2`.\n- `increment()` uses `this.count.update(...)` to add one.\n- `reset()` uses `this.count.set(0)`.\n- The template shows `{{ count() }}` and `{{ doubled() }}`.",
+    "hints": [
+      "Signals are created with functions: `signal(...)` and `computed(...)`. Remember to import them.",
+      "`computed(() => this.count() * 2)` reads the other signal by calling it. `update` takes a function from the old value to the new value.",
+      "count = signal(0);\ndoubled = computed(() => this.count() * 2);\n\nincrement() {\n  this.count.update((c) => c + 1);\n}\n\nreset() {\n  this.count.set(0);\n}"
+    ],
+    "checks": [
+      {
+        "name": "signal is imported from @angular/core",
+        "hint": "import { Component, signal, computed } from '@angular/core';",
+        "regex": "import\\s*\\{[^}]*\\bsignal\\b[^}]*\\}\\s*from\\s*['\"]@angular/core['\"]"
+      },
+      {
+        "name": "computed is imported from @angular/core",
+        "hint": "Add computed to the import list.",
+        "regex": "import\\s*\\{[^}]*\\bcomputed\\b[^}]*\\}\\s*from\\s*['\"]@angular/core['\"]"
+      },
+      {
+        "name": "count is a signal starting at 0",
+        "hint": "Write count = signal(0);",
+        "regex": "\\bcount\\s*=\\s*signal\\s*(<\\s*number\\s*>)?\\s*\\(\\s*0\\s*\\)"
+      },
+      {
+        "name": "doubled is a computed signal that doubles count()",
+        "hint": "Write doubled = computed(() => this.count() * 2);",
+        "regex": "\\bdoubled\\s*=\\s*computed\\s*(<\\s*number\\s*>)?\\s*\\(\\s*\\(\\s*\\)\\s*(:\\s*number\\s*)?=>\\s*(\\{\\s*return\\s+)?(this\\.count\\(\\s*\\)\\s*\\*\\s*2|2\\s*\\*\\s*this\\.count\\(\\s*\\))"
+      },
+      {
+        "name": "increment() adds one with count.update",
+        "hint": "Write this.count.update(c => c + 1);",
+        "regex": "\\bincrement\\s*\\(\\s*\\)\\s*(:\\s*void\\s*)?\\{[^}]*this\\.count\\.update\\s*\\(\\s*\\(?\\s*(\\w+)\\s*(:\\s*number\\s*)?\\)?\\s*=>\\s*(\\2\\s*\\+\\s*1|1\\s*\\+\\s*\\2)"
+      },
+      {
+        "name": "reset() uses count.set(0)",
+        "hint": "Write this.count.set(0);",
+        "regex": "\\breset\\s*\\(\\s*\\)\\s*(:\\s*void\\s*)?\\{[^}]*this\\.count\\.set\\s*\\(\\s*0\\s*\\)"
+      },
+      {
+        "name": "The template reads count() and doubled() with parentheses",
+        "hint": "Use {{ count() }} and {{ doubled() }}.",
+        "regex": "\\{\\{\\s*count\\(\\s*\\)\\s*\\}\\}[\\s\\S]*\\{\\{\\s*doubled\\(\\s*\\)\\s*\\}\\}"
+      }
+    ]
+  }
+}

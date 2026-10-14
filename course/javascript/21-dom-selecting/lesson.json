@@ -1,0 +1,63 @@
+{
+  "title": "Selecting DOM elements",
+  "minutes": 15,
+  "summary": "Find elements on a page with querySelector and read or change their text with textContent.",
+  "docs": [
+    { "title": "MDN: Document Object Model", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction" },
+    { "title": "MDN: document.querySelector()", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector" },
+    { "title": "MDN: Node.textContent", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `document.querySelector('.mark')` return?",
+      "options": [
+        "Every element with class mark",
+        "The first element with class mark, or null",
+        "The text of the element",
+        "Always an array"
+      ],
+      "answer": 1,
+      "explain": "`querySelector` gives back one element, the first match in the page, or `null` if nothing matches. Use `querySelectorAll` for all matches."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the line that finds the element whose id is `title`.",
+      "template": "const heading = document.___('___');",
+      "blanks": [["querySelector"], ["#title"]],
+      "explain": "The text inside `querySelector` is a CSS selector. An id selector starts with `#`."
+    },
+    {
+      "type": "predict",
+      "q": "The page contains `<p id=\"msg\">Hi</p>`. What does this program print?",
+      "code": "const p = document.querySelector('#msg');\np.textContent = 'Bye';\nconsole.log(p.textContent);",
+      "language": "js",
+      "answer": "Bye",
+      "explain": "Assigning to `textContent` replaces the text inside the element, and reading it afterwards gives the new text."
+    },
+    {
+      "type": "mcq",
+      "q": "The page has three `<li class=\"mark\">` elements. How many items does `document.querySelectorAll('.mark')` hold?",
+      "options": ["1", "3", "0", "It depends on the browser"],
+      "answer": 1,
+      "explain": "`querySelectorAll` returns a list of every match, here all 3. You can loop over it with `for...of` or `forEach`."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line with the mistake. The goal is to set the heading text to 'Marks'.",
+      "code": "const heading = document.querySelector('h1');\nheading.textContent() = 'Marks';",
+      "answerLines": [2],
+      "explain": "`textContent` is a property, not a function. Write `heading.textContent = 'Marks';` with no round brackets."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "select.js",
+    "task": "The page has an `<h1 id=\"title\">`, several `<li class=\"mark\">` items with numbers inside, and a `<p id=\"total\">`.\n\nIn `select.js` (the global `document` is already available):\n\n- Set the text of `#title` to `Student Marks`.\n- Find all `.mark` items, add up their numbers and put the sum in the text of `#total`, for example `Total: 235`. Use `textContent` (the checks read that property).",
+    "hints": [
+      "Use `document.querySelector('#title')` for one element and `document.querySelectorAll('.mark')` for the list.",
+      "The text inside an element is a string, so turn it into a number with `Number(item.textContent)` before adding. Loop with `for (const item of items)`.",
+      "document.querySelector('#title').textContent = 'Student Marks';\n\nlet sum = 0;\nfor (const item of document.querySelectorAll('.mark')) {\n  sum = sum + Number(item.textContent);\n}\ndocument.querySelector('#total').textContent = 'Total: ' + sum;"
+    ]
+  }
+}

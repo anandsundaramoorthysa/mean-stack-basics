@@ -1,0 +1,95 @@
+{
+  "title": "Cursors and geospatial overview",
+  "minutes": 14,
+  "summary": "Read results through a cursor and write a 2dsphere index with a $near query.",
+  "docs": [
+    { "title": "MongoDB: Iterate a cursor in mongosh", "url": "https://www.mongodb.com/docs/manual/tutorial/iterate-a-cursor/" },
+    { "title": "MongoDB: Geospatial queries", "url": "https://www.mongodb.com/docs/manual/geospatial-queries/" },
+    { "title": "MongoDB: $near operator", "url": "https://www.mongodb.com/docs/manual/reference/operator/query/near/" },
+    { "title": "MongoDB: 2dsphere indexes", "url": "https://www.mongodb.com/docs/manual/core/indexes/index-types/geospatial/2dsphere/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `db.students.find({})` return?",
+      "options": [
+        "An array of every document",
+        "A cursor that gives access to the matching documents",
+        "A count of the documents",
+        "The first document only"
+      ],
+      "answer": 1,
+      "explain": "`find` returns a cursor. Call `toArray()`, `forEach()` or `next()` to read from it."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the cursor method that returns all remaining results as an array.",
+      "template": "db.students.find({}).___()",
+      "blanks": [["toArray"]],
+      "explain": "`toArray()` reads the whole cursor into an array."
+    },
+    {
+      "type": "mcq",
+      "q": "In a GeoJSON point, what is the order of `coordinates`?",
+      "options": [
+        "[latitude, longitude]",
+        "[longitude, latitude]",
+        "[x, y, name]",
+        "It does not matter"
+      ],
+      "answer": 1,
+      "explain": "GeoJSON uses longitude first. Swapping them is a classic bug that places a point in the wrong part of the world."
+    },
+    {
+      "type": "mcq",
+      "q": "What do you need before you can use `$near` on a field?",
+      "options": [
+        "A geospatial index such as 2dsphere on that field",
+        "A unique index on _id",
+        "A text index",
+        "Nothing, it works on any field"
+      ],
+      "answer": 0,
+      "explain": "`$near` requires a geospatial index. With GeoJSON points, that is a `2dsphere` index."
+    },
+    {
+      "type": "mcq",
+      "q": "With GeoJSON points, which unit does `$maxDistance` use?",
+      "options": ["Kilometres", "Meters", "Miles", "Degrees"],
+      "answer": 1,
+      "explain": "For a GeoJSON `$geometry` point, `$maxDistance` is measured in meters. Convert from kilometres by multiplying by 1000."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "geo.js",
+    "task": "In `geo.js`, write two statements for a `places` collection whose documents have a GeoJSON field named `location`:\n\n- Create a **2dsphere** index on `location`.\n- Find places **near** the point with longitude `78.12` and latitude `9.92`, within **2000 meters**. Use `$near`, `$geometry` and `$maxDistance`.",
+    "hints": [
+      "The first statement is `db.places.createIndex(...)`. The second is `db.places.find(...)` with a filter on `location`.",
+      "The index value is the string `'2dsphere'`. The query is `location: { $near: { $geometry: ..., $maxDistance: ... } }`. A point is `{ type: 'Point', coordinates: [lng, lat] }`.",
+      "db.places.createIndex({ location: '2dsphere' })\ndb.places.find({\n  location: {\n    $near: {\n      $geometry: { type: 'Point', coordinates: [78.12, 9.92] },\n      $maxDistance: 2000\n    }\n  }\n})"
+    ],
+    "checks": [
+      {
+        "name": "A 2dsphere index on location",
+        "hint": "Write db.places.createIndex({ location: '2dsphere' }).",
+        "regex": "db\\.places\\.createIndex\\(\\s*\\{\\s*location\\s*:\\s*['\"]2dsphere['\"]\\s*\\}\\s*\\)"
+      },
+      {
+        "name": "A find on places with a $near filter on location",
+        "hint": "Write db.places.find({ location: { $near: { ... } } }).",
+        "regex": "db\\.places\\.find\\(\\s*\\{\\s*location\\s*:\\s*\\{\\s*\\$near\\s*:"
+      },
+      {
+        "name": "The point is [78.12, 9.92] (longitude first)",
+        "hint": "Use $geometry: { type: 'Point', coordinates: [78.12, 9.92] }. Longitude comes first.",
+        "regex": "\\$geometry\\s*:\\s*\\{\\s*type\\s*:\\s*['\"]Point['\"]\\s*,\\s*coordinates\\s*:\\s*\\[\\s*78\\.12\\s*,\\s*9\\.92\\s*\\]"
+      },
+      {
+        "name": "The distance limit is 2000 meters",
+        "hint": "Add $maxDistance: 2000 next to $geometry.",
+        "regex": "\\$maxDistance\\s*:\\s*2000\\b"
+      }
+    ]
+  }
+}

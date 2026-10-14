@@ -1,0 +1,64 @@
+{
+  "title": "Async files with promises",
+  "minutes": 16,
+  "summary": "Read and write files without blocking, using fs/promises with async and await.",
+  "docs": [
+    { "title": "Node.js API: fs promises API", "url": "https://nodejs.org/api/fs.html#promises-api" },
+    { "title": "Node.js: Asynchronous flow control", "url": "https://nodejs.org/en/learn/asynchronous-work/asynchronous-flow-control" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Why is readFileSync a poor choice inside a web server that handles many users?",
+      "options": [
+        "It returns the wrong data",
+        "While it waits for the disk, the whole program is frozen and no other request can run",
+        "It can only read small files",
+        "It is not part of Node.js"
+      ],
+      "answer": 1,
+      "explain": "Node runs your JavaScript on one thread. A synchronous call blocks that thread, so every other user waits. The promise version lets Node serve others while the disk works."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the function so it waits for the file to be read.",
+      "template": "async function load() {\n  const text = ___ fs.readFile('a.txt', 'utf8');\n  return text;\n}",
+      "blanks": [["await"]],
+      "explain": "`await` pauses the async function until the promise finishes and gives you its result. In a CommonJS file it only works inside a function marked `async`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which line imports the promise-based file functions?",
+      "options": [
+        "const fs = require('node:fs/promises');",
+        "const fs = require('node:fs').sync;",
+        "const fs = require('promises');",
+        "const fs = await require('fs');"
+      ],
+      "answer": 0,
+      "explain": "`node:fs/promises` gives you the same functions (`readFile`, `writeFile`, ...) but they return promises. `require('node:fs').promises` gives the same functions."
+    },
+    {
+      "type": "predict",
+      "q": "The file a.txt exists. What is printed, in order? Write the two words separated by a space.",
+      "code": "const fs = require('node:fs/promises');\nfs.readFile('a.txt', 'utf8').then(() => console.log('read'));\nconsole.log('after');",
+      "language": "js",
+      "answer": "after read",
+      "explain": "The file is read in the background. The next line runs immediately, so `after` prints first and `read` prints when the file is ready."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "files.js",
+    "task": "In `files.js`, write three **async** functions with `fs/promises` and export them.\n\n- `wordCount(file)` reads a text file and resolves to the number of words in it (words are separated by spaces or new lines).\n- `readJson(file)` reads a JSON file and resolves to the parsed object.\n- `writeLines(file, lines)` writes an array of strings to a file, one per line, with a newline after each, and resolves when done.\n\nThe folder contains `story.txt` and `config.json` to try your code on.",
+    "hints": [
+      "Import `fs/promises` and mark each function `async`. Inside use `await fs.readFile(file, 'utf8')`.",
+      "For words: `text.split(/\\s+/).filter(Boolean).length`. For JSON: `JSON.parse(text)`. For writing: `await fs.writeFile(file, ...)`. Do not forget to export all three.",
+      "const fs = require('node:fs/promises');\n\nasync function wordCount(file) {\n  const text = await fs.readFile(file, 'utf8');\n  return text.split(/\\s+/).filter(Boolean).length;\n}\nasync function readJson(file) {\n  return JSON.parse(await fs.readFile(file, 'utf8'));\n}\nasync function writeLines(file, lines) {\n  await fs.writeFile(file, lines.map((l) => l + '\\n').join(''));\n}\n\nmodule.exports = { wordCount, readJson, writeLines };"
+    ],
+    "fixtures": {
+      "story.txt": "the quick brown fox\njumps over the lazy dog\n",
+      "config.json": "{\"port\":3000,\"name\":\"demo\"}"
+    }
+  }
+}

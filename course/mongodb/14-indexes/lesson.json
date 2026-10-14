@@ -1,0 +1,100 @@
+{
+  "title": "Indexes",
+  "minutes": 14,
+  "summary": "Understand what indexes do and write single, compound, unique, text and hashed indexes.",
+  "docs": [
+    { "title": "MongoDB: Indexes", "url": "https://www.mongodb.com/docs/manual/indexes/" },
+    { "title": "MongoDB: db.collection.createIndex()", "url": "https://www.mongodb.com/docs/manual/reference/method/db.collection.createIndex/" },
+    { "title": "MongoDB: Unique indexes", "url": "https://www.mongodb.com/docs/manual/core/index-unique/" },
+    { "title": "MongoDB: Compound indexes", "url": "https://www.mongodb.com/docs/manual/core/indexes/index-types/index-compound/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is the main benefit of an index?",
+      "options": [
+        "It makes the stored data smaller",
+        "It lets MongoDB find matching documents without reading the whole collection",
+        "It stops other users from reading the data",
+        "It checks that every field has the right type"
+      ],
+      "answer": 1,
+      "explain": "An index is a sorted lookup structure. It speeds up reads, but it uses extra storage and slows writes a little."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the call to create an ascending index on `marks`.",
+      "template": "db.students.createIndex({ marks: ___ })",
+      "blanks": [["1"]],
+      "explain": "`1` is ascending order and `-1` is descending."
+    },
+    {
+      "type": "mcq",
+      "q": "You have an index `{ customerId: 1, createdAt: -1 }`. Which query can use it well?",
+      "options": [
+        "db.orders.find({ createdAt: { $gt: someDate } }) alone",
+        "db.orders.find({ customerId: 7 })",
+        "db.orders.find({ total: 100 })",
+        "None, compound indexes only work with all fields"
+      ],
+      "answer": 1,
+      "explain": "A compound index serves queries that start with its first field (`customerId`), alone or together with the next. A query on only the second field cannot use it well."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `db.users.createIndex({ email: 1 }, { unique: true })` do?",
+      "options": [
+        "It deletes users with the same email",
+        "It makes the database refuse a second user with an email that already exists",
+        "It sorts the users by email permanently",
+        "It encrypts the email field"
+      ],
+      "answer": 1,
+      "explain": "A unique index rejects duplicates. The insert or update that would create the duplicate fails with an error."
+    },
+    {
+      "type": "mcq",
+      "q": "Which statements about text and hashed indexes are true? Choose two.",
+      "options": [
+        "A collection may have only one text index",
+        "A hashed index is ideal for range queries like marks above 80",
+        "A hashed index supports equality matches only",
+        "A text index is created with { name: -1 }"
+      ],
+      "answer": [0, 2],
+      "explain": "Text indexes are limited to one per collection and are created with the value 'text'. Hashed values cannot be ordered, so ranges are not supported."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "indexes.js",
+    "task": "Write four index commands in `indexes.js`:\n\n- A **unique** index on `email` in the `users` collection.\n- A **compound** index on `orders`: `customerId` ascending, then `createdAt` descending.\n- A **text** index on `description` in the `products` collection.\n- A **hashed** index on `userId` in the `sessions` collection.",
+    "hints": [
+      "Each command has the form `db.<collection>.createIndex(<fields>, <options>)`. Only the unique one needs the options object.",
+      "The unique one ends with `{ unique: true }`. Use `'text'` and `'hashed'` as the value instead of 1 for the last two. Use `1` and `-1` for the compound one.",
+      "db.users.createIndex({ email: 1 }, { unique: true })\ndb.orders.createIndex({ customerId: 1, createdAt: -1 })\ndb.products.createIndex({ description: 'text' })\ndb.sessions.createIndex({ userId: 'hashed' })"
+    ],
+    "checks": [
+      {
+        "name": "A unique index on users.email",
+        "hint": "Write db.users.createIndex({ email: 1 }, { unique: true }).",
+        "regex": "db\\.users\\.createIndex\\(\\s*\\{\\s*email\\s*:\\s*1\\s*\\}\\s*,\\s*\\{\\s*unique\\s*:\\s*true\\s*\\}\\s*\\)"
+      },
+      {
+        "name": "A compound index on orders: customerId 1, createdAt -1",
+        "hint": "List both fields in one object, in this order: { customerId: 1, createdAt: -1 }.",
+        "regex": "db\\.orders\\.createIndex\\(\\s*\\{\\s*customerId\\s*:\\s*1\\s*,\\s*createdAt\\s*:\\s*-1\\s*\\}\\s*\\)"
+      },
+      {
+        "name": "A text index on products.description",
+        "hint": "Use the string 'text' as the value: { description: 'text' }.",
+        "regex": "db\\.products\\.createIndex\\(\\s*\\{\\s*description\\s*:\\s*['\"]text['\"]\\s*\\}\\s*\\)"
+      },
+      {
+        "name": "A hashed index on sessions.userId",
+        "hint": "Use the string 'hashed' as the value: { userId: 'hashed' }.",
+        "regex": "db\\.sessions\\.createIndex\\(\\s*\\{\\s*userId\\s*:\\s*['\"]hashed['\"]\\s*\\}\\s*\\)"
+      }
+    ]
+  }
+}

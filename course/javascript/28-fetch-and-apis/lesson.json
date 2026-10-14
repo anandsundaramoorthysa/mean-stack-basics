@@ -1,0 +1,67 @@
+{
+  "title": "fetch and APIs",
+  "minutes": 20,
+  "summary": "Request data from an API with fetch, read the JSON response and handle errors.",
+  "docs": [
+    { "title": "MDN: Fetch API", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" },
+    { "title": "MDN: Using the Fetch API", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch" },
+    { "title": "MDN: Response", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Response" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `fetch(url)` return?",
+      "options": ["The data from the server", "A promise that fulfills with a Response object", "A string of JSON", "Nothing"],
+      "answer": 1,
+      "explain": "`fetch` returns a promise. The Response it gives you is only the envelope. You still have to read the body, for example with `response.json()`."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the function to read the data from the response.",
+      "template": "async function getStudents() {\n  const response = await fetch('/api/students');\n  return await response.___();\n}",
+      "blanks": [["json"]],
+      "explain": "`response.json()` reads the body and parses it as JSON. It also returns a promise, so it needs `await`."
+    },
+    {
+      "type": "mcq",
+      "q": "The server answers with status 404 (not found). What does `await fetch(url)` do?",
+      "options": [
+        "Throws an error",
+        "Resolves normally, with response.ok equal to false",
+        "Never finishes",
+        "Returns null"
+      ],
+      "answer": 1,
+      "explain": "fetch only rejects for network problems such as being offline. HTTP errors like 404 and 500 still resolve, so you must check `response.ok` or `response.status` yourself."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that forgets to wait for the data.",
+      "code": "async function getName(fetchFn) {\n  const response = await fetchFn('/api/me');\n  const data = response.json();\n  return data.name;\n}",
+      "answerLines": [3],
+      "explain": "`response.json()` returns a promise, so `data` would be a promise and `data.name` would be `undefined`. Write `await response.json()`."
+    },
+    {
+      "type": "mcq",
+      "q": "Why do the exercises in this lesson receive `fetchFn` as a parameter instead of calling fetch directly?",
+      "options": [
+        "fetch cannot be used in Node.js",
+        "So the checker can pass a fake fetch and the code can run without a network",
+        "Parameters make code faster",
+        "Because fetch only works in Angular"
+      ],
+      "answer": 1,
+      "explain": "Passing the dependency in is a common technique. In real code you pass the real `fetch`, in tests you pass a stand-in that returns known data."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "api.js",
+    "task": "In `api.js`, write two `async` functions that receive the fetch function as their first parameter:\n\n- `getStudent(fetchFn, id)` calls `fetchFn('/api/students/' + id)`. If `response.ok` is false it throws `new Error('Request failed: ' + response.status)`. Otherwise it returns the parsed JSON (`await response.json()`).\n- `getNames(fetchFn)` calls `fetchFn('/api/students')`, reads the JSON array of students and returns only their `name` values. If anything goes wrong (the request rejects or the response is not ok) it returns an empty array.",
+    "hints": [
+      "Both functions are `async`. Call `await fetchFn(url)` to get the response, and check `response.ok` before reading it.",
+      "In `getNames`, wrap everything in `try...catch` and `return []` from `catch`. You can reuse a throw for the not-ok case. Use `.map((s) => s.name)` on the array.",
+      "async function getStudent(fetchFn, id) {\n  const response = await fetchFn('/api/students/' + id);\n  if (!response.ok) {\n    throw new Error('Request failed: ' + response.status);\n  }\n  return await response.json();\n}\n\nasync function getNames(fetchFn) {\n  try {\n    const response = await fetchFn('/api/students');\n    if (!response.ok) return [];\n    const students = await response.json();\n    return students.map((s) => s.name);\n  } catch (error) {\n    return [];\n  }\n}"
+    ]
+  }
+}

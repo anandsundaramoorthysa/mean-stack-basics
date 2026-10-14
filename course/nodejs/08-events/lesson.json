@@ -1,0 +1,60 @@
+{
+  "title": "Events with EventEmitter",
+  "minutes": 14,
+  "summary": "Announce things with emit and react to them with on and once.",
+  "docs": [
+    { "title": "Node.js API: Events", "url": "https://nodejs.org/api/events.html" },
+    { "title": "Node.js: The Node.js Event emitter", "url": "https://nodejs.org/en/learn/asynchronous-work/the-nodejs-event-emitter" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the two lines separated by a space.",
+      "code": "const EventEmitter = require('node:events');\nconst bell = new EventEmitter();\n\nbell.on('ring', (who) => console.log('Hello ' + who));\nbell.emit('ring', 'Asha');\nbell.emit('ring', 'Ravi');",
+      "language": "js",
+      "answer": "Hello Asha Hello Ravi",
+      "explain": "`on` registers a listener that runs for **every** emit of that event, and the extra argument given to `emit` is passed to the listener."
+    },
+    {
+      "type": "predict",
+      "q": "What does this print? Write the two lines separated by a space.",
+      "code": "const EventEmitter = require('node:events');\nconst bell = new EventEmitter();\n\nbell.once('ring', () => console.log('first'));\nbell.emit('ring');\nbell.emit('ring');\nconsole.log('done');",
+      "language": "js",
+      "answer": "first done",
+      "explain": "`once` removes the listener after it runs one time, so the second `emit` finds nobody listening."
+    },
+    {
+      "type": "mcq",
+      "q": "What happens if you emit an event that has no listener?",
+      "options": [
+        "An error is thrown",
+        "Nothing happens; emit returns false",
+        "The event is saved and delivered later",
+        "The program stops"
+      ],
+      "answer": 1,
+      "explain": "Emitting to nobody is harmless, and `emit` returns `false`. The one exception is an event named `'error'`: with no listener Node throws it."
+    },
+    {
+      "type": "order",
+      "q": "Put these lines in an order that works.",
+      "lines": [
+        "const EventEmitter = require('node:events');",
+        "const shop = new EventEmitter();",
+        "shop.on('order', (item) => console.log(item));",
+        "shop.emit('order', 'tea');"
+      ],
+      "explain": "Create the emitter first. Register listeners with `on` before you `emit`, because a listener added later does not hear events that already happened."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "shop.js",
+    "task": "In `shop.js`, finish `setup(emitter)`. It receives an `EventEmitter` and returns a state object `{ orders: [], opened: 0 }` that it keeps up to date:\n\n- Every time the emitter emits `'order'` with an item name, push the name onto `state.orders`.\n- The first time (and only the first time) the emitter emits `'open'`, add 1 to `state.opened`. Use `once`.\n\nExport `setup` with `module.exports`.",
+    "hints": [
+      "Create the `state` object first, register the listeners on the `emitter` you were given, and return the state at the end.",
+      "`emitter.on('order', (item) => { ... })` runs for every order. `emitter.once('open', () => { ... })` runs only for the first open.",
+      "function setup(emitter) {\n  const state = { orders: [], opened: 0 };\n  emitter.on('order', (item) => {\n    state.orders.push(item);\n  });\n  emitter.once('open', () => {\n    state.opened += 1;\n  });\n  return state;\n}\n\nmodule.exports = { setup };"
+    ]
+  }
+}

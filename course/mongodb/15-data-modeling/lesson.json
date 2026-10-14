@@ -1,0 +1,76 @@
+{
+  "title": "Data modelling",
+  "minutes": 15,
+  "summary": "Decide when to embed data, when to reference it, and when copying data is the right choice.",
+  "docs": [
+    { "title": "MongoDB: Data modeling", "url": "https://www.mongodb.com/docs/manual/data-modeling/" },
+    { "title": "MongoDB: Embedded data versus references", "url": "https://www.mongodb.com/docs/manual/data-modeling/concepts/embedding-vs-references/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "An order always has between 1 and 10 line items, and you always show them with the order. What is the best design?",
+      "options": [
+        "Embed the items as an array inside the order",
+        "Put each item in a separate collection and join them every time",
+        "Store the items as one long string",
+        "Create one collection per item"
+      ],
+      "answer": 0,
+      "explain": "Small lists that belong to a single parent and are read together are the classic case for embedding."
+    },
+    {
+      "type": "mcq",
+      "q": "A popular post may collect millions of comments. Which design is safer?",
+      "options": [
+        "Embed all comments in the post document",
+        "Keep comments in their own collection and store postId on each comment",
+        "Store the comments in a text file",
+        "Embed only the newest comment and delete the rest"
+      ],
+      "answer": 1,
+      "explain": "An embedded array that can grow without limit will eventually hit the 16 MB document size limit and make every read of the post heavy."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the term: storing only an id that points to a document in another collection is called a ___.",
+      "template": "a ___ (the opposite of embedding)",
+      "blanks": [["reference", "references", "Reference", "Referencing", "referencing"]],
+      "explain": "A reference holds the id of another document, and `$lookup` can join it when needed."
+    },
+    {
+      "type": "mcq",
+      "q": "Why should an order store the **price at the time of purchase** instead of only a productId?",
+      "options": [
+        "Because MongoDB cannot join collections",
+        "Because the product's price may change later, and the order must keep what the customer paid",
+        "Because ids take more space than prices",
+        "Because referencing is not allowed in MongoDB"
+      ],
+      "answer": 1,
+      "explain": "Here a copy is a deliberate snapshot. Duplicating is good when the value should not change with its source."
+    },
+    {
+      "type": "mcq",
+      "q": "A customer's phone number is copied into 5,000 old orders. What is the main downside?",
+      "options": [
+        "Reads become slower",
+        "When the number changes, all 5,000 copies must be updated or they will be out of date",
+        "MongoDB refuses duplicate values",
+        "The _id of the orders changes"
+      ],
+      "answer": 1,
+      "explain": "Duplicated data has to be kept in sync by your code. That is the price you pay for faster reads."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "Model an order by inserting **one** document into the `orders` collection using `insertOne`. The document must have:\n\n- `orderNo`: `'A100'`\n- `customer`: an embedded object `{ name: 'Asha', city: 'Madurai' }`\n- `items`: an embedded array of two objects, each with `sku`, `qty` and `price`:\n  - `PEN`, quantity 2, price 10\n  - `BOOK`, quantity 1, price 50",
+    "hints": [
+      "Call `db.orders.insertOne({ ... })` with one object that has three fields.",
+      "`customer` is an object in curly braces. `items` is an array in square brackets that holds two objects.",
+      "db.orders.insertOne({\n  orderNo: 'A100',\n  customer: { name: 'Asha', city: 'Madurai' },\n  items: [\n    { sku: 'PEN', qty: 2, price: 10 },\n    { sku: 'BOOK', qty: 1, price: 50 }\n  ]\n})"
+    ]
+  }
+}

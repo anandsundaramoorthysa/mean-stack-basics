@@ -1,0 +1,105 @@
+{
+  "title": "Lifecycle hooks and effect()",
+  "minutes": 18,
+  "summary": "Run code when a component starts and stops with ngOnInit and ngOnDestroy, and react to signal changes with effect().",
+  "docs": [
+    {
+      "title": "Angular: Component lifecycle",
+      "url": "https://angular.dev/guide/components/lifecycle"
+    },
+    {
+      "title": "Angular: Signals (effects)",
+      "url": "https://angular.dev/guide/signals"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "order",
+      "q": "Put these in the order Angular runs them for a new component.",
+      "lines": [
+        "constructor",
+        "ngOnInit",
+        "ngAfterViewInit",
+        "ngOnDestroy"
+      ],
+      "explain": "The constructor runs first, `ngOnInit` once the inputs are set, `ngAfterViewInit` after the view is built, and `ngOnDestroy` when the component is removed."
+    },
+    {
+      "type": "mcq",
+      "q": "Why do you clear a timer in `ngOnDestroy`?",
+      "options": [
+        "Angular forbids timers",
+        "Otherwise the timer keeps running after the component is gone",
+        "To make the page faster to load",
+        "To reset signals"
+      ],
+      "answer": 1,
+      "explain": "A timer started with setInterval lives on its own. If it is not stopped, it keeps running and wastes memory (a **leak**)."
+    },
+    {
+      "type": "mcq",
+      "q": "What is `effect(() => console.log(this.count()))` for?",
+      "options": [
+        "It runs again every time `count` changes",
+        "It runs only once",
+        "It changes `count`",
+        "It declares an input"
+      ],
+      "answer": 0,
+      "explain": "An effect re-runs when any signal it reads changes. Use it for side effects such as logging, saving to localStorage or custom DOM work."
+    },
+    {
+      "type": "fill",
+      "q": "Fill in the interface name so the class promises an ngOnInit method.",
+      "template": "export class Clock implements ___ {",
+      "blanks": [
+        [
+          "OnInit"
+        ]
+      ],
+      "explain": "`implements OnInit` is optional but helps TypeScript check that you wrote `ngOnInit()` correctly."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "clock.component.ts",
+    "task": "Finish `clock.component.ts`.\n\n- The class `implements OnInit, OnDestroy`.\n- In `ngOnInit()` start `setInterval(...)` that adds one to `seconds` (use `this.seconds.update(...)`) and store its result in `this.timerId`.\n- In `ngOnDestroy()` call `clearInterval(this.timerId)`.\n- In the constructor create an `effect(() => { ... })` that reads `this.seconds()` and logs it.",
+    "hints": [
+      "Hooks are methods with fixed names. Start things in `ngOnInit` and stop them in `ngOnDestroy`.",
+      "`this.timerId = setInterval(() => this.seconds.update(s => s + 1), 1000);` An effect must be created in the constructor (or a field initialiser).",
+      "constructor() {\n  effect(() => {\n    console.log('seconds:', this.seconds());\n  });\n}\n\nngOnInit() {\n  this.timerId = setInterval(() => this.seconds.update((s) => s + 1), 1000);\n}\n\nngOnDestroy() {\n  clearInterval(this.timerId);\n}"
+    ],
+    "checks": [
+      {
+        "name": "The class implements OnInit and OnDestroy",
+        "hint": "Write class ClockComponent implements OnInit, OnDestroy.",
+        "regex": "class\\s+ClockComponent\\s+implements\\s+(?=[^{]*\\bOnInit\\b)(?=[^{]*\\bOnDestroy\\b)[^{]*\\{"
+      },
+      {
+        "name": "ngOnInit starts a setInterval stored in this.timerId",
+        "hint": "Write this.timerId = setInterval(...) inside ngOnInit().",
+        "regex": "\\bngOnInit\\s*\\(\\s*\\)\\s*(:\\s*void\\s*)?\\{\\s*this\\.timerId\\s*=\\s*setInterval\\s*\\("
+      },
+      {
+        "name": "The interval adds one to seconds",
+        "hint": "Use this.seconds.update(s => s + 1) or this.seconds.set(this.seconds() + 1).",
+        "regex": "setInterval\\s*\\([\\s\\S]*this\\.seconds\\.(update\\s*\\(|set\\s*\\()"
+      },
+      {
+        "name": "ngOnDestroy clears the timer",
+        "hint": "Write clearInterval(this.timerId); in ngOnDestroy().",
+        "regex": "\\bngOnDestroy\\s*\\(\\s*\\)\\s*(:\\s*void\\s*)?\\{[^}]*clearInterval\\s*\\(\\s*this\\.timerId\\s*\\)"
+      },
+      {
+        "name": "The constructor creates an effect that reads this.seconds()",
+        "hint": "Write constructor() { effect(() => { console.log(this.seconds()); }); }",
+        "regex": "constructor\\s*\\(\\s*\\)\\s*\\{\\s*effect\\s*\\(\\s*\\(\\s*\\)\\s*=>\\s*\\{[^}]*this\\.seconds\\s*\\(\\s*\\)"
+      },
+      {
+        "name": "OnInit, OnDestroy and effect are imported",
+        "hint": "import { Component, signal, effect, OnInit, OnDestroy } from '@angular/core';",
+        "regex": "import\\s*\\{(?=[^}]*\\bOnInit\\b)(?=[^}]*\\bOnDestroy\\b)(?=[^}]*\\beffect\\b)[^}]*\\}\\s*from\\s*['\"]@angular/core['\"]"
+      }
+    ]
+  }
+}

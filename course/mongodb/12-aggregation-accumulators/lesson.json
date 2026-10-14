@@ -1,0 +1,61 @@
+{
+  "title": "Aggregation accumulators",
+  "minutes": 16,
+  "summary": "Summarise groups with $min, $max, $first, $last, $push and $addToSet.",
+  "docs": [
+    { "title": "MongoDB: $group accumulators", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/" },
+    { "title": "MongoDB: $addToSet accumulator", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/addToSet/" },
+    { "title": "MongoDB: $push accumulator", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/push/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "A group's documents have `city` values 'Salem', 'Erode', 'Salem'. What do `$push` and `$addToSet` produce?",
+      "options": [
+        "Both give ['Salem', 'Erode', 'Salem']",
+        "$push gives ['Salem', 'Erode', 'Salem'] and $addToSet gives the unique values 'Salem' and 'Erode'",
+        "$push gives the unique values and $addToSet keeps duplicates",
+        "Both give ['Salem', 'Erode']"
+      ],
+      "answer": 1,
+      "explain": "`$push` collects every value. `$addToSet` collects each distinct value once."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the accumulator that finds the highest mark in each group.",
+      "template": "{ best: { $___: '$marks' } }",
+      "blanks": [["max"]],
+      "explain": "`$max` returns the largest value in the group. `$min` returns the smallest."
+    },
+    {
+      "type": "mcq",
+      "q": "Why do you normally put a `$sort` stage before a `$group` that uses `$first`?",
+      "options": [
+        "`$group` refuses to run without a sort",
+        "`$first` takes the first document that reaches the group, and without a sort that order is not defined",
+        "`$sort` makes `$first` faster",
+        "`$first` sorts the group by itself afterwards"
+      ],
+      "answer": 1,
+      "explain": "`$first` and `$last` simply follow the order of incoming documents, so you decide the order with `$sort`."
+    },
+    {
+      "type": "predict",
+      "q": "Documents reach `$group` in this order of marks: 40, 90, 60. What does `last` equal? Type the number.",
+      "code": "{ $group: { _id: null, last: { $last: '$marks' } } }",
+      "language": "js",
+      "answer": "60",
+      "explain": "`$last` returns the value from the last document in the incoming order, which is 60 (not the biggest, which is 90)."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "The `sales` collection has the fields `region`, `rep`, `product` and `amount`.\n\nWrite a pipeline that first sorts by `amount` (smallest first) and then groups by `region` with these fields:\n\n- `lowest`: the smallest amount\n- `highest`: the largest amount\n- `topRep`: the `rep` who made the largest sale (use `$last`)\n- `reps`: an array of all reps with `$push`\n- `products`: the unique products with `$addToSet`",
+    "hints": [
+      "Two stages: a `$sort` on `amount`, then a `$group` with `_id: '$region'`.",
+      "Use `$min` and `$max` on `'$amount'`, `$last` on `'$rep'`, `$push` on `'$rep'` and `$addToSet` on `'$product'`.",
+      "db.sales.aggregate([\n  { $sort: { amount: 1 } },\n  { $group: { _id: '$region', lowest: { $min: '$amount' }, highest: { $max: '$amount' }, topRep: { $last: '$rep' }, reps: { $push: '$rep' }, products: { $addToSet: '$product' } } }\n])"
+    ]
+  }
+}

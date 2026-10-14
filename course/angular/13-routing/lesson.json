@@ -1,0 +1,131 @@
+{
+  "title": "Routing and route parameters",
+  "minutes": 20,
+  "summary": "Map URLs to components with provideRouter and read a route parameter such as :id.",
+  "docs": [
+    {
+      "title": "Angular: Routing overview",
+      "url": "https://angular.dev/guide/routing"
+    },
+    {
+      "title": "Angular: Define routes",
+      "url": "https://angular.dev/guide/routing/define-routes"
+    },
+    {
+      "title": "Angular: Read route state",
+      "url": "https://angular.dev/guide/routing/read-route-state"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which entry shows `StudentComponent` for a URL like /students/7?",
+      "options": [
+        "{ path: 'students', component: StudentComponent }",
+        "{ path: 'students/:id', component: StudentComponent }",
+        "{ path: '/students/id', component: StudentComponent }",
+        "{ url: 'students/:id', page: StudentComponent }"
+      ],
+      "answer": 1,
+      "explain": "A colon makes a segment a **parameter**. `students/:id` matches /students/7 and captures 7 as `id`. Paths are written without a leading slash."
+    },
+    {
+      "type": "fill",
+      "q": "Add the link that goes to the students page without reloading the browser.",
+      "template": "<a ___=\"/students\">Students</a>",
+      "blanks": [
+        [
+          "routerLink"
+        ]
+      ],
+      "explain": "`routerLink` navigates inside the app. A normal `href` would reload the whole page."
+    },
+    {
+      "type": "mcq",
+      "q": "Where do you put `<router-outlet />`?",
+      "options": [
+        "In the routes array",
+        "In the template where the routed component should appear",
+        "In package.json",
+        "In a service"
+      ],
+      "answer": 1,
+      "explain": "The router-outlet is a placeholder. The component for the current URL is shown there."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `provideRouter(routes)` do, and where does it go?",
+      "options": [
+        "It starts the router; it goes in the `providers` of the app configuration",
+        "It draws links; it goes in a template",
+        "It loads a CSS file",
+        "It creates a service; it goes in a component class"
+      ],
+      "answer": 0,
+      "explain": "`providers: [provideRouter(routes)]` in `app.config.ts` gives the app its router."
+    },
+    {
+      "type": "fill",
+      "q": "With input binding turned on, a route parameter arrives as a component input. Finish the field.",
+      "template": "id = input.___<string>();",
+      "blanks": [
+        [
+          "required"
+        ]
+      ],
+      "explain": "Route parameters are always strings. With `withComponentInputBinding()` the input called `id` receives the value of `:id`."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "app.config.ts",
+    "task": "Finish `app.config.ts`.\n\n- `routes` is typed `Routes`.\n- A route with `path: ''` shows `HomeComponent`.\n- A route with `path: 'students/:id'` shows `StudentComponent`.\n- A last route with `path: '**'` and `redirectTo: ''` handles unknown URLs.\n- `StudentComponent` has `id = input.required<string>()` and the template shows `{{ id() }}`.\n- `providers` contains `provideRouter(routes, withComponentInputBinding())`.",
+    "hints": [
+      "Routes are an array of objects. Order matters, and the catch-all `**` goes last.",
+      "`withComponentInputBinding()` is the second argument of `provideRouter`, and it lets the `:id` value flow into an `input()`.",
+      "export const routes: Routes = [\n  { path: '', component: HomeComponent },\n  { path: 'students/:id', component: StudentComponent },\n  { path: '**', redirectTo: '' },\n];\n\nproviders: [provideRouter(routes, withComponentInputBinding())]"
+    ],
+    "checks": [
+      {
+        "name": "provideRouter and withComponentInputBinding are imported from @angular/router",
+        "hint": "import { provideRouter, withComponentInputBinding, Routes } from '@angular/router';",
+        "regex": "import\\s*\\{(?=[^}]*\\bprovideRouter\\b)(?=[^}]*\\bwithComponentInputBinding\\b)[^}]*\\}\\s*from\\s*['\"]@angular/router['\"]"
+      },
+      {
+        "name": "routes is typed Routes",
+        "hint": "Write export const routes: Routes = [ ... ];",
+        "regex": "\\broutes\\s*:\\s*Routes\\s*=\\s*\\["
+      },
+      {
+        "name": "The empty path shows HomeComponent",
+        "hint": "Add { path: '', component: HomeComponent }.",
+        "regex": "path\\s*:\\s*['\"]['\"]\\s*,\\s*component\\s*:\\s*HomeComponent"
+      },
+      {
+        "name": "students/:id shows StudentComponent",
+        "hint": "Add { path: 'students/:id', component: StudentComponent }.",
+        "regex": "path\\s*:\\s*['\"]students/:id['\"]\\s*,\\s*component\\s*:\\s*StudentComponent"
+      },
+      {
+        "name": "The ** route redirects to the home page",
+        "hint": "Add { path: '**', redirectTo: '' } as the last route.",
+        "regex": "path\\s*:\\s*['\"]\\*\\*['\"]\\s*,\\s*redirectTo\\s*:\\s*['\"]['\"]"
+      },
+      {
+        "name": "StudentComponent has a required string input id",
+        "hint": "Write id = input.required<string>();",
+        "regex": "\\bid\\s*=\\s*input\\.required\\s*<\\s*string\\s*>\\s*\\(\\s*\\)"
+      },
+      {
+        "name": "The template shows {{ id() }}",
+        "hint": "Use {{ id() }} in the template.",
+        "regex": "\\{\\{\\s*id\\(\\s*\\)\\s*\\}\\}"
+      },
+      {
+        "name": "providers calls provideRouter(routes, withComponentInputBinding())",
+        "hint": "Write providers: [provideRouter(routes, withComponentInputBinding())].",
+        "regex": "providers\\s*:\\s*\\[[^\\]]*provideRouter\\s*\\(\\s*routes\\s*,\\s*withComponentInputBinding\\s*\\(\\s*\\)\\s*\\)"
+      }
+    ]
+  }
+}

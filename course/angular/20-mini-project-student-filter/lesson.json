@@ -1,0 +1,116 @@
+{
+  "title": "Mini project: student list with filter",
+  "minutes": 30,
+  "summary": "Combine signals, computed, ngModel, @for, @if and @empty into a searchable student list.",
+  "docs": [
+    {
+      "title": "Angular: Signals",
+      "url": "https://angular.dev/guide/signals"
+    },
+    {
+      "title": "Angular: Control flow",
+      "url": "https://angular.dev/guide/templates/control-flow"
+    },
+    {
+      "title": "Angular: Template-driven forms",
+      "url": "https://angular.dev/guide/forms/template-driven-forms"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Why is the filtered list a `computed` signal and not a separate array you update by hand?",
+      "options": [
+        "Computed signals run faster than arrays",
+        "It recalculates by itself whenever `students` or `query` changes",
+        "Arrays cannot be filtered",
+        "Templates cannot read arrays"
+      ],
+      "answer": 1,
+      "explain": "A computed value always matches its sources. You cannot forget to update it."
+    },
+    {
+      "type": "predict",
+      "q": "With students Asha, Ravi and Meena and `query = \"e\"`, how many students does this case-insensitive filter keep?",
+      "code": "students.filter(s => s.name.toLowerCase().includes(\"e\"))",
+      "language": "ts",
+      "answer": "1",
+      "explain": "Only Meena contains the letter e. Asha and Ravi do not, so one student remains."
+    },
+    {
+      "type": "mcq",
+      "q": "Where does the message 'No students found' belong?",
+      "options": [
+        "In an @empty block of the @for",
+        "In ngOnInit",
+        "In the constructor",
+        "In providers"
+      ],
+      "answer": 0,
+      "explain": "`@empty` shows when the list being repeated has no items, which is exactly the no-match case."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "student-filter.component.ts",
+    "task": "Finish the search component in `student-filter.component.ts`.\n\n- Add `FormsModule` to the component's `imports`.\n- Create `query = signal('')`.\n- Create `filtered = computed(...)` that keeps students whose name contains `this.query()`, ignoring case (use `toLowerCase()` and `includes`) with `.filter(...)`.\n- Add an input with `[(ngModel)]=\"query\"`.\n- Show `{{ filtered().length }}` and `{{ students().length }}`.\n- Loop with `@for (s of filtered(); track s.id)`, add an `@if (s.marks >= 40)` badge with an `@else`, and an `@empty` block.\n- Do not use `*ngFor` or `*ngIf`.",
+    "hints": [
+      "Work in this order: query signal, filtered computed, then the template.",
+      "Inside `computed`, read `this.query().toLowerCase()` once, then `this.students().filter(s => s.name.toLowerCase().includes(q))`.",
+      "query = signal('');\nfiltered = computed(() => {\n  const q = this.query().toLowerCase();\n  return this.students().filter((s) => s.name.toLowerCase().includes(q));\n});\n\n<input [(ngModel)]=\"query\" />\n<p>Showing {{ filtered().length }} of {{ students().length }}</p>\n@for (s of filtered(); track s.id) {\n  <li>{{ s.name }} @if (s.marks >= 40) { Pass } @else { Fail }</li>\n} @empty {\n  <li>No students found</li>\n}"
+    ],
+    "checks": [
+      {
+        "name": "FormsModule is in the component's imports",
+        "hint": "Add imports: [FormsModule].",
+        "regex": "imports\\s*:\\s*\\[[^\\]]*\\bFormsModule\\b"
+      },
+      {
+        "name": "query is a signal starting as empty text",
+        "hint": "Write query = signal('');",
+        "regex": "\\bquery\\s*=\\s*signal\\s*(<\\s*string\\s*>)?\\s*\\(\\s*(''|\"\")\\s*\\)"
+      },
+      {
+        "name": "filtered is a computed signal that reads query() and uses filter",
+        "hint": "Write filtered = computed(() => ... this.query() ... .filter(...)).",
+        "regex": "\\bfiltered\\s*=\\s*computed(?=[\\s\\S]*?this\\.query\\s*\\(\\s*\\))(?=[\\s\\S]*?\\.filter\\s*\\()"
+      },
+      {
+        "name": "The search ignores case",
+        "hint": "Call toLowerCase() on the names and the query, then use includes().",
+        "regex": "(?=[\\s\\S]*\\.toLowerCase\\s*\\(\\s*\\))(?=[\\s\\S]*\\.includes\\s*\\()"
+      },
+      {
+        "name": "The input uses [(ngModel)]=\"query\"",
+        "hint": "Add <input [(ngModel)]=\"query\" />.",
+        "regex": "<input[^>]*\\[\\(ngModel\\)\\]\\s*=\\s*[\"']query[\"']"
+      },
+      {
+        "name": "The template shows the filtered and total counts",
+        "hint": "Show {{ filtered().length }} and {{ students().length }}.",
+        "regex": "\\{\\{\\s*filtered\\s*\\(\\s*\\)\\s*\\.length\\s*\\}\\}[\\s\\S]*\\{\\{\\s*students\\s*\\(\\s*\\)\\s*\\.length\\s*\\}\\}"
+      },
+      {
+        "name": "@for loops over filtered() and tracks by id",
+        "hint": "Write @for (s of filtered(); track s.id) {",
+        "regex": "@for\\s*\\(\\s*(\\w+)\\s+of\\s+filtered\\s*\\(\\s*\\)\\s*;\\s*track\\s+\\1\\.id\\s*\\)\\s*\\{"
+      },
+      {
+        "name": "An @if on marks >= 40 shows pass and an @else shows fail",
+        "hint": "Write @if (s.marks >= 40) { ... } @else { ... } inside the loop.",
+        "regex": "@if\\s*\\(\\s*\\w+\\.marks\\s*>=\\s*40\\s*\\)\\s*\\{[\\s\\S]*?\\}\\s*@else\\s*\\{"
+      },
+      {
+        "name": "An @empty block handles no matches",
+        "hint": "Add } @empty { <li>No students found</li> }.",
+        "regex": "\\}\\s*@empty\\s*\\{"
+      },
+      {
+        "name": "The old *ngFor and *ngIf are not used",
+        "hint": "Use @for and @if instead.",
+        "regex": "\\*ng(For|If)",
+        "not": true
+      }
+    ]
+  }
+}

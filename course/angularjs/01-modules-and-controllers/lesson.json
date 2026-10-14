@@ -1,0 +1,56 @@
+{
+  "title": "Modules and controllers",
+  "minutes": 15,
+  "summary": "Create an AngularJS module, attach a controller to it and put data on $scope.",
+  "docs": [
+    { "title": "AngularJS: Modules", "url": "https://docs.angularjs.org/guide/module" },
+    { "title": "AngularJS: Controllers", "url": "https://docs.angularjs.org/guide/controller" },
+    { "title": "AngularJS: Version support status", "url": "https://docs.angularjs.org/misc/version-support-status" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is the status of AngularJS 1.x today?",
+      "options": ["It is the recommended choice for new projects", "Support ended in January 2022, so new projects should use modern Angular", "It was renamed to Angular 2", "It only works on old phones"],
+      "answer": 1,
+      "explain": "AngularJS reached end of life in January 2022. It gets no more fixes, so learn it only to read or maintain existing code."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the call that creates a module named `shopApp` with no dependencies.",
+      "template": "angular.___('shopApp', ___);",
+      "blanks": [["module"], ["[]"]],
+      "explain": "`angular.module(name, [])` creates a module. The empty array is its list of dependencies. Leaving the array out would look up an existing module instead."
+    },
+    {
+      "type": "mcq",
+      "q": "Which attribute tells AngularJS which module to start on a page?",
+      "options": ["ng-start", "ng-module", "ng-app", "ng-controller"],
+      "answer": 2,
+      "explain": "`ng-app=\"shopApp\"` marks the root element and names the module. `ng-controller` attaches a controller to a smaller part of the page."
+    },
+    {
+      "type": "bug",
+      "q": "This controller should show a title, but the page stays empty. Click the faulty line.",
+      "code": "angular.module('app', [])\n  .controller('MainController', function ($scope) {\n    title = 'My Students';\n  });",
+      "answerLines": [3],
+      "explain": "The value must be stored on the scope: `$scope.title = 'My Students';`. A bare `title` is just a stray variable the template cannot see."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "app.js",
+    "task": "Complete `app.js`.\n\n- Create a module named `studentApp` with an empty dependency array.\n- Add a controller named `MainController` to it.\n- The controller function receives `$scope`.\n- Set `$scope.title` to `'My Students'`.",
+    "hints": [
+      "Start with angular.module('studentApp', []) and chain .controller(...) onto it.",
+      ".controller takes the name as a string, then a function. Give the function a $scope parameter and assign to $scope.title inside it.",
+      "angular.module('studentApp', [])\n  .controller('MainController', function ($scope) {\n    $scope.title = 'My Students';\n  });"
+    ],
+    "checks": [
+      { "name": "The module studentApp is created with []", "hint": "Write angular.module('studentApp', []). The empty array matters.", "regex": "angular\\s*\\.\\s*module\\s*\\(\\s*['\"]studentApp['\"]\\s*,\\s*\\[\\s*\\]\\s*\\)" },
+      { "name": "A controller named MainController is registered", "hint": "Chain .controller('MainController', function ...) onto the module.", "regex": "\\.\\s*controller\\s*\\(\\s*['\"]MainController['\"]" },
+      { "name": "The controller receives $scope", "hint": "Give the function a parameter named $scope: function ($scope) { ... }.", "regex": "function\\s*\\(\\s*\\$scope\\s*\\)|\\(\\s*\\$scope\\s*\\)\\s*=>|['\"]\\$scope['\"]" },
+      { "name": "$scope.title is 'My Students'", "hint": "Inside the controller write $scope.title = 'My Students';", "regex": "\\$scope\\s*\\.\\s*title\\s*=\\s*['\"]My Students['\"]" }
+    ]
+  }
+}

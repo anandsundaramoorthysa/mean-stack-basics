@@ -1,0 +1,68 @@
+{
+  "title": "URLs and query strings",
+  "minutes": 14,
+  "summary": "Take a web address apart with URL and build query strings with URLSearchParams.",
+  "docs": [
+    { "title": "Node.js API: URL", "url": "https://nodejs.org/api/url.html" },
+    { "title": "Node.js API: URLSearchParams", "url": "https://nodejs.org/api/url.html#class-urlsearchparams" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this print?",
+      "code": "const u = new URL('https://shop.example.com:8080/items/tea?page=2#top');\nconsole.log(u.pathname);",
+      "language": "js",
+      "answer": "/items/tea",
+      "explain": "`pathname` is the part after the host and before the `?`. The query is in `search` and the `#top` part is in `hash`."
+    },
+    {
+      "type": "predict",
+      "q": "What does this print?",
+      "code": "const u = new URL('https://example.com/search?q=node&page=3');\nconsole.log(u.searchParams.get('page'));",
+      "language": "js",
+      "answer": "3",
+      "explain": "`get` returns the value as a **string**, `'3'`. Use `Number(...)` if you need a number. A missing name gives `null`."
+    },
+    {
+      "type": "mcq",
+      "q": "For the address /list?tag=a&tag=b, which call returns ['a', 'b']?",
+      "options": [
+        "params.get('tag')",
+        "params.getAll('tag')",
+        "params.has('tag')",
+        "params.toString()"
+      ],
+      "answer": 1,
+      "explain": "`get` returns only the first value. `getAll` returns every value with that name as an array."
+    },
+    {
+      "type": "mcq",
+      "q": "Why use URLSearchParams to build ?q=node js&page=2 instead of joining strings yourself?",
+      "options": [
+        "It sorts the keys alphabetically",
+        "It encodes special characters such as spaces, so the result is a valid URL",
+        "It sends the request for you",
+        "It shortens the URL"
+      ],
+      "answer": 1,
+      "explain": "A space is not allowed in a URL. `URLSearchParams` writes it as `+`, and encodes characters like `&` and `=` that would otherwise break the query. `?q=node+js&page=2` is the safe result."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the code to add page=2 to the query of a URL object called u.",
+      "template": "u.searchParams.___('page', '2');",
+      "blanks": [["set", "append"]],
+      "explain": "`set` replaces any existing value for the name, and `append` adds another value. Either way the URL's text is updated automatically."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "links.js",
+    "task": "In `links.js`, write and export two functions.\n\n- `summarize(link)` takes a full URL string and returns `{ host, path, page, tags }`:\n  - `host` is the host name, `path` is the path, `page` is the `page` query value as a **number** (default `1` when missing), and `tags` is an array of every `tag` value.\n- `buildSearchUrl(term, page)` returns the string `https://example.com/search?q=<term>&page=<page>`, with the term encoded properly. Build it with `URL` and `searchParams`.\n\nExample: `summarize('https://example.com/list?page=3&tag=a&tag=b')` gives `{ host: 'example.com', path: '/list', page: 3, tags: ['a', 'b'] }`.",
+    "hints": [
+      "Create a URL object with `new URL(link)`. It has properties `hostname`, `pathname` and `searchParams`.",
+      "`url.searchParams.get('page')` returns a string or `null`. Convert with `Number(...)` and use `?? 1` for the default. `getAll('tag')` returns the array. For the builder, start from `new URL('https://example.com/search')` and call `searchParams.set` twice.",
+      "function summarize(link) {\n  const url = new URL(link);\n  return {\n    host: url.hostname,\n    path: url.pathname,\n    page: Number(url.searchParams.get('page') ?? 1),\n    tags: url.searchParams.getAll('tag'),\n  };\n}\n\nfunction buildSearchUrl(term, page) {\n  const url = new URL('https://example.com/search');\n  url.searchParams.set('q', term);\n  url.searchParams.set('page', String(page));\n  return url.toString();\n}\n\nmodule.exports = { summarize, buildSearchUrl };"
+    ]
+  }
+}

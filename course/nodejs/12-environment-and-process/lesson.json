@@ -1,0 +1,64 @@
+{
+  "title": "Environment and process",
+  "minutes": 16,
+  "summary": "Use process.env, process.argv, stdin and exit codes to build a small command-line program.",
+  "docs": [
+    { "title": "Node.js API: process", "url": "https://nodejs.org/api/process.html" },
+    { "title": "Node.js: How to read environment variables", "url": "https://nodejs.org/en/learn/command-line/how-to-read-environment-variables-from-nodejs" },
+    { "title": "Node.js: Accept input from the command line", "url": "https://nodejs.org/en/learn/command-line/accept-input-from-the-command-line-in-nodejs" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What type of value is process.env.PORT when the variable PORT=3000 is set?",
+      "options": ["A number", "A string", "A boolean", "An array"],
+      "answer": 1,
+      "explain": "Environment variables are always strings. Use `Number(process.env.PORT)` when you need a number."
+    },
+    {
+      "type": "predict",
+      "q": "PORT is NOT set. What does this print?",
+      "code": "const port = process.env.PORT || 3000;\nconsole.log(port);",
+      "language": "js",
+      "answer": "3000",
+      "explain": "`process.env.PORT` is `undefined` when the variable is missing, so `||` falls back to `3000`. This pattern lets the same code run on your laptop and on a server that chooses its own port."
+    },
+    {
+      "type": "mcq",
+      "q": "By convention, which exit code tells the operating system that the program failed?",
+      "options": ["0", "1", "true", "ok"],
+      "answer": 1,
+      "explain": "`0` means success and any non-zero number, usually `1`, means failure. Tools such as npm and CI servers read this code."
+    },
+    {
+      "type": "mcq",
+      "q": "Why keep passwords and API keys in environment variables instead of in the code?",
+      "options": [
+        "Environment variables are faster",
+        "The code can be shared or committed to Git without exposing the secret, and each machine can use its own value",
+        "Node.js refuses passwords in code",
+        "Strings in code cannot contain symbols"
+      ],
+      "answer": 1,
+      "explain": "Secrets written in code end up in Git history and in every copy of the project. Reading them from `process.env` keeps them outside the code."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the code that sets a failing exit code and prints the problem on the error stream.",
+      "template": "console.___('No numbers given');\nprocess.___ = 1;",
+      "blanks": [["error"], ["exitCode"]],
+      "explain": "`console.error` writes to stderr, which is meant for problems. Setting `process.exitCode = 1` lets the program finish cleanly and then exit with a failure code. `process.exit(1)` ends it immediately."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "sum.js",
+    "task": "In `sum.js`, write a command-line program that reads numbers from standard input, **one per line**, and prints their total.\n\n- If the input is `10`, `20` and `5` on three lines, print `Total: 35`.\n- Skip empty lines.\n- If there are no numbers at all, print `No numbers given` with `console.error` (not `console.log`), print nothing on standard output, and set the exit code to `1`.\n- On success the exit code stays `0`.",
+    "hints": [
+      "Collect the input with `process.stdin.on('data', ...)` and handle the finished text in `process.stdin.on('end', ...)`.",
+      "In the `end` handler split the text into lines, drop the empty ones with `filter`, and turn them into numbers with `Number`. If the list is empty, call `console.error` and set `process.exitCode = 1`. Otherwise add them up and print `Total: ` followed by the sum.",
+      "let input = '';\nprocess.stdin.setEncoding('utf8');\nprocess.stdin.on('data', (chunk) => {\n  input += chunk;\n});\nprocess.stdin.on('end', () => {\n  const numbers = input.split('\\n').filter((l) => l.trim() !== '').map(Number);\n  if (numbers.length === 0) {\n    console.error('No numbers given');\n    process.exitCode = 1;\n    return;\n  }\n  console.log(`Total: ${numbers.reduce((a, b) => a + b, 0)}`);\n});"
+    ],
+    "timeoutMs": 10000
+  }
+}

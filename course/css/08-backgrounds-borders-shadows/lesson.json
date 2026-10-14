@@ -1,0 +1,59 @@
+{
+  "title": "Backgrounds, borders and shadows",
+  "minutes": 14,
+  "summary": "Add background colours, rounded corners and soft shadows to make boxes look like cards and buttons.",
+  "docs": [
+    { "title": "MDN: Backgrounds and borders", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Backgrounds_and_borders" },
+    { "title": "MDN: border-radius", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius" },
+    { "title": "MDN: box-shadow", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which property gives a box rounded corners?",
+      "options": ["corner-style", "border-round", "border-radius", "round"],
+      "answer": 2,
+      "explain": "`border-radius` rounds the corners. A larger value means a rounder corner."
+    },
+    {
+      "type": "mcq",
+      "q": "How do you turn a square element into a circle?",
+      "options": ["border-radius: 50%", "border-radius: 0", "box-shadow: circle", "display: circle"],
+      "answer": 0,
+      "explain": "A radius of 50% rounds each corner by half of the side, so a square becomes a circle. On a non-square element you get an ellipse."
+    },
+    {
+      "type": "fill",
+      "q": "Fill the shadow so it moves 0 right, 4px down, and blurs by 8px.",
+      "template": "box-shadow: 0 ___ 8px rgba(0, 0, 0, 0.3);",
+      "blanks": [["4px"]],
+      "explain": "`box-shadow` is x-offset, y-offset, blur radius, optional spread, then colour. A positive y-offset moves the shadow down."
+    },
+    {
+      "type": "bug",
+      "q": "The author wants a shadow under the card, but it never appears. Click the faulty line.",
+      "code": ".card {\n  background: lightgrey;\n  border-radius: 8px;\n  box-shadow 0 2px 4px gray;\n}",
+      "answerLines": [4],
+      "explain": "The colon is missing after `box-shadow`. When one declaration is broken the browser skips just that line."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Turn the boxes into a card and an avatar. Work in `index.html`.\n\n- `.card`: `background-color` of `whitesmoke`, `border-radius` of 12px, a `1px solid` border, and a `box-shadow`.\n- `.avatar`: `width` and `height` of 80px, `background-color` of `steelblue`, and `border-radius: 50%` to make it a circle.",
+    "hints": [
+      "Backgrounds, corners and shadows each have their own property.",
+      "A shadow needs offsets, a blur and a colour, for example `0 4px 8px rgba(0, 0, 0, 0.3)`.",
+      ".card {\n  background-color: whitesmoke;\n  border: 1px solid #ccc;\n  border-radius: 12px;\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);\n}\n.avatar {\n  width: 80px;\n  height: 80px;\n  background-color: steelblue;\n  border-radius: 50%;\n}"
+    ],
+    "checks": [
+      { "name": ".card has a whitesmoke background", "selector": ".card", "style": { "prop": "background-color", "equals": "whitesmoke" }, "hint": "Add background-color: whitesmoke; to .card." },
+      { "name": ".card has 12px rounded corners", "selector": ".card", "style": { "prop": "border-top-left-radius", "equals": "12px" }, "hint": "Add border-radius: 12px; to .card." },
+      { "name": ".card has a 1px solid border", "selector": ".card", "style": { "prop": "border-top-width", "min": 1, "max": 1 }, "hint": "Add border: 1px solid #ccc; to .card." },
+      { "name": ".card has a box shadow", "selector": ".card", "style": { "prop": "box-shadow", "regex": "^(?!none)" }, "hint": "Add box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); to .card." },
+      { "name": ".avatar is 80px by 80px", "selector": ".avatar", "style": { "prop": "width", "equals": "80px" }, "hint": "Give .avatar a width and a height of 80px." },
+      { "name": ".avatar is steelblue", "selector": ".avatar", "style": { "prop": "background-color", "equals": "steelblue" }, "hint": "Add background-color: steelblue; to .avatar." },
+      { "name": ".avatar is a circle", "selector": ".avatar", "style": { "prop": "border-top-left-radius", "equals": "50%" }, "hint": "Add border-radius: 50%; to .avatar." }
+    ]
+  }
+}

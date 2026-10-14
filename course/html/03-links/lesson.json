@@ -1,0 +1,123 @@
+{
+  "title": "Links",
+  "minutes": 14,
+  "summary": "Connect pages with the a element and choose between absolute, relative and in-page links.",
+  "docs": [
+    {
+      "title": "MDN: Creating links",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Creating_links"
+    },
+    {
+      "title": "MDN: The a element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which attribute holds the destination of a link?",
+      "options": [
+        "src",
+        "href",
+        "link",
+        "to"
+      ],
+      "answer": 1,
+      "explain": "`href` (hypertext reference) holds the address. `src` is used by images, not links."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the link so it opens in a new tab.",
+      "template": "<a href=\"https://example.com\" ___=\"_blank\">Example</a>",
+      "blanks": [
+        [
+          "target"
+        ]
+      ],
+      "explain": "`target=\"_blank\"` asks the browser to use a new tab or window."
+    },
+    {
+      "type": "mcq",
+      "q": "Which of these is a **relative** URL?",
+      "options": [
+        "https://example.com/about.html",
+        "about.html",
+        "https://example.com",
+        "mailto:me@example.com"
+      ],
+      "answer": 1,
+      "explain": "A relative URL has no website name. It is found by following the path from the current file."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that will not jump to the section.",
+      "code": "<a href=\"#contact\">Contact</a>\n<h2 name=\"contact\">Contact us</h2>",
+      "answerLines": [
+        2
+      ],
+      "explain": "The target needs `id=\"contact\"`. The old `name` attribute on a heading is ignored."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Add navigation links to `index.html`.\n\n- An absolute link to `https://developer.mozilla.org` with the text `MDN`, opening in a new tab (`target=\"_blank\"`) with `rel=\"noopener\"`.\n- A relative link to `about.html` with the text `About me`.\n- A link to `#contact` with the text `Contact`.\n- A heading `<h2 id=\"contact\">Contact</h2>` for the link to jump to.",
+    "hints": [
+      "A link is <a href=\"...\">text</a>. Make three of them, then add the heading with an id.",
+      "Absolute addresses start with https://. Relative ones are just a file name. In-page links start with # and match an id exactly.",
+      "<a href=\"https://developer.mozilla.org\" target=\"_blank\" rel=\"noopener\">MDN</a>\n<a href=\"about.html\">About me</a>\n<a href=\"#contact\">Contact</a>\n<h2 id=\"contact\">Contact</h2>"
+    ],
+    "checks": [
+      {
+        "name": "A link goes to https://developer.mozilla.org with the text MDN",
+        "hint": "Use href=\"https://developer.mozilla.org\" and the link text MDN.",
+        "selector": "a[href=\"https://developer.mozilla.org\"]",
+        "text": {
+          "equals": "MDN"
+        }
+      },
+      {
+        "name": "The MDN link opens in a new tab",
+        "hint": "Add target=\"_blank\" to the MDN link.",
+        "selector": "a[href=\"https://developer.mozilla.org\"]",
+        "attr": {
+          "name": "target",
+          "equals": "_blank"
+        }
+      },
+      {
+        "name": "The MDN link has rel=\"noopener\"",
+        "hint": "Add rel=\"noopener\" next to target.",
+        "selector": "a[href=\"https://developer.mozilla.org\"]",
+        "attr": {
+          "name": "rel",
+          "includes": "noopener"
+        }
+      },
+      {
+        "name": "A relative link to about.html says \"About me\"",
+        "hint": "Write <a href=\"about.html\">About me</a>.",
+        "selector": "a[href=\"about.html\"]",
+        "text": {
+          "equals": "About me"
+        }
+      },
+      {
+        "name": "A link to #contact says \"Contact\"",
+        "hint": "Write <a href=\"#contact\">Contact</a>.",
+        "selector": "a[href=\"#contact\"]",
+        "text": {
+          "equals": "Contact"
+        }
+      },
+      {
+        "name": "An h2 with id \"contact\" exists",
+        "hint": "Add <h2 id=\"contact\">Contact</h2>.",
+        "selector": "h2#contact",
+        "text": {
+          "equals": "Contact"
+        }
+      }
+    ]
+  }
+}

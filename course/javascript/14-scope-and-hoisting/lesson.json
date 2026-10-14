@@ -1,0 +1,59 @@
+{
+  "title": "Scope and hoisting",
+  "minutes": 16,
+  "summary": "Know where a variable can be used, and why let and const are safer than var.",
+  "docs": [
+    { "title": "MDN: Scope (glossary)", "url": "https://developer.mozilla.org/en-US/docs/Glossary/Scope" },
+    { "title": "MDN: Hoisting (glossary)", "url": "https://developer.mozilla.org/en-US/docs/Glossary/Hoisting" },
+    { "title": "MDN: var", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Where can a variable declared with `let` inside an `if { ... }` block be used?",
+      "options": ["Anywhere in the file", "Only inside that block", "Only in other functions", "Nowhere"],
+      "answer": 1,
+      "explain": "`let` and `const` are **block scoped**: they exist only between the curly braces where they were declared."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that causes a ReferenceError.",
+      "code": "function check() {\n  const secret = 42;\n}\ncheck();\nconsole.log(secret);",
+      "answerLines": [5],
+      "explain": "`secret` lives only inside `check`. Outside the function it does not exist, so line 5 throws `ReferenceError: secret is not defined`."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "console.log(x);\nvar x = 5;",
+      "language": "js",
+      "answer": "undefined",
+      "explain": "`var` is hoisted: the declaration moves to the top and starts as `undefined`, while the assignment `= 5` stays where it is. With `let` the same code would throw an error instead, which is better."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "if (true) {\n  var a = 1;\n}\nconsole.log(a);",
+      "language": "js",
+      "answer": "1",
+      "explain": "`var` ignores blocks and leaks out of the `if`. Only functions create a scope for `var`. That leak is a main reason to avoid it."
+    },
+    {
+      "type": "mcq",
+      "q": "What happens when you read a `let` variable before its declaration line?",
+      "options": ["You get undefined", "You get 0", "A ReferenceError is thrown", "JavaScript declares it for you"],
+      "answer": 2,
+      "explain": "A `let` or `const` is in a \"temporal dead zone\" until its line runs, so reading it early throws an error. That is helpful, because it exposes mistakes immediately."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "scope.js",
+    "task": "In `scope.js`, write and export two functions. Do **not** use the `var` keyword.\n\n- `largest(numbers)` returns the biggest number in the array, or `undefined` for an empty array. Declare the variable that holds the best number **outside** the loop so it is still available after the loop ends.\n- `makeCallbacks()` returns an array of three functions. Calling the function at index 0, 1 and 2 must return `0`, `1` and `2`. Build it with a `for (let i = 0; i < 3; i++)` loop that pushes `() => i`.",
+    "hints": [
+      "For `largest`, a variable created inside the loop body disappears after each round. Create it above the loop. For `makeCallbacks`, each round of a `let` loop gets its own `i`.",
+      "Use `let best;` before the loop, update it with an `if` inside, and `return best;` afterwards. In `makeCallbacks`, create an empty array first and `push(() => i)` inside the loop.",
+      "function largest(numbers) {\n  let best;\n  for (const n of numbers) {\n    if (best === undefined || n > best) {\n      best = n;\n    }\n  }\n  return best;\n}\nfunction makeCallbacks() {\n  const callbacks = [];\n  for (let i = 0; i < 3; i++) {\n    callbacks.push(() => i);\n  }\n  return callbacks;\n}\nmodule.exports = { largest, makeCallbacks };"
+    ]
+  }
+}

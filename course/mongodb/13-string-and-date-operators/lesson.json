@@ -1,0 +1,58 @@
+{
+  "title": "String and date operators",
+  "minutes": 16,
+  "summary": "Build new text and date values inside a pipeline with $concat, $toUpper, $substrCP, $split and $dateToString.",
+  "docs": [
+    { "title": "MongoDB: $concat", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/concat/" },
+    { "title": "MongoDB: $split", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/split/" },
+    { "title": "MongoDB: $substrCP", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/substrCP/" },
+    { "title": "MongoDB: $dateToString", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/dateToString/" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this expression produce when `first` is 'Asha' and `last` is 'Kumar'?",
+      "code": "{ $concat: ['$first', ' ', '$last'] }",
+      "language": "js",
+      "answer": "Asha Kumar",
+      "explain": "`$concat` joins the strings in order. The middle item is a single space."
+    },
+    {
+      "type": "predict",
+      "q": "What does `$substrCP: ['Madurai', 0, 3]` return?",
+      "code": "{ $substrCP: ['Madurai', 0, 3] }",
+      "language": "js",
+      "answer": "Mad",
+      "explain": "Start at position 0 and take 3 characters: M, a, d."
+    },
+    {
+      "type": "mcq",
+      "q": "`{ $split: ['a@b.com', '@'] }` returns...",
+      "options": [
+        "'a'",
+        "'b.com'",
+        "['a', 'b.com']",
+        "2"
+      ],
+      "answer": 2,
+      "explain": "`$split` returns an array of the pieces. Use `$arrayElemAt` with a position if you want just one."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the date format so that a date prints like 2025-01-20.",
+      "template": "{ $dateToString: { format: '%Y-%m-___', date: '$joined' } }",
+      "blanks": [["%d"]],
+      "explain": "`%d` is the day of the month. `%Y` is the year and `%m` is the month."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "The `users` collection has `first`, `last`, `email` and `joined` (a date).\n\nWrite an aggregation with a single `$project` stage that outputs these fields only (no `_id`):\n\n- `fullName`: first name, a space, then last name\n- `lastNameUpper`: the last name in capitals\n- `initial`: the first letter of the first name\n- `domain`: the part of the email after the `@`\n- `joinedOn`: the joined date as text like `2024-03-15`",
+    "hints": [
+      "Everything goes inside one `{ $project: { _id: 0, ... } }`. Each new field is an expression such as `{ $concat: [...] }`.",
+      "For `domain`, split the email on `'@'` and take the element at position 1 with `$arrayElemAt`. For `initial`, use `$substrCP` with start 0 and length 1.",
+      "db.users.aggregate([\n  { $project: {\n    _id: 0,\n    fullName: { $concat: ['$first', ' ', '$last'] },\n    lastNameUpper: { $toUpper: '$last' },\n    initial: { $substrCP: ['$first', 0, 1] },\n    domain: { $arrayElemAt: [{ $split: ['$email', '@'] }, 1] },\n    joinedOn: { $dateToString: { format: '%Y-%m-%d', date: '$joined' } }\n  } }\n])"
+    ]
+  }
+}

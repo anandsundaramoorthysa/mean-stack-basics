@@ -1,0 +1,42 @@
+{
+  "title": "Find documents",
+  "minutes": 14,
+  "summary": "Read documents from a collection with find, filters and comparison operators.",
+  "docs": [
+    { "title": "MongoDB: Query documents", "url": "https://www.mongodb.com/docs/manual/tutorial/query-documents/" },
+    { "title": "MongoDB: Comparison query operators", "url": "https://www.mongodb.com/docs/manual/reference/mql/query-predicates/comparison/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `db.students.find({})` return?",
+      "options": ["Nothing", "Every document in students", "Only the first document", "An error"],
+      "answer": 1,
+      "explain": "An empty filter matches all documents."
+    },
+    {
+      "type": "mcq",
+      "q": "Which filter finds students whose marks are **less than** 50?",
+      "options": ["{ marks: { $gt: 50 } }", "{ marks: { $lt: 50 } }", "{ marks: 50 }", "{ $lt: marks }"],
+      "answer": 1,
+      "explain": "`$lt` means less than, and it goes inside an object under the field name."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the operator for \"greater than or equal to\".",
+      "template": "{ marks: { $___: 60 } }",
+      "blanks": [["gte"]],
+      "explain": "`$gte` means greater than or equal to."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "Write a query that finds every student with **more than 80** marks.\n\nUse `db.students.find(...)` with a filter. The collection has these fields: `name`, `marks`, `city`.",
+    "hints": [
+      "Start with `db.students.find(` and put a filter object inside the brackets.",
+      "The filter names the field `marks` and gives it a comparison operator as an object.",
+      "db.students.find({ marks: { $gt: 80 } })"
+    ]
+  }
+}

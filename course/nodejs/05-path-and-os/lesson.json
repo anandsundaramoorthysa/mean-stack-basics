@@ -1,0 +1,68 @@
+{
+  "title": "path and os",
+  "minutes": 14,
+  "summary": "Build and take apart file paths safely with the path module, and peek at the os module.",
+  "docs": [
+    { "title": "Node.js API: path", "url": "https://nodejs.org/api/path.html" },
+    { "title": "Node.js API: os", "url": "https://nodejs.org/api/os.html" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Why use path.join('reports', 'a.txt') instead of 'reports' + '/' + 'a.txt'?",
+      "options": [
+        "It runs faster",
+        "It uses the correct separator for the operating system and tidies extra slashes",
+        "It checks that the file exists",
+        "It creates the folder"
+      ],
+      "answer": 1,
+      "explain": "Windows separates folders with a backslash and macOS or Linux with a forward slash. `path.join` picks the right one and cleans up doubled or missing slashes. It does not touch the disk."
+    },
+    {
+      "type": "predict",
+      "q": "What does this print?",
+      "code": "const path = require('node:path');\nconsole.log(path.extname('notes/week1/summary.md'));",
+      "language": "js",
+      "answer": ".md",
+      "explain": "`extname` returns the extension including the dot."
+    },
+    {
+      "type": "predict",
+      "q": "What does this print?",
+      "code": "const path = require('node:path');\nconsole.log(path.basename('/home/asha/photo.png'));",
+      "language": "js",
+      "answer": "photo.png",
+      "explain": "`basename` returns the last part of the path, the file name. Pass a second argument such as `'.png'` to cut the extension off as well."
+    },
+    {
+      "type": "mcq",
+      "q": "What does path.resolve('data.txt') return?",
+      "options": [
+        "The text 'data.txt' unchanged",
+        "The full absolute path, starting from the current working directory",
+        "true if the file exists",
+        "The contents of the file"
+      ],
+      "answer": 1,
+      "explain": "`resolve` turns a relative path into an absolute one by starting from the folder where the program was started (the current working directory)."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the line so it prints the number of CPU cores in this computer.",
+      "template": "const os = require('node:os');\nconsole.log(os.___().length);",
+      "blanks": [["cpus"]],
+      "explain": "`os.cpus()` returns an array with one item per logical CPU core. The `os` module also offers `os.platform()`, `os.homedir()` and `os.totalmem()`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "paths.js",
+    "task": "In `paths.js`, finish three functions using the `path` module, and export them.\n\n- `reportPath(student)` returns the path `reports/<student>.txt` built with `path.join`.\n- `fileInfo(file)` returns an object `{ name, ext, folder }`: the file name, the extension (with the dot) and the name of the folder that contains the file.\n- `absolute(file)` returns the absolute path of `file`.\n\nExample: `fileInfo('notes/week1/summary.md')` gives `{ name: 'summary.md', ext: '.md', folder: 'week1' }`.",
+    "hints": [
+      "Start with `const path = require('node:path');`. Each function needs just one or two path calls.",
+      "`path.join('reports', student + '.txt')`, `path.basename(file)`, `path.extname(file)`, `path.dirname(file)` and `path.resolve(file)`. For the folder name, take the basename of the dirname.",
+      "const path = require('node:path');\n\nfunction reportPath(student) {\n  return path.join('reports', student + '.txt');\n}\nfunction fileInfo(file) {\n  return {\n    name: path.basename(file),\n    ext: path.extname(file),\n    folder: path.basename(path.dirname(file)),\n  };\n}\nfunction absolute(file) {\n  return path.resolve(file);\n}\n\nmodule.exports = { reportPath, fileInfo, absolute };"
+    ]
+  }
+}

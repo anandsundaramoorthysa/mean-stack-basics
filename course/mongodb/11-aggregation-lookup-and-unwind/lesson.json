@@ -1,0 +1,70 @@
+{
+  "title": "Aggregation: $lookup and $unwind",
+  "minutes": 16,
+  "summary": "Join two collections with $lookup and flatten the joined array with $unwind.",
+  "docs": [
+    { "title": "MongoDB: $lookup stage", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/" },
+    { "title": "MongoDB: $unwind stage", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/unwind/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What type of value does the `as` field hold after a `$lookup`?",
+      "options": [
+        "A single object",
+        "An array of the matching documents",
+        "A string",
+        "A number counting the matches"
+      ],
+      "answer": 1,
+      "explain": "`$lookup` always produces an array, even when there is exactly one match. That is why `$unwind` is so often used right after it."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the stage that turns the `customer` array into one document per element.",
+      "template": "{ $___: '$customer' }",
+      "blanks": [["unwind"]],
+      "explain": "`$unwind` takes the array path (with a dollar sign) and emits one document for each element."
+    },
+    {
+      "type": "predict",
+      "q": "A document has `tags: ['a', 'b', 'c']`. How many documents does `{ $unwind: '$tags' }` output for it? Type the number.",
+      "code": "db.posts.aggregate([{ $unwind: '$tags' }])",
+      "language": "js",
+      "answer": "3",
+      "explain": "One output document is produced per element, each with a single value in `tags`."
+    },
+    {
+      "type": "mcq",
+      "q": "An order has `customerId: 99`, but no customer has that id. After `$lookup` and a plain `$unwind: '$customer'`, what happens to that order?",
+      "options": [
+        "It stays, with customer set to null",
+        "It stays, with an empty customer object",
+        "It is dropped from the output",
+        "The pipeline fails with an error"
+      ],
+      "answer": 2,
+      "explain": "The lookup gives an empty array, and `$unwind` removes documents whose array is empty. Add `preserveNullAndEmptyArrays: true` if you need to keep them."
+    },
+    {
+      "type": "order",
+      "q": "Arrange the stages to list each order with the customer's name.",
+      "lines": [
+        "{ $lookup: { from: 'customers', localField: 'customerId', foreignField: '_id', as: 'customer' } },",
+        "{ $unwind: '$customer' },",
+        "{ $project: { _id: 0, item: 1, customerName: '$customer.name' } }"
+      ],
+      "explain": "Join first, flatten the array second, and shape the output last."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "There are two collections: `orders` (`item`, `customerId`) and `customers` (`_id`, `name`).\n\nWrite an aggregation on `orders` that outputs one document per order with only:\n\n- `item`\n- `customerName`, the name of the customer\n\nHide `_id`. Orders whose customer does not exist should not appear.",
+    "hints": [
+      "Use three stages: `$lookup`, `$unwind` and `$project`.",
+      "`$lookup` needs `from: 'customers'`, `localField: 'customerId'`, `foreignField: '_id'` and an `as` name. Then unwind that `as` name.",
+      "db.orders.aggregate([\n  { $lookup: { from: 'customers', localField: 'customerId', foreignField: '_id', as: 'customer' } },\n  { $unwind: '$customer' },\n  { $project: { _id: 0, item: 1, customerName: '$customer.name' } }\n])"
+    ]
+  }
+}

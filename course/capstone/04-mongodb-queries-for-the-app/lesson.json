@@ -1,0 +1,75 @@
+{
+  "title": "MongoDB queries for the app",
+  "minutes": 18,
+  "summary": "Find the top scorers with sort and limit, and compute department averages with an aggregation pipeline.",
+  "docs": [
+    {
+      "title": "MongoDB: Aggregation pipeline",
+      "url": "https://www.mongodb.com/docs/manual/core/aggregation-pipeline/"
+    },
+    {
+      "title": "MongoDB: $group stage",
+      "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/"
+    },
+    {
+      "title": "MongoDB: $avg accumulator",
+      "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/avg/"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which sort puts the highest marks first?",
+      "options": [
+        "sort({ marks: 1 })",
+        "sort({ marks: -1 })",
+        "sort({ marks: 'high' })",
+        "sort({ -marks: 1 })"
+      ],
+      "answer": 1,
+      "explain": "-1 means descending (largest first) and 1 means ascending."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the group stage that averages marks for each department.",
+      "template": "{ $group: { _id: '$___', average: { $___: '$marks' } } }",
+      "blanks": [
+        [
+          "department"
+        ],
+        [
+          "avg"
+        ]
+      ],
+      "explain": "`_id` names what to group by, written as `'$field'`. `$avg` calculates the mean of each group."
+    },
+    {
+      "type": "order",
+      "q": "Arrange the stages to get only the single best department, with its average.",
+      "lines": [
+        "{ $group: { _id: '$department', average: { $avg: '$marks' } } }",
+        "{ $sort: { average: -1 } }",
+        "{ $limit: 1 }"
+      ],
+      "explain": "Each stage works on the output of the one before it. Sorting by `average` only works after `$group` has created that field, and `$limit` must come after the sort so that it keeps the best bucket."
+    },
+    {
+      "type": "predict",
+      "q": "How many documents does this return when 10 students exist?",
+      "code": "db.students.find({}).sort({ marks: -1 }).limit(3)",
+      "language": "js",
+      "answer": "3",
+      "explain": "`limit(3)` stops after three documents, whatever the collection size."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "Write two queries in `query.js`. Students have `name`, `department` and `marks`.\n\n- Query 1: `find` students with **75 or more** marks, sorted by marks **highest first**, limited to **3**.\n- Query 2 (last statement): an `aggregate` that returns one row per department as `{ department, average }`, with the highest average first. Do not return `_id`.",
+    "hints": [
+      "Chain the cursor methods on find: `.sort(...)` and then `.limit(...)`. For the aggregate, the pipeline is an array of stages in order.",
+      "Query 2 needs three stages: `$group` with `$avg`, `$project` to turn `_id` into `department`, and `$sort` on `average`.",
+      "db.students.find({ marks: { $gte: 75 } }).sort({ marks: -1 }).limit(3)\n\ndb.students.aggregate([\n  { $group: { _id: '$department', average: { $avg: '$marks' } } },\n  { $project: { _id: 0, department: '$_id', average: 1 } },\n  { $sort: { average: -1 } },\n])"
+    ]
+  }
+}

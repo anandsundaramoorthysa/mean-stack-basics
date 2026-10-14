@@ -1,0 +1,58 @@
+{
+  "title": "Selectors: type, class, id and groups",
+  "minutes": 14,
+  "summary": "Pick exactly the elements you want to style using type, class, id and grouped selectors.",
+  "docs": [
+    { "title": "MDN: Basic CSS selectors", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Basic_selectors" },
+    { "title": "MDN: Class selectors", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors" },
+    { "title": "MDN: ID selectors", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which selector matches `<p class=\"note\">`?",
+      "options": ["note", "#note", ".note", "p#note"],
+      "answer": 2,
+      "explain": "A class selector starts with a dot: `.note`. A hash `#` is for ids."
+    },
+    {
+      "type": "fill",
+      "q": "Select the element with `id=\"banner\"`.",
+      "template": "___banner { color: white; }",
+      "blanks": [["#"]],
+      "explain": "An id selector starts with `#`. Each id should appear only once in a page."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `h1, h2 { color: navy; }` do?",
+      "options": ["Styles only h2 elements inside an h1", "Styles every h1 and every h2", "Styles an element that is both h1 and h2", "Nothing, commas are not allowed"],
+      "answer": 1,
+      "explain": "A comma groups selectors. Both get the same declarations, which saves you from writing the rule twice."
+    },
+    {
+      "type": "bug",
+      "q": "The paragraph has `class=\"intro\"`. Click the line whose selector will not match it.",
+      "code": "<style>\n  intro {\n    color: green;\n  }\n</style>",
+      "answerLines": [2],
+      "explain": "Without a dot, `intro` looks for an element named `<intro>`. Write `.intro`."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Write CSS for the page. Work in `index.html`.\n\n- Make every `h1` and `h2` dark blue using one grouped rule (`navy`).\n- Make elements with class `note` have an orange `color`.\n- Make the element with id `warning` red and bold (`font-weight: bold`).",
+    "hints": [
+      "Type selectors are tag names, class selectors start with a dot, id selectors start with a hash.",
+      "Group two selectors with a comma: `h1, h2 { ... }`. The class rule is `.note { ... }` and the id rule is `#warning { ... }`.",
+      "h1, h2 {\n  color: navy;\n}\n.note {\n  color: orange;\n}\n#warning {\n  color: red;\n  font-weight: bold;\n}"
+    ],
+    "checks": [
+      { "name": "The h1 is navy", "selector": "h1", "style": { "prop": "color", "equals": "navy" }, "hint": "Add h1, h2 { color: navy; }." },
+      { "name": "Every h2 is navy", "selector": "h2", "scope": "all", "style": { "prop": "color", "equals": "navy" }, "hint": "Group h1 and h2 in the same rule." },
+      { "name": "Elements with class note are orange", "selector": ".note", "scope": "all", "style": { "prop": "color", "equals": "orange" }, "hint": "Use .note { color: orange; } with a leading dot." },
+      { "name": "The #warning element is red", "selector": "#warning", "style": { "prop": "color", "equals": "red" }, "hint": "Use #warning { color: red; }." },
+      { "name": "The #warning element is bold", "selector": "#warning", "style": { "prop": "font-weight", "min": 700 }, "hint": "Add font-weight: bold; to the #warning rule." },
+      { "name": "Plain paragraphs are not orange", "selector": "p:not(.note):not(#warning)", "scope": "all", "style": { "prop": "color", "regex": "^(?!rgb\\(255, 165, 0\\))" }, "hint": "Only the .note paragraphs should be orange. Do not style the p type selector." }
+    ]
+  }
+}

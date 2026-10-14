@@ -1,0 +1,73 @@
+{
+  "title": "npm and package.json",
+  "minutes": 15,
+  "summary": "Describe a project in package.json with scripts, dependencies and version ranges.",
+  "docs": [
+    { "title": "Node.js: Introduction to npm", "url": "https://nodejs.org/en/learn/getting-started/an-introduction-to-the-npm-package-manager" },
+    { "title": "Node.js API: Packages and package.json fields", "url": "https://nodejs.org/api/packages.html" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is npm?",
+      "options": [
+        "The package manager that installs and tracks libraries for Node.js projects",
+        "A text editor",
+        "The engine that runs JavaScript",
+        "A kind of database"
+      ],
+      "answer": 0,
+      "explain": "npm is the default package manager for Node.js and comes installed with it. It downloads libraries from the npm registry and records them in `package.json`."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the commands: create package.json with default answers, then install Express and save it as a dependency.",
+      "template": "npm ___ -y\nnpm ___ express",
+      "blanks": [["init"], ["install", "i"]],
+      "explain": "`npm init -y` creates a starter package.json. `npm install express` downloads Express into `node_modules` and adds it to `dependencies`."
+    },
+    {
+      "type": "mcq",
+      "q": "In semantic versioning a version is MAJOR.MINOR.PATCH. The range `^4.2.1` allows which versions?",
+      "options": [
+        "Only 4.2.1",
+        "4.2.1 up to, but not including, 5.0.0",
+        "4.2.1 up to, but not including, 4.3.0",
+        "Any version at all"
+      ],
+      "answer": 1,
+      "explain": "The caret `^` accepts new minor and patch versions but not a new major version, because a major change may break your code. `~4.2.1` is the stricter one that only allows patch updates (below 4.3.0)."
+    },
+    {
+      "type": "mcq",
+      "q": "Which command runs the script named \"start\" from package.json?",
+      "options": ["npm start", "node start", "npm run-script.start", "start npm"],
+      "answer": 0,
+      "explain": "`npm start` is a shortcut for `npm run start`. Scripts with other names need `npm run <name>`, for example `npm run dev`."
+    },
+    {
+      "type": "mcq",
+      "q": "You cloned a project that has package.json but no node_modules folder. What do you do first?",
+      "options": ["Run npm install", "Delete package.json", "Run npm init", "Nothing, Node finds packages on its own"],
+      "answer": 0,
+      "explain": "`node_modules` is not saved in Git because it is large. `npm install` reads package.json and rebuilds it."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "package.json",
+    "task": "Complete this `package.json` for a small server project.\n\n- Add a `start` script that runs `node index.js`.\n- Add a `test` script that runs `node --test`.\n- Add `express` to `dependencies` with the range `^5.0.0`.\n- Add `nodemon` to `devDependencies` with the range `^3.1.0`.\n\nKeep the file valid JSON: put commas between entries, no comma after the last one.",
+    "hints": [
+      "`scripts` and the two dependency sections are objects: each holds `\"name\": \"value\"` pairs.",
+      "Script names are the keys, commands are the values: `\"start\": \"node index.js\"`. Dependencies map a package name to a version range.",
+      "\"scripts\": {\n  \"start\": \"node index.js\",\n  \"test\": \"node --test\"\n},\n\"dependencies\": {\n  \"express\": \"^5.0.0\"\n},\n\"devDependencies\": {\n  \"nodemon\": \"^3.1.0\"\n}"
+    ],
+    "checks": [
+      { "name": "The start script runs node index.js", "hint": "Inside \"scripts\" add \"start\": \"node index.js\".", "regex": "\"start\"\\s*:\\s*\"node index\\.js\"" },
+      { "name": "The test script runs node --test", "hint": "Inside \"scripts\" add \"test\": \"node --test\".", "regex": "\"test\"\\s*:\\s*\"node --test\"" },
+      { "name": "express ^5.0.0 is in dependencies", "hint": "Add \"dependencies\": { \"express\": \"^5.0.0\" }.", "regex": "\"dependencies\"\\s*:\\s*\\{[^}]*\"express\"\\s*:\\s*\"\\^5\\.0\\.0\"" },
+      { "name": "nodemon ^3.1.0 is in devDependencies", "hint": "Add \"devDependencies\": { \"nodemon\": \"^3.1.0\" }. Tools used only while developing go here.", "regex": "\"devDependencies\"\\s*:\\s*\\{[^}]*\"nodemon\"\\s*:\\s*\"\\^3\\.1\\.0\"" },
+      { "name": "No comma sits before a closing brace", "hint": "JSON does not allow a trailing comma after the last entry.", "regex": ",\\s*\\}", "not": true }
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "title": "Objects",
+  "minutes": 16,
+  "summary": "Group related data in objects, read it with dot and bracket access, nest objects and list keys.",
+  "docs": [
+    { "title": "MDN: Working with objects", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects" },
+    { "title": "MDN: Object.keys()", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const student = { name: 'Asha', marks: 88 };\nconsole.log(student.marks);",
+      "language": "js",
+      "answer": "88",
+      "explain": "Dot notation reads the value stored under the key `marks`."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const student = { name: 'Asha' };\nconst key = 'name';\nconsole.log(student[key]);",
+      "language": "js",
+      "answer": "Asha",
+      "explain": "Square brackets evaluate what is inside them. `key` holds the text `'name'`, so this reads `student.name`. `student.key` would look for a property literally called key and give `undefined`."
+    },
+    {
+      "type": "mcq",
+      "q": "How do you read the city from this object?\n\n`const s = { name: 'Ravi', address: { city: 'Pune' } };`",
+      "options": ["s.city", "s.address.city", "s[address][city]", "s.address(city)"],
+      "answer": 1,
+      "explain": "Follow the path one step at a time: `s.address` is the inner object, and `.city` reads from it."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const item = { id: 1, title: 'Pen', price: 10 };\nconsole.log(Object.keys(item).length);",
+      "language": "js",
+      "answer": "3",
+      "explain": "`Object.keys` returns an array of the property names: `['id', 'title', 'price']`, which has length 3."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line with the mistake. The program should print 90.",
+      "code": "const result = { subject: 'Maths', score: 90 }\nconsole.log(result.Score);",
+      "answerLines": [2],
+      "explain": "Property names are case-sensitive. `result.Score` is `undefined` because the key is `score`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "objects.js",
+    "task": "In `objects.js`, write and export four functions:\n\n- `makeStudent(name, marks)` returns an object `{ name, marks, passed }` where `passed` is `true` when `marks` is 40 or more.\n- `getCity(student)` returns `student.address.city` (the student has a nested `address` object).\n- `getField(obj, key)` returns the value stored under `key`, where `key` is a variable (use bracket notation).\n- `countFields(obj)` returns how many properties the object has (use `Object.keys`).",
+    "hints": [
+      "The first function builds and returns an object literal. The others read from an object you receive.",
+      "For `getField` you cannot write `obj.key`, because `key` is a variable. Use `obj[key]`. For counting, `Object.keys(obj)` gives an array.",
+      "function makeStudent(name, marks) {\n  return { name: name, marks: marks, passed: marks >= 40 };\n}\nfunction getCity(student) {\n  return student.address.city;\n}\nfunction getField(obj, key) {\n  return obj[key];\n}\nfunction countFields(obj) {\n  return Object.keys(obj).length;\n}\nmodule.exports = { makeStudent, getCity, getField, countFields };"
+    ]
+  }
+}

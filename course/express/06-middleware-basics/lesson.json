@@ -1,0 +1,67 @@
+{
+  "title": "Middleware basics",
+  "minutes": 16,
+  "summary": "Write functions that run before your routes, call next(), and understand why their order matters.",
+  "docs": [
+    { "title": "Express: Using middleware", "url": "https://expressjs.com/en/guide/using-middleware.html" },
+    { "title": "Express: Writing middleware", "url": "https://expressjs.com/en/guide/writing-middleware.html" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does a middleware function do when it finishes and the request should continue to the next step?",
+      "options": ["Calls next()", "Calls res.next()", "Returns true", "Calls app.listen()"],
+      "answer": 0,
+      "explain": "`next()` hands the request to the next middleware or route. Forget it, and the request hangs until the browser gives up."
+    },
+    {
+      "type": "order",
+      "q": "Put the lines in order for a logger that runs before the route.",
+      "lines": [
+        "app.use((req, res, next) => {",
+        "  console.log(req.method, req.url);",
+        "  next();",
+        "});",
+        "app.get('/', (req, res) => res.send('Home'));"
+      ],
+      "explain": "Express runs `app.use` and `app.get` in the order you write them, so the logger has to come first."
+    },
+    {
+      "type": "predict",
+      "q": "A browser asks for GET /. What does the server send?",
+      "code": "app.get('/', (req, res) => {\n  res.send('Route');\n});\napp.use((req, res, next) => {\n  res.send('Middleware');\n});",
+      "language": "javascript",
+      "answer": "Route",
+      "explain": "The route is written first and it sends a response. The request never reaches the later middleware."
+    },
+    {
+      "type": "mcq",
+      "q": "A middleware sets `req.user = 'guest'` and calls `next()`. How can a later route use that value?",
+      "options": [
+        "Read req.user, because the same req object travels through every step",
+        "It cannot, each function gets its own copy of req",
+        "Read res.user",
+        "Call app.get('user')"
+      ],
+      "answer": 0,
+      "explain": "All middleware and routes for one request share the same `req` and `res` objects. That is how middleware passes information forward."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that makes every request hang.",
+      "code": "app.use((req, res, next) => {\n  req.user = 'guest';\n  return;\n});\napp.get('/', (req, res) => {\n  res.send('Home');\n});",
+      "answerLines": [3],
+      "explain": "The middleware leaves without sending a response and without calling `next()`, so the request never reaches the route. Replace `return;` with `next();`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "In `app.js`, add the middleware and two routes:\n\n- A middleware registered with `app.use` that adds the text `GET /path` (the method and the URL, for example `GET /whoami`) to the `log` array, then continues to the next step.\n- A second middleware that sets `req.user = 'guest'` and continues.\n- `GET /whoami` sends the text `Hello, guest` using `req.user`.\n- `GET /log` sends the `log` array as JSON.\n\nThe middleware must come **before** the routes. Leave `module.exports = app;` at the bottom.",
+    "hints": [
+      "A middleware has three parameters: `(req, res, next)`. End each one with `next();` so the request continues.",
+      "Use `app.use((req, res, next) => { ... })` above the routes. Build the log text with `req.method + ' ' + req.url`.",
+      "app.use((req, res, next) => {\n  log.push(`${req.method} ${req.url}`);\n  next();\n});\n\napp.use((req, res, next) => {\n  req.user = 'guest';\n  next();\n});\n\napp.get('/whoami', (req, res) => {\n  res.send(`Hello, ${req.user}`);\n});\n\napp.get('/log', (req, res) => {\n  res.json(log);\n});"
+    ]
+  }
+}

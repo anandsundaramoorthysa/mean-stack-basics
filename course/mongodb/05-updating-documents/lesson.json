@@ -1,0 +1,72 @@
+{
+  "title": "Updating documents",
+  "minutes": 16,
+  "summary": "Change existing documents with updateOne, updateMany, $set, $inc, $unset and $push.",
+  "docs": [
+    { "title": "MongoDB: Update documents", "url": "https://www.mongodb.com/docs/manual/tutorial/update-documents/" },
+    { "title": "MongoDB: db.collection.updateMany()", "url": "https://www.mongodb.com/docs/manual/reference/method/db.collection.updateMany/" },
+    { "title": "MongoDB: $push operator", "url": "https://www.mongodb.com/docs/manual/reference/operator/update/push/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Three students live in Salem. What does `db.students.updateOne({ city: 'Salem' }, { $inc: { marks: 1 } })` do?",
+      "options": [
+        "Adds 1 mark to all three",
+        "Adds 1 mark to the first matching student only",
+        "Adds 1 mark to a random student",
+        "Fails because several documents match"
+      ],
+      "answer": 1,
+      "explain": "`updateOne` stops after the first match. Use `updateMany` to change all three."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the operator that adds 10 to the current stock.",
+      "template": "{ $___: { stock: 10 } }",
+      "blanks": [["inc"]],
+      "explain": "`$inc` adds a number to the existing value, so it does not need you to read the old value first."
+    },
+    {
+      "type": "predict",
+      "q": "A student has `marks: 60`. After this update runs, what are the marks? Type the number.",
+      "code": "db.students.updateOne(\n  { name: 'Chitra' },\n  { $inc: { marks: -10 } }\n)",
+      "language": "js",
+      "answer": "50",
+      "explain": "A negative number with `$inc` subtracts. 60 minus 10 is 50."
+    },
+    {
+      "type": "mcq",
+      "q": "What happens with `db.students.updateOne({ name: 'Asha' }, { marks: 100 })`?",
+      "options": [
+        "marks becomes 100",
+        "The whole document is replaced by { marks: 100 }",
+        "MongoDB reports an error because the update has no operator such as $set",
+        "Nothing happens and no error appears"
+      ],
+      "answer": 2,
+      "explain": "`updateOne` and `updateMany` require update operators. Write `{ $set: { marks: 100 } }`. Replacing a whole document is done by a different method, `replaceOne`."
+    },
+    {
+      "type": "order",
+      "q": "Arrange the pieces to add the badge 'topper' to Asha.",
+      "lines": [
+        "db.students.updateOne(",
+        "  { name: 'Asha' },",
+        "  { $push: { badges: 'topper' } }",
+        ")"
+      ],
+      "explain": "First the method, then the filter that picks the document, then the update, then the closing bracket."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "Write four update statements for the `students` collection:\n\n- Set Bala's `city` to `'Chennai'`.\n- Give every student in the `'CSE'` department 5 more `marks`.\n- Add the badge `'topper'` to Asha's `badges` array.\n- Remove the `phone` field from Chitra.\n\nPick the filters carefully so that nobody else changes.",
+    "hints": [
+      "Each change is its own `updateOne` or `updateMany` call. Only the CSE change affects several students.",
+      "Use `$set`, `$inc`, `$push` and `$unset` in that order. A filter like `{ name: 'Bala' }` picks one student.",
+      "db.students.updateOne({ name: 'Bala' }, { $set: { city: 'Chennai' } })\ndb.students.updateMany({ dept: 'CSE' }, { $inc: { marks: 5 } })\ndb.students.updateOne({ name: 'Asha' }, { $push: { badges: 'topper' } })\ndb.students.updateOne({ name: 'Chitra' }, { $unset: { phone: '' } })"
+    ]
+  }
+}

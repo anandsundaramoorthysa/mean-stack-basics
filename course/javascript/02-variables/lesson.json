@@ -1,0 +1,57 @@
+{
+  "title": "Variables: let and const",
+  "minutes": 12,
+  "summary": "Store values in named boxes with let and const, and choose good names.",
+  "docs": [
+    { "title": "MDN: let", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let" },
+    { "title": "MDN: const", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which keyword declares a variable whose value you plan to change later?",
+      "options": ["const", "let", "name", "fixed"],
+      "answer": 1,
+      "explain": "`let` creates a variable that can be given a new value. `const` creates one that cannot be reassigned."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the code so that the city never changes.",
+      "template": "___ city = 'Chennai';",
+      "blanks": [["const"]],
+      "explain": "A value that is never reassigned should be declared with `const`. It tells readers (and JavaScript) that it stays fixed."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "let marks = 50;\nmarks = marks + 5;\nconsole.log(marks);",
+      "language": "js",
+      "answer": "55",
+      "explain": "The right side is calculated first (50 + 5 = 55), then stored back into `marks`."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that makes this program crash.",
+      "code": "const total = 10;\nconsole.log(total);\ntotal = 20;\nconsole.log(total);",
+      "answerLines": [3],
+      "explain": "A `const` cannot be given a new value, so line 3 throws `TypeError: Assignment to constant variable.` Use `let` if the value must change."
+    },
+    {
+      "type": "mcq",
+      "q": "Which is the best variable name for a student's final mark?",
+      "options": ["2marks", "final mark", "finalMark", "final-mark"],
+      "answer": 2,
+      "explain": "Names cannot start with a digit or contain spaces or hyphens. The camelCase style `finalMark` is the usual JavaScript choice."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "variables.js",
+    "task": "In `variables.js`:\n\n- Declare a `const` named `studentName` with the text `Asha`.\n- Declare a `let` named `marks` that starts at `70`, then add `10` to it on a later line.\n- Export both with `module.exports = { studentName, marks };` (already written for you at the bottom).",
+    "hints": [
+      "You need two declarations, and one extra line that changes `marks`.",
+      "Use `const` for the name because it never changes and `let` for `marks` because you reassign it: `marks = marks + 10;`.",
+      "const studentName = 'Asha';\nlet marks = 70;\nmarks = marks + 10;\n\nmodule.exports = { studentName, marks };"
+    ]
+  }
+}

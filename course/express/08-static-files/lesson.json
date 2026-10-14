@@ -1,0 +1,94 @@
+{
+  "title": "Static files",
+  "minutes": 14,
+  "summary": "Serve HTML, CSS and other ready-made files from a folder with express.static.",
+  "docs": [
+    {
+      "title": "Express: Serving static files",
+      "url": "https://expressjs.com/en/starter/static-files.html"
+    },
+    {
+      "title": "Express 5 API: express.static",
+      "url": "https://expressjs.com/en/5x/api.html#express.static"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is a static file?",
+      "options": [
+        "A file the server sends exactly as it is stored, such as an image or CSS file",
+        "A file that never changes name",
+        "A file created by a route handler for each request",
+        "A file that only the server can read"
+      ],
+      "answer": 0,
+      "explain": "Static files need no code to produce them. Express just finds the file on disk and sends it."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the line so files in the folder named public are served.",
+      "template": "app.use(express.___('___'));",
+      "blanks": [
+        [
+          "static"
+        ],
+        [
+          "public"
+        ]
+      ],
+      "explain": "`express.static(folderName)` creates the middleware, and `app.use` plugs it in."
+    },
+    {
+      "type": "mcq",
+      "q": "The folder `public` contains `css/site.css`. The line is `app.use(express.static('public'))`. Which URL returns that file?",
+      "options": [
+        "/css/site.css",
+        "/public/css/site.css",
+        "/static/css/site.css",
+        "/site.css"
+      ],
+      "answer": 0,
+      "explain": "The folder name is not part of the URL. Everything inside `public` is served from the root `/`."
+    },
+    {
+      "type": "mcq",
+      "q": "With `app.use('/assets', express.static('public'))`, which URL returns `public/logo.png`?",
+      "options": [
+        "/logo.png",
+        "/public/logo.png",
+        "/assets/logo.png",
+        "/assets/public/logo.png"
+      ],
+      "answer": 2,
+      "explain": "The first argument of `app.use` is a prefix placed in front of the file paths."
+    },
+    {
+      "type": "mcq",
+      "q": "A browser asks for the folder URL `/` and `public/index.html` exists. What happens with `express.static`?",
+      "options": [
+        "index.html is sent",
+        "A 404 is sent",
+        "A list of files is shown",
+        "The server crashes"
+      ],
+      "answer": 0,
+      "explain": "`express.static` sends `index.html` for a folder request by default, which is how a home page is served."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "Two folders already exist next to your program: `public` (with `index.html` and `hello.txt`) and `docs` (with `guide.txt`).\n\nIn `app.js`:\n\n- Serve the `public` folder at the root of the site, so `/hello.txt` works and `/` shows the home page.\n- Serve the `docs` folder under the prefix `/guide`, so `/guide/guide.txt` works.\n- Keep the existing `GET /api/hi` route.\n\nUse the folder names `'public'` and `'docs'` exactly as written. Leave `module.exports = app;` at the bottom.",
+    "hints": [
+      "`express.static('public')` creates middleware for a folder. Plug it in with `app.use(...)`.",
+      "Without a prefix the folder is served at `/`. To put a folder under a prefix, give `app.use` the prefix first: `app.use('/guide', express.static('docs'))`.",
+      "// Put these lines above the /api/hi route\napp.use(express.static('public'));\napp.use('/guide', express.static('docs'));"
+    ],
+    "fixtures": {
+      "public/index.html": "<!doctype html>\n<html>\n<head><title>Campus</title></head>\n<body><h1>Campus Home</h1></body>\n</html>\n",
+      "public/hello.txt": "Hello from a static file\n",
+      "docs/guide.txt": "Read the guide\n"
+    }
+  }
+}

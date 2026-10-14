@@ -1,0 +1,60 @@
+{
+  "title": "Destructuring and spread",
+  "minutes": 18,
+  "summary": "Unpack values from arrays and objects, and copy or merge them with spread syntax.",
+  "docs": [
+    { "title": "MDN: Destructuring", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring" },
+    { "title": "MDN: Spread syntax (...)", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const [a, b] = [10, 20];\nconsole.log(a + b);",
+      "language": "js",
+      "answer": "30",
+      "explain": "Array destructuring assigns by position: `a` gets 10 and `b` gets 20."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const { name, age } = { name: 'Asha', age: 19 };\nconsole.log(name);",
+      "language": "js",
+      "answer": "Asha",
+      "explain": "Object destructuring picks values by key name, not by position."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the array as it appears.",
+      "code": "const a = [1, 2];\nconst b = [...a, 3];\nconsole.log(b);",
+      "language": "js",
+      "answer": "[ 1, 2, 3 ]",
+      "accept": ["[1, 2, 3]", "[1,2,3]"],
+      "explain": "`...a` spreads the items of `a` into the new array, followed by 3."
+    },
+    {
+      "type": "mcq",
+      "q": "What is the value of `copy.marks` and `original.marks` afterwards?\n\n`const original = { marks: 50 };`\n`const copy = { ...original, marks: 90 };`",
+      "options": ["Both 90", "copy 90, original 50", "Both 50", "copy 50, original 90"],
+      "answer": 1,
+      "explain": "Spread makes a new object, so changing `copy` does not affect `original`. A property written after the spread overrides the copied one."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the code to take `city` out of the object.",
+      "template": "const ___ city ___ = person;",
+      "blanks": [["{"], ["}"]],
+      "explain": "Curly braces on the left side pull properties out of an object. Square brackets would unpack an array instead."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "unpack.js",
+    "task": "In `unpack.js`, write and export four functions:\n\n- `swap(pair)` takes `[a, b]` and returns `[b, a]` using array destructuring.\n- `fullName({ first, last })` destructures an object **in the parameter list** and returns `'first last'`.\n- `mergeLists(a, b)` returns a new array with the items of `a` followed by the items of `b` (use spread, do not change `a` or `b`).\n- `withMarks(student, marks)` returns a **new** object with all fields of `student` plus `marks` (use spread, do not change `student`).",
+    "hints": [
+      "Destructuring unpacks, spread copies. Neither of them changes the original data.",
+      "swap: `const [a, b] = pair;` then return `[b, a]`. fullName: `({ first, last }) => ...`. For the last two, put `...a` / `...student` inside the new array / object literal.",
+      "function swap(pair) {\n  const [a, b] = pair;\n  return [b, a];\n}\nfunction fullName({ first, last }) {\n  return first + ' ' + last;\n}\nfunction mergeLists(a, b) {\n  return [...a, ...b];\n}\nfunction withMarks(student, marks) {\n  return { ...student, marks };\n}\nmodule.exports = { swap, fullName, mergeLists, withMarks };"
+    ]
+  }
+}

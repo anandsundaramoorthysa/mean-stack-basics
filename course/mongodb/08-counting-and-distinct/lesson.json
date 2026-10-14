@@ -1,0 +1,70 @@
+{
+  "title": "Counting and distinct",
+  "minutes": 10,
+  "summary": "Count matching documents with countDocuments and list unique values with distinct.",
+  "docs": [
+    {
+      "title": "MongoDB: db.collection.countDocuments()",
+      "url": "https://www.mongodb.com/docs/manual/reference/method/db.collection.countDocuments/"
+    },
+    {
+      "title": "MongoDB: db.collection.distinct()",
+      "url": "https://www.mongodb.com/docs/manual/reference/method/db.collection.distinct/"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `db.orders.countDocuments({ status: 'shipped' })` return?",
+      "options": [
+        "The shipped orders",
+        "The number of shipped orders",
+        "The first shipped order",
+        "true if any order is shipped"
+      ],
+      "answer": 1,
+      "explain": "It returns a single number, the count of documents that match the filter."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the call to list each city only once.",
+      "template": "db.orders.___('city')",
+      "blanks": [
+        [
+          "distinct"
+        ]
+      ],
+      "explain": "`distinct` takes the field name and returns the unique values."
+    },
+    {
+      "type": "predict",
+      "q": "The `orders` collection has cities Madurai, Salem, Madurai, Erode, Salem. How many values does this return? Type the number.",
+      "code": "db.orders.distinct('city')",
+      "language": "js",
+      "answer": "3",
+      "explain": "Each city appears once: Madurai, Salem and Erode. MongoDB does not promise any order for the values, so sort the result if order matters."
+    },
+    {
+      "type": "mcq",
+      "q": "Which call lists the cities that have at least one **shipped** order?",
+      "options": [
+        "db.orders.distinct('city', { status: 'shipped' })",
+        "db.orders.distinct({ status: 'shipped' }, 'city')",
+        "db.orders.countDocuments('city', { status: 'shipped' })",
+        "db.orders.distinct('status', { city: 'shipped' })"
+      ],
+      "answer": 0,
+      "explain": "The field name comes first, the filter second. Swapping them, or using `countDocuments`, gives errors or the wrong thing."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "Using the `orders` collection (fields `item`, `city`, `status`), make the **last line** of your file an array with two values, in this order:\n\n- the number of orders whose status is `'shipped'`\n- the list of distinct cities of the **shipped** orders\n\nThe result will look like `[5, [ ...cities ]]`.",
+    "hints": [
+      "Square brackets make an array. Put one call before the comma and one call after it.",
+      "Use `countDocuments` with `{ status: 'shipped' }` for the first value, and `distinct('city', filter)` with the same filter for the second.",
+      "[db.orders.countDocuments({ status: 'shipped' }), db.orders.distinct('city', { status: 'shipped' })]"
+    ]
+  }
+}

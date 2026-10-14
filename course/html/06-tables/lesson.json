@@ -1,0 +1,136 @@
+{
+  "title": "Tables",
+  "minutes": 16,
+  "summary": "Present data in rows and columns with table, caption, thead, tbody, th and td.",
+  "docs": [
+    {
+      "title": "MDN: HTML table basics",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_table_basics"
+    },
+    {
+      "title": "MDN: The table element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/table"
+    },
+    {
+      "title": "MDN: The th element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/th"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `<tr>` stand for in a table?",
+      "options": [
+        "Table row",
+        "Text region",
+        "Top rule",
+        "Table range"
+      ],
+      "answer": 0,
+      "explain": "`tr` is a table row. Cells (`th` and `td`) go inside it."
+    },
+    {
+      "type": "fill",
+      "q": "Fill in the element for a **header** cell.",
+      "template": "<tr><___ scope=\"col\">Name</___></tr>",
+      "blanks": [
+        [
+          "th"
+        ],
+        [
+          "th"
+        ]
+      ],
+      "explain": "`th` is the header cell, `td` is the ordinary data cell."
+    },
+    {
+      "type": "order",
+      "q": "Put the parts of a table in the correct order from the top.",
+      "lines": [
+        "<table>",
+        "<caption>Marks</caption>",
+        "<thead>",
+        "<tbody>",
+        "</table>"
+      ],
+      "explain": "The caption comes first, then the header group, then the body group."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that does not belong in a table row.",
+      "code": "<table>\n  <tr>\n    <td>Asha</td>\n    <p>88</p>\n  </tr>\n</table>",
+      "answerLines": [
+        4
+      ],
+      "explain": "Inside a `<tr>` only `<th>` and `<td>` cells are allowed. Use `<td>88</td>`."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Build a marks table in `index.html`.\n\n- A `<table>` with a `<caption>` that says `Class marks`.\n- A `<thead>` with a row of three `<th>` cells (Name, Maths, Science), each with `scope=\"col\"`.\n- A `<tbody>` with at least 2 rows, each with three `<td>` cells.",
+    "hints": [
+      "Draw it on paper first: one header row, two data rows, three columns.",
+      "The order inside table is caption, thead, tbody. Each row is a tr and the cells go inside the tr.",
+      "<table>\n  <caption>Class marks</caption>\n  <thead>\n    <tr><th scope=\"col\">Name</th><th scope=\"col\">Maths</th><th scope=\"col\">Science</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Asha</td><td>88</td><td>91</td></tr>\n    <tr><td>Ravi</td><td>92</td><td>85</td></tr>\n  </tbody>\n</table>"
+    ],
+    "checks": [
+      {
+        "name": "The table has a caption \"Class marks\"",
+        "hint": "Add <caption>Class marks</caption> as the first thing inside the table.",
+        "selector": "table > caption",
+        "text": {
+          "equals": "Class marks"
+        }
+      },
+      {
+        "name": "The source uses a thead element",
+        "hint": "Wrap the header row in <thead> and </thead>.",
+        "source": {
+          "regex": "<thead[\\s>]",
+          "flags": "i"
+        }
+      },
+      {
+        "name": "The source uses a tbody element",
+        "hint": "Wrap the data rows in <tbody> and </tbody>.",
+        "source": {
+          "regex": "<tbody[\\s>]",
+          "flags": "i"
+        }
+      },
+      {
+        "name": "The header row has 3 th cells",
+        "hint": "Put three <th> cells in one row inside thead.",
+        "selector": "thead th",
+        "count": 3
+      },
+      {
+        "name": "Every header cell has scope=\"col\"",
+        "hint": "Add scope=\"col\" to each <th>.",
+        "selector": "thead th",
+        "scope": "all",
+        "attr": {
+          "name": "scope",
+          "equals": "col"
+        }
+      },
+      {
+        "name": "The body has at least 2 rows",
+        "hint": "Add two <tr> rows inside tbody.",
+        "selector": "tbody tr",
+        "count": {
+          "min": 2
+        }
+      },
+      {
+        "name": "The body has at least 6 td cells",
+        "hint": "Each body row needs three <td> cells.",
+        "selector": "tbody td",
+        "count": {
+          "min": 6
+        }
+      }
+    ]
+  }
+}

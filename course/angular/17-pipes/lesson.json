@@ -1,0 +1,97 @@
+{
+  "title": "Pipes",
+  "minutes": 12,
+  "summary": "Format values in a template with built-in pipes such as uppercase, currency, date and percent.",
+  "docs": [
+    {
+      "title": "Angular: Pipes",
+      "url": "https://angular.dev/guide/templates/pipes"
+    },
+    {
+      "title": "Angular API: DatePipe",
+      "url": "https://angular.dev/api/common/DatePipe"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "With `name = 'asha'`, what does this show?",
+      "code": "{{ name | uppercase }}",
+      "language": "html",
+      "answer": "ASHA",
+      "explain": "The pipe symbol `|` sends the value through `uppercase`, which converts text to capitals. The class value itself is unchanged."
+    },
+    {
+      "type": "fill",
+      "q": "Format `fee` as Indian rupees.",
+      "template": "{{ fee | currency___'INR' }}",
+      "blanks": [
+        [
+          ":"
+        ]
+      ],
+      "explain": "Pipe arguments follow a colon: `currency:'INR'`. Several arguments are separated by more colons."
+    },
+    {
+      "type": "mcq",
+      "q": "In a standalone component, how do you make the `date` pipe available?",
+      "options": [
+        "Nothing, it is global",
+        "Add DatePipe from @angular/common to the component's imports",
+        "Import FormsModule",
+        "Call provideDate()"
+      ],
+      "answer": 1,
+      "explain": "Standalone components only know what they import. Add `DatePipe` (and `CurrencyPipe`, `UpperCasePipe`...) to `imports`."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `{{ 0.756 | percent }}` show?",
+      "options": [
+        "0.756%",
+        "76%",
+        "7.56",
+        "0.76"
+      ],
+      "answer": 1,
+      "explain": "The `percent` pipe multiplies by 100 and rounds with its default format, giving 76%."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "report.component.ts",
+    "task": "Finish `report.component.ts`.\n\n- Show `name` with the `uppercase` pipe.\n- Show `fee` with `currency:'INR'`.\n- Show `joined` with `date:'dd MMM yyyy'`.\n- Show `ratio` with the `percent` pipe.\n- Add `UpperCasePipe`, `CurrencyPipe`, `DatePipe` and `PercentPipe` (from `@angular/common`) to the component's `imports`.",
+    "hints": [
+      "Each interpolation gets a pipe: `{{ value | pipeName }}`.",
+      "Arguments follow a colon, e.g. `date:'dd MMM yyyy'`. The component's `imports` array must list the four pipe classes.",
+      "imports: [UpperCasePipe, CurrencyPipe, DatePipe, PercentPipe],\ntemplate: `\n  <p>{{ name | uppercase }}</p>\n  <p>{{ fee | currency:'INR' }}</p>\n  <p>{{ joined | date:'dd MMM yyyy' }}</p>\n  <p>{{ ratio | percent }}</p>\n`"
+    ],
+    "checks": [
+      {
+        "name": "name uses the uppercase pipe",
+        "hint": "Write {{ name | uppercase }}.",
+        "regex": "\\{\\{\\s*name\\s*\\|\\s*uppercase\\s*\\}\\}"
+      },
+      {
+        "name": "fee uses currency with the code 'INR'",
+        "hint": "Write {{ fee | currency:'INR' }}.",
+        "regex": "\\{\\{\\s*fee\\s*\\|\\s*currency\\s*:\\s*['\"]INR['\"][^}]*\\}\\}"
+      },
+      {
+        "name": "joined uses date with 'dd MMM yyyy'",
+        "hint": "Write {{ joined | date:'dd MMM yyyy' }}.",
+        "regex": "\\{\\{\\s*joined\\s*\\|\\s*date\\s*:\\s*['\"]dd MMM yyyy['\"][^}]*\\}\\}"
+      },
+      {
+        "name": "ratio uses the percent pipe",
+        "hint": "Write {{ ratio | percent }}.",
+        "regex": "\\{\\{\\s*ratio\\s*\\|\\s*percent\\s*\\}\\}"
+      },
+      {
+        "name": "All four pipe classes are in imports",
+        "hint": "Add imports: [UpperCasePipe, CurrencyPipe, DatePipe, PercentPipe].",
+        "regex": "imports\\s*:\\s*\\[(?=[^\\]]*\\bUpperCasePipe\\b)(?=[^\\]]*\\bCurrencyPipe\\b)(?=[^\\]]*\\bDatePipe\\b)(?=[^\\]]*\\bPercentPipe\\b)[^\\]]*\\]"
+      }
+    ]
+  }
+}

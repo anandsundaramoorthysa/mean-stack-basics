@@ -1,0 +1,61 @@
+{
+  "title": "Colors and units",
+  "minutes": 14,
+  "summary": "Write colours as names, hex, rgb() and hsl(), and choose between px, em, rem and percentages.",
+  "docs": [
+    { "title": "MDN: Values and units", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Values_and_units" },
+    { "title": "MDN: <color>", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value" },
+    { "title": "MDN: <length>", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which value is the same colour as `rgb(255, 0, 0)`?",
+      "options": ["#00ff00", "#ff0000", "#0000ff", "hsl(120, 100%, 50%)"],
+      "answer": 1,
+      "explain": "Hex `#rrggbb` stores red, green and blue as two hex digits each. `ff` is 255, so `#ff0000` is full red and nothing else."
+    },
+    {
+      "type": "fill",
+      "q": "Write a colour using hue 240 (blue), full saturation and 50% lightness.",
+      "template": "color: ___(240, 100%, 50%);",
+      "blanks": [["hsl"]],
+      "explain": "`hsl(hue, saturation, lightness)`. Hue is an angle on the colour wheel from 0 to 360, which makes it easy to pick lighter or darker versions."
+    },
+    {
+      "type": "predict",
+      "q": "The parent has `font-size: 20px`. What is the child's font size in px?",
+      "code": ".parent { font-size: 20px; }\n.child { font-size: 2em; }",
+      "language": "css",
+      "answer": "40px",
+      "accept": ["40", "40 px"],
+      "explain": "`em` is relative to the parent's font size here, so 2em is 2 times 20px."
+    },
+    {
+      "type": "mcq",
+      "q": "What is `rem` relative to?",
+      "options": ["The parent element's font size", "The root (html) element's font size", "The width of the screen", "The element's own width"],
+      "answer": 1,
+      "explain": "`rem` means root em. It always uses the html element's font size (16px by default), so it stays predictable inside nested elements."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Colour and size the five paragraphs using different notations. Work in `index.html`.\n\n- `.hex`: `color` as the hex value `#ff6600`.\n- `.rgb`: `color` as `rgb(0, 128, 0)`.\n- `.hsl`: `color` as `hsl(240, 100%, 50%)`.\n- `.em`: `font-size: 2em` (its parent is 20px).\n- `.rem`: `font-size: 2rem`.",
+    "hints": [
+      "Each class gets its own rule. Colours use `color`, sizes use `font-size`.",
+      "Hex starts with # and has six digits. rgb() takes three numbers. hsl() takes a number and two percentages.",
+      ".hex { color: #ff6600; }\n.rgb { color: rgb(0, 128, 0); }\n.hsl { color: hsl(240, 100%, 50%); }\n.em { font-size: 2em; }\n.rem { font-size: 2rem; }"
+    ],
+    "checks": [
+      { "name": ".hex is orange written as #ff6600", "selector": ".hex", "style": { "prop": "color", "equals": "#ff6600" }, "hint": "Add .hex { color: #ff6600; }." },
+      { "name": ".hex really uses hex in the source", "source": { "regex": "#ff6600", "flags": "i" }, "hint": "Write the colour as #ff6600, not as a name." },
+      { "name": ".rgb is green", "selector": ".rgb", "style": { "prop": "color", "equals": "rgb(0, 128, 0)" }, "hint": "Add .rgb { color: rgb(0, 128, 0); }." },
+      { "name": ".hsl is blue", "selector": ".hsl", "style": { "prop": "color", "equals": "blue" }, "hint": "Add .hsl { color: hsl(240, 100%, 50%); }." },
+      { "name": ".hsl uses hsl() in the source", "source": { "regex": "hsl\\(", "flags": "i" }, "hint": "Write the colour with the hsl() function." },
+      { "name": ".em is 40px (2em of a 20px parent)", "selector": ".em", "style": { "prop": "font-size", "equals": "40px" }, "hint": "Add .em { font-size: 2em; }." },
+      { "name": ".rem is 32px (2rem of the 16px root)", "selector": ".rem", "style": { "prop": "font-size", "equals": "32px" }, "hint": "Add .rem { font-size: 2rem; }." }
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "title": "Your first web page",
+  "minutes": 12,
+  "summary": "Every page starts from the same skeleton: doctype, html, head and body.",
+  "docs": [
+    { "title": "MDN: Basic HTML syntax", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Basic_HTML_syntax" },
+    { "title": "MDN: The title element", "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/title" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which element holds everything the visitor can **see** on the page?",
+      "options": ["<head>", "<body>", "<title>", "<html>"],
+      "answer": 1,
+      "explain": "`<body>` holds the visible content. `<head>` holds information about the page, and `<html>` wraps both."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the closing tag.",
+      "template": "<h1>Welcome</___>",
+      "blanks": [["h1"]],
+      "explain": "A closing tag repeats the element name after a slash: `</h1>`."
+    },
+    {
+      "type": "order",
+      "q": "Put the lines of the page skeleton in the correct order.",
+      "lines": ["<!DOCTYPE html>", "<html>", "<head>", "</head>", "<body>", "</body>", "</html>"],
+      "explain": "The doctype comes first, then `<html>`. The head comes before the body, and every element is closed in the reverse order it was opened."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that is wrong.",
+      "code": "<body>\n  <h1>Hello</h1>\n  <p>Welcome to my page.<p>\n</body>",
+      "answerLines": [3],
+      "explain": "The paragraph is opened twice. The second `<p>` should be the closing tag `</p>`."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Edit `index.html` so the page has a title, a main heading and a paragraph.\n\n- Add `<title>My first page</title>` inside `<head>`.\n- Add `<h1>Hello, web!</h1>` inside `<body>`.\n- Add a `<p>` paragraph of your own below the heading.",
+    "hints": [
+      "The title goes inside the head. Start by adding a `<head>` element between `<html>` and `<body>`.",
+      "Inside `<head>` write `<title>` then the text then `</title>`. Inside `<body>` add the heading and the paragraph.",
+      "<head>\n  <title>My first page</title>\n</head>\n<body>\n  <h1>Hello, web!</h1>\n  <p>Any sentence you like.</p>\n</body>"
+    ],
+    "checks": [
+      { "name": "The first line is <!DOCTYPE html>", "source": { "regex": "^\\s*<!DOCTYPE html>", "flags": "i" }, "hint": "Keep the doctype as the very first line." },
+      { "name": "The page has a head element", "source": { "regex": "<head>[\\s\\S]*</head>", "flags": "i" }, "hint": "Add a head element with an opening and closing tag." },
+      { "name": "The title is \"My first page\"", "selector": "head > title", "text": { "equals": "My first page" }, "hint": "Put the title text between <title> and </title>." },
+      { "name": "There is an h1 that says \"Hello, web!\"", "selector": "body h1", "text": { "equals": "Hello, web!" }, "hint": "Write the heading text exactly as shown, with the comma and exclamation mark." },
+      { "name": "There is at least one paragraph", "selector": "body p", "count": { "min": 1 }, "hint": "Add a <p> element with some text." }
+    ]
+  }
+}

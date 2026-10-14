@@ -1,0 +1,52 @@
+{
+  "title": "Run it end to end",
+  "minutes": 12,
+  "summary": "Start the three tiers in the right order, test the API alone, and fix a CORS error.",
+  "docs": [
+    { "title": "MDN: Cross-Origin Resource Sharing (CORS)", "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS" },
+    { "title": "Express: cors middleware", "url": "https://expressjs.com/en/resources/middleware/cors.html" },
+    { "title": "Angular: ng serve", "url": "https://angular.dev/cli/serve" }
+  ],
+  "quiz": [
+    {
+      "type": "order",
+      "q": "Put the start-up steps in the best order.",
+      "lines": [
+        "Start MongoDB (mongod)",
+        "Start the Express API",
+        "Check the API with curl or the browser",
+        "Run ng serve",
+        "Open http://localhost:4200"
+      ],
+      "explain": "Each tier needs the one below it. Checking the API before Angular tells you which tier is faulty if something fails."
+    },
+    {
+      "type": "mcq",
+      "q": "The Angular page shows a CORS error but `curl http://localhost:3000/students` returns JSON. Where do you fix it?",
+      "options": ["In the Angular component", "In MongoDB settings", "In the Express server, by allowing the Angular origin", "In the browser's settings"],
+      "answer": 2,
+      "explain": "CORS is a permission the server gives to a browser origin. curl ignores it, which is why curl works while the page fails."
+    },
+    {
+      "type": "mcq",
+      "q": "Which of these is a different origin from `http://localhost:4200`?",
+      "options": ["http://localhost:4200/students", "http://localhost:3000", "http://localhost:4200/#/home", "http://localhost:4200/index.html"],
+      "answer": 1,
+      "explain": "An origin is the protocol, host and port together. Only the port differs in `localhost:3000`, and that is enough."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the command that serves an Angular project during development.",
+      "template": "ng ___",
+      "blanks": [["serve"]],
+      "explain": "`ng serve` builds the app, serves it on port 4200 and reloads when you save a file."
+    },
+    {
+      "type": "mcq",
+      "q": "The API prints a connection refused error for port 27017. What is the most likely cause?",
+      "options": ["Angular is not running", "MongoDB is not running", "CORS is blocking the request", "The students array is empty"],
+      "answer": 1,
+      "explain": "27017 is MongoDB's default port. Refused means nothing is listening there, so start `mongod`."
+    }
+  ]
+}

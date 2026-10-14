@@ -1,0 +1,59 @@
+{
+  "title": "JSON",
+  "minutes": 14,
+  "summary": "Turn objects into JSON text with JSON.stringify and read JSON text back with JSON.parse.",
+  "docs": [
+    { "title": "MDN: Working with JSON", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/JSON" },
+    { "title": "MDN: JSON.parse()", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" },
+    { "title": "MDN: JSON.stringify()", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const text = JSON.stringify({ name: 'Asha', age: 19 });\nconsole.log(text);",
+      "language": "js",
+      "answer": "{\"name\":\"Asha\",\"age\":19}",
+      "explain": "`JSON.stringify` returns a string. Keys become double-quoted text and there are no extra spaces."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const data = JSON.parse('{\"marks\":[70,90]}');\nconsole.log(data.marks[1]);",
+      "language": "js",
+      "answer": "90",
+      "explain": "`JSON.parse` turns the text back into a real object, so `data.marks` is an array and index 1 is `90`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which of these is valid JSON text?",
+      "options": ["{ name: 'Asha' }", "{ \"name\": \"Asha\" }", "{ 'name': 'Asha' }", "{ \"name\": \"Asha\", }"],
+      "answer": 1,
+      "explain": "JSON is stricter than JavaScript objects: keys and strings need double quotes, and a trailing comma is not allowed."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that will throw an error.",
+      "code": "const text = '{ name: \"Asha\" }';\nconst student = JSON.parse(text);\nconsole.log(student.name);",
+      "answerLines": [2],
+      "explain": "The text is not valid JSON because the key `name` has no quotes, so `JSON.parse` throws a SyntaxError on line 2. Wrap risky parsing in `try...catch`."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the call so the JSON text is indented with 2 spaces.",
+      "template": "JSON.stringify(student, null, ___)",
+      "blanks": [["2"]],
+      "explain": "The third argument sets the indentation. The second one (`null` here) is an optional filter that you can ignore for now."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "json.js",
+    "task": "In `json.js`, write three functions:\n\n- `parseOrNull(text)` returns the parsed value, or `null` when the text is not valid JSON (use `try...catch`).\n- `toPrettyJson(value)` returns the JSON text indented with 2 spaces.\n- `copy(value)` returns a deep copy of an object by converting it to JSON text and back, so changing the copy never changes the original.",
+    "hints": [
+      "`JSON.parse` throws when the text is invalid. A `try { ... } catch { ... }` lets you return `null` instead of crashing.",
+      "`JSON.stringify(value, null, 2)` gives pretty text. For `copy`, stringify first and then parse the result.",
+      "function parseOrNull(text) {\n  try {\n    return JSON.parse(text);\n  } catch (error) {\n    return null;\n  }\n}\n\nfunction toPrettyJson(value) {\n  return JSON.stringify(value, null, 2);\n}\n\nfunction copy(value) {\n  return JSON.parse(JSON.stringify(value));\n}"
+    ]
+  }
+}

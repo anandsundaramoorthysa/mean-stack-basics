@@ -1,0 +1,63 @@
+{
+  "title": "Error handling in Node.js",
+  "minutes": 16,
+  "summary": "Handle errors in callbacks and promises, and use try/catch around await.",
+  "docs": [
+    { "title": "Node.js API: Errors", "url": "https://nodejs.org/api/errors.html" },
+    { "title": "Node.js API: process events (uncaughtException)", "url": "https://nodejs.org/api/process.html#event-uncaughtexception" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "In an error-first callback `(err, data) => { ... }`, what is err when everything worked?",
+      "options": ["An Error object with an empty message", "null", "The text 'ok'", "The data"],
+      "answer": 1,
+      "explain": "By convention the first argument is the error, and it is `null` when there is none. That is why you check `if (err)` first and use `data` only afterwards."
+    },
+    {
+      "type": "bug",
+      "q": "If notes.txt does not exist, this program crashes with a confusing TypeError. Which line is the problem?",
+      "code": "const fs = require('node:fs');\n\nfs.readFile('notes.txt', 'utf8', (err, data) => {\n  console.log(data.toUpperCase());\n});",
+      "answerLines": [4],
+      "explain": "When the read fails, `err` holds the error and `data` is `undefined`, so `data.toUpperCase()` throws. A callback must check `if (err)` first and only then use `data`."
+    },
+    {
+      "type": "mcq",
+      "q": "Reading a file that does not exist fails with error code ENOENT. How do you tell this error apart from others?",
+      "options": [
+        "Compare err.code to 'ENOENT'",
+        "Compare err to the text 'ENOENT'",
+        "Check err.length",
+        "You cannot, all errors look the same"
+      ],
+      "answer": 0,
+      "explain": "Errors raised by Node's own modules carry a `code` string such as `'ENOENT'` (no such file) or `'EACCES'` (not allowed). Checking `err.code` lets you handle a missing file differently from a real failure."
+    },
+    {
+      "type": "mcq",
+      "q": "What is process.on('uncaughtException', ...) best used for?",
+      "options": [
+        "Replacing try/catch everywhere",
+        "Logging the problem and shutting down cleanly, as a last resort",
+        "Ignoring errors so the server keeps running as if nothing happened",
+        "Making errors faster"
+      ],
+      "answer": 1,
+      "explain": "After an uncaught exception the program may be in a broken state. Use the handler to log and exit, not to carry on. The real fix is to catch errors where they happen."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "safe.js",
+    "task": "In `safe.js`, write and export two functions.\n\n- `parseAge(text, callback)` uses an **error-first callback**. If `text` is a whole number from 0 upwards (such as `'19'`), call `callback(null, 19)` with the number. Otherwise call `callback(new Error('Invalid age'))`.\n- `safeReadJson(file)` is **async**. It reads a JSON file with `fs/promises` and resolves to `{ ok: true, data }`. It never rejects. On failure it resolves to `{ ok: false, error }` where `error` is `'File not found'` when the file is missing (`err.code === 'ENOENT'`) and `'Invalid JSON'` for any other problem.\n\nThe folder contains `good.json` and `bad.json` for testing.",
+    "hints": [
+      "For `parseAge`, convert with `Number(text)` and check `Number.isInteger(n) && n >= 0`. Watch out: `Number('')` is `0`, so reject empty text too.",
+      "For `safeReadJson` put `await fs.readFile(...)` and `JSON.parse(...)` inside a `try`. In the `catch`, look at `err.code` to choose the message.",
+      "const fs = require('node:fs/promises');\n\nfunction parseAge(text, callback) {\n  const age = Number(text);\n  if (String(text).trim() === '' || !Number.isInteger(age) || age < 0) {\n    callback(new Error('Invalid age'));\n    return;\n  }\n  callback(null, age);\n}\n\nasync function safeReadJson(file) {\n  try {\n    const data = JSON.parse(await fs.readFile(file, 'utf8'));\n    return { ok: true, data };\n  } catch (err) {\n    return { ok: false, error: err.code === 'ENOENT' ? 'File not found' : 'Invalid JSON' };\n  }\n}\n\nmodule.exports = { parseAge, safeReadJson };"
+    ],
+    "fixtures": {
+      "good.json": "{\"name\":\"Asha\"}",
+      "bad.json": "{oops"
+    }
+  }
+}

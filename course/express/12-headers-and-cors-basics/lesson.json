@@ -1,0 +1,67 @@
+{
+  "title": "Headers and CORS basics",
+  "minutes": 18,
+  "summary": "Read request headers, set response headers, and add simple CORS headers by hand.",
+  "docs": [
+    { "title": "Express 5 API: res.set", "url": "https://expressjs.com/en/5x/api.html#res.set" },
+    { "title": "Express 5 API: req.get", "url": "https://expressjs.com/en/5x/api.html#req.get" },
+    { "title": "Express: cors middleware", "url": "https://expressjs.com/en/resources/middleware/cors.html" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Where do HTTP headers travel?",
+      "options": [
+        "With every request and response, as name and value pairs separate from the body",
+        "Only in the URL",
+        "Only in responses",
+        "Inside the JSON body"
+      ],
+      "answer": 0,
+      "explain": "Headers are extra information about the message, such as its content type or who is asking. The body carries the actual data."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the code that reads the x-name header and sets a response header.",
+      "template": "const name = req.___('x-name');\nres.___('X-App', 'Campus API');",
+      "blanks": [["get", "header"], ["set", "header"]],
+      "explain": "`req.get(name)` reads a request header (case-insensitive) and `res.set(name, value)` writes a response header."
+    },
+    {
+      "type": "mcq",
+      "q": "A page at http://localhost:4200 calls an API at http://localhost:3000 and the browser blocks the answer. What is the most likely cause?",
+      "options": [
+        "The API response lacks an Access-Control-Allow-Origin header",
+        "The API is written in the wrong language",
+        "JSON cannot be sent between ports",
+        "The browser cannot use GET"
+      ],
+      "answer": 0,
+      "explain": "Browsers only let a page read a response from another **origin** (different scheme, host or port) if the server opts in with CORS headers."
+    },
+    {
+      "type": "mcq",
+      "q": "Before a POST with a JSON body from another origin, the browser first sends a \"preflight\" request. Which method does it use?",
+      "options": ["OPTIONS", "HEAD", "GET", "TRACE"],
+      "answer": 0,
+      "explain": "The browser asks OPTIONS first to check whether the server allows the real request. The server should answer 204 with the CORS headers."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that stops browsers from accepting this server's answers from another origin.",
+      "code": "app.use((req, res, next) => {\n  res.set('Access-Control-Allow-Origins', '*');\n  res.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');\n  next();\n});",
+      "answerLines": [2],
+      "explain": "The header name is misspelled. The real name is `Access-Control-Allow-Origin`, singular. Browsers ignore unknown header names, so CORS silently stays blocked."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "In `app.js`, above the routes, add these:\n\n- A middleware for every request that sets `Access-Control-Allow-Origin: *`, `Access-Control-Allow-Methods: GET,POST,OPTIONS` and `Access-Control-Allow-Headers: Content-Type`, then continues.\n- For `OPTIONS` requests (the preflight), the same middleware answers with status `204` instead of continuing.\n- `GET /api/info` sets the response header `X-App-Name` to `Campus API` and sends JSON `{ \"ok\": true }`.\n- `GET /api/hello` reads the request header `x-name` and sends the text `Hello, NAME`. When the header is missing it sends `Hello, stranger`.\n\nLeave `module.exports = app;` at the bottom.",
+    "hints": [
+      "Use `res.set('Header-Name', 'value')` for response headers and `req.get('x-name')` for request headers. The CORS part is a middleware with `app.use((req, res, next) => { ... })`.",
+      "Inside the middleware, after setting the three headers, check `if (req.method === 'OPTIONS') return res.sendStatus(204);` and otherwise call `next()`.",
+      "app.use((req, res, next) => {\n  res.set('Access-Control-Allow-Origin', '*');\n  res.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');\n  res.set('Access-Control-Allow-Headers', 'Content-Type');\n  if (req.method === 'OPTIONS') {\n    return res.sendStatus(204);\n  }\n  next();\n});\n\napp.get('/api/info', (req, res) => {\n  res.set('X-App-Name', 'Campus API');\n  res.json({ ok: true });\n});\n\napp.get('/api/hello', (req, res) => {\n  res.send(`Hello, ${req.get('x-name') || 'stranger'}`);\n});"
+    ]
+  }
+}

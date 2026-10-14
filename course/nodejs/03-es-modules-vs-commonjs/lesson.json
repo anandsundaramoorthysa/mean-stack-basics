@@ -1,0 +1,73 @@
+{
+  "title": "ES modules vs CommonJS",
+  "minutes": 14,
+  "summary": "Tell the two module systems apart and write import and export in a .mjs file.",
+  "docs": [
+    { "title": "Node.js API: ECMAScript modules", "url": "https://nodejs.org/api/esm.html" },
+    { "title": "Node.js API: Packages and the \"type\" field", "url": "https://nodejs.org/api/packages.html#type" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which file name tells Node.js, by its extension alone, that the file is always an ES module?",
+      "options": ["app.js", "app.cjs", "app.mjs", "app.json"],
+      "answer": 2,
+      "explain": "The `.mjs` extension always means ES module and `.cjs` always means CommonJS. A plain `.js` file depends on the `\"type\"` field in the nearest package.json (and, in newer Node versions, on whether it uses `import` or `export`)."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the package.json line that makes every .js file in the project an ES module.",
+      "template": "\"___\": \"___\"",
+      "blanks": [["type"], ["module"]],
+      "explain": "`\"type\": \"module\"` switches `.js` files to ES modules. The default is `\"commonjs\"`."
+    },
+    {
+      "type": "mcq",
+      "q": "In an ES module, how do you load your own file helpers.js from the same folder?",
+      "options": [
+        "import { sum } from './helpers';",
+        "import { sum } from './helpers.js';",
+        "const { sum } = require('./helpers');",
+        "import { sum } from helpers.js;"
+      ],
+      "answer": 1,
+      "explain": "ES modules need the **full file name including the extension**, and the path goes in quotes. CommonJS `require` may leave `.js` out, but `import` may not."
+    },
+    {
+      "type": "bug",
+      "q": "This file is an ES module (a .mjs file). Which line causes an error?",
+      "code": "import path from 'node:path';\n\nconst file = path.join('notes', 'a.txt');\nmodule.exports = { file };",
+      "answerLines": [4],
+      "explain": "`module.exports` is part of CommonJS and does not exist in an ES module. Use `export { file };` or `export const file = ...` instead."
+    },
+    {
+      "type": "mcq",
+      "q": "Which statement about the two systems is true?",
+      "options": [
+        "They cannot be mixed in one project at all",
+        "ES modules are the standard JavaScript system also used by browsers; CommonJS is Node's older system",
+        "CommonJS is newer and faster",
+        "`import` is only for packages and `require` is only for your own files"
+      ],
+      "answer": 1,
+      "explain": "ES modules are part of the JavaScript language and run in browsers too. CommonJS came first and is still very common in Node.js code, including Express tutorials. You can mix them in one project, with care, by using different file extensions."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "report.mjs",
+    "task": "`report.mjs` is written in CommonJS. Convert it to an ES module.\n\n- Import `path` from `node:path` with `import path from ...`.\n- Import `{ average }` from `./grades.js` (keep the file extension).\n- Export the function `report` with `export`.\n- Remove `require(...)` and `module.exports`.",
+    "hints": [
+      "Every `require` line becomes an `import ... from '...'` line, and `module.exports` becomes `export`.",
+      "`const path = require('node:path')` becomes `import path from 'node:path'`. For a named piece use braces: `import { average } from './grades.js'`.",
+      "import path from 'node:path';\nimport { average } from './grades.js';\n\nexport function report(file, marks) {\n  return path.basename(file) + ': ' + average(marks);\n}"
+    ],
+    "checks": [
+      { "name": "path is imported with import from node:path", "hint": "Write: import path from 'node:path';", "regex": "import\\s+path\\s+from\\s+['\"](node:)?path['\"]" },
+      { "name": "average is imported from ./grades.js with the extension", "hint": "Write: import { average } from './grades.js'; (ES modules need the .js).", "regex": "import\\s*\\{\\s*average\\s*\\}\\s*from\\s*['\"]\\./grades\\.js['\"]" },
+      { "name": "report is exported with export", "hint": "Write export function report(...) { ... } or export { report };", "regex": "export\\s+(function\\s+report\\b|\\{[^}]*\\breport\\b[^}]*\\})" },
+      { "name": "No require() is left", "hint": "Remove every require(...) call.", "regex": "\\brequire\\s*\\(", "not": true },
+      { "name": "No module.exports is left", "hint": "Remove module.exports and use export instead.", "regex": "module\\.exports", "not": true }
+    ]
+  }
+}

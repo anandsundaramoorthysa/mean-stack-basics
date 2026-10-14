@@ -1,0 +1,58 @@
+{
+  "title": "Reading and writing files",
+  "minutes": 16,
+  "summary": "Read a text file with fs.readFileSync, process its lines and save a result with fs.writeFileSync.",
+  "docs": [
+    { "title": "Node.js API: fs (file system)", "url": "https://nodejs.org/api/fs.html" },
+    { "title": "Node.js: Reading files with Node.js", "url": "https://nodejs.org/en/learn/manipulating-files/reading-files-with-nodejs" },
+    { "title": "Node.js: Writing files with Node.js", "url": "https://nodejs.org/en/learn/manipulating-files/writing-files-with-nodejs" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "fs.readFileSync('notes.txt') with no second argument returns what?",
+      "options": ["A string", "A Buffer (raw bytes)", "An array of lines", "A promise"],
+      "answer": 1,
+      "explain": "Without an encoding Node cannot know the file holds text, so it gives you raw bytes in a `Buffer`. Pass `'utf8'` as the second argument to get a string."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the line that reads a file as text.",
+      "template": "const text = fs.___('notes.txt', '___');",
+      "blanks": [["readFileSync"], ["utf8", "utf-8"]],
+      "explain": "`readFileSync(path, 'utf8')` reads the whole file and returns it as a string."
+    },
+    {
+      "type": "predict",
+      "q": "The file list.txt contains the three lines `a`, `b` and `c`, each followed by a newline. How many items does this array have?",
+      "code": "const text = fs.readFileSync('list.txt', 'utf8');\nconsole.log(text.split('\\n').length);",
+      "language": "js",
+      "answer": "4",
+      "explain": "The text is `a\\nb\\nc\\n`. Splitting on `\\n` also creates an empty item after the last newline. Remove empty lines with `.filter(Boolean)` or `.trim()` the text first."
+    },
+    {
+      "type": "mcq",
+      "q": "What does fs.writeFileSync('out.txt', 'Hi') do if out.txt already has content?",
+      "options": [
+        "Adds Hi to the end",
+        "Throws an error because the file exists",
+        "Replaces the old content with Hi",
+        "Does nothing"
+      ],
+      "answer": 2,
+      "explain": "`writeFileSync` overwrites. To add to the end of a file use `fs.appendFileSync`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "report.js",
+    "task": "The folder contains `marks.txt` with one student per line, written as `name,mark`, for example `Asha,82`.\n\nIn `report.js`, read `marks.txt` and write a file `summary.txt` with exactly these three lines:\n\n```\nStudents: 3\nAverage: 80\nTop: Meena\n```\n\n- `Students` is the number of students, `Average` is the average mark and `Top` is the name with the highest mark.\n- Your program must work for any `marks.txt`, not only this one. Ignore empty lines.\n- Use the relative file names `marks.txt` and `summary.txt`.",
+    "hints": [
+      "Read the file with `fs.readFileSync('marks.txt', 'utf8')`, split it into lines, then split each line on the comma.",
+      "Remember the empty last line: `.trim().split('\\n')`. Turn the mark into a number with `Number(...)`. Keep the best student in a variable while you loop. Build the output as one string with `\\n` between lines.",
+      "const fs = require('node:fs');\n\nconst lines = fs.readFileSync('marks.txt', 'utf8').trim().split('\\n');\nconst students = lines.map((line) => {\n  const [name, mark] = line.split(',');\n  return { name, mark: Number(mark) };\n});\nconst total = students.reduce((sum, s) => sum + s.mark, 0);\nconst top = students.reduce((a, b) => (b.mark > a.mark ? b : a));\n\nfs.writeFileSync('summary.txt', `Students: ${students.length}\\nAverage: ${total / students.length}\\nTop: ${top.name}\\n`);"
+    ],
+    "fixtures": { "marks.txt": "Asha,82\nRavi,67\nMeena,91\n" },
+    "timeoutMs": 10000
+  }
+}

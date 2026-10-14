@@ -1,0 +1,57 @@
+{
+  "title": "Route parameters",
+  "minutes": 14,
+  "summary": "Capture changing parts of a URL, such as a user id, with :name and read them from req.params.",
+  "docs": [
+    { "title": "Express: Routing", "url": "https://expressjs.com/en/guide/routing.html" },
+    { "title": "Express 5 API: req.params", "url": "https://expressjs.com/en/5x/api.html#req.params" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "A route is written as `/users/:id`. Which request URL does it match?",
+      "options": ["/users", "/users/7", "/users/7/posts", "/user/7"],
+      "answer": 1,
+      "explain": "`:id` matches exactly one piece of the path, so `/users/7` matches. `/users` has no second piece and `/users/7/posts` has an extra one."
+    },
+    {
+      "type": "predict",
+      "q": "A browser asks for `/greet/Meena`. What does the server send?",
+      "code": "app.get('/greet/:name', (req, res) => {\n  res.send('Hi ' + req.params.name);\n});",
+      "language": "javascript",
+      "answer": "Hi Meena",
+      "explain": "Express stores the matched piece in `req.params.name`, so the text is `Hi Meena`."
+    },
+    {
+      "type": "mcq",
+      "q": "For the URL `/users/42`, what is the type of `req.params.id`?",
+      "options": ["number 42", "string \"42\"", "boolean true", "undefined"],
+      "answer": 1,
+      "explain": "Everything in a URL is text. `req.params.id` is the string \"42\". Use `Number(req.params.id)` when you need a number, for example to compare with `user.id`."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the route so it reads both parameters.",
+      "template": "app.get('/courses/:course/lessons/:lesson', (req, res) => {\n  res.send(req.___.course + ' ' + req.___.lesson);\n});",
+      "blanks": [["params"], ["params"]],
+      "explain": "All named parts of the path live on `req.params`."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that stops this route from finding the user.",
+      "code": "const users = [{ id: 1, name: 'Asha' }];\napp.get('/users/:id', (req, res) => {\n  const user = users.find((u) => u.id === req.params.id);\n  res.json(user);\n});",
+      "answerLines": [3],
+      "explain": "`u.id` is the number 1 but `req.params.id` is the string \"1\", and `===` never treats them as equal. Convert first with `Number(req.params.id)`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "Add three GET routes in `app.js`:\n\n- `/greet/:name` sends the text `Hello, NAME!` (for `/greet/Asha` it sends `Hello, Asha!`).\n- `/users/:id` sends the matching user from the `users` array as JSON with `res.json`.\n- `/courses/:course/lessons/:lesson` sends the text `Course COURSE, lesson LESSON`, for example `Course html, lesson 3`.\n\nLeave `module.exports = app;` at the bottom.",
+    "hints": [
+      "Put a colon before the changing part of the path, for example `'/greet/:name'`, and read it from `req.params`.",
+      "For the user route, find the user with `users.find(...)`. The id in the URL is a string, so use `Number(req.params.id)` before comparing.",
+      "app.get('/greet/:name', (req, res) => {\n  res.send(`Hello, ${req.params.name}!`);\n});\n\napp.get('/users/:id', (req, res) => {\n  const user = users.find((u) => u.id === Number(req.params.id));\n  res.json(user);\n});\n\napp.get('/courses/:course/lessons/:lesson', (req, res) => {\n  res.send(`Course ${req.params.course}, lesson ${req.params.lesson}`);\n});"
+    ]
+  }
+}

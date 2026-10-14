@@ -1,0 +1,74 @@
+{
+  "title": "Error-handling middleware",
+  "minutes": 16,
+  "summary": "Catch errors from routes, including async ones, in one four-argument handler that sends a JSON error.",
+  "docs": [
+    { "title": "Express: Error handling", "url": "https://expressjs.com/en/guide/error-handling.html" },
+    { "title": "Express: Writing error handlers", "url": "https://expressjs.com/en/guide/error-handling.html#writing-error-handlers" },
+    { "title": "Express: Migrating to Express 5", "url": "https://expressjs.com/en/guide/migrating-5.html" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What makes Express treat a function as an error handler?",
+      "options": [
+        "It takes four parameters: (err, req, res, next)",
+        "Its name contains the word error",
+        "It is registered with app.error()",
+        "It returns a status code"
+      ],
+      "answer": 0,
+      "explain": "Express looks at how many parameters a function declares. Four means error handler. Even if you never use `next`, keep it in the list."
+    },
+    {
+      "type": "mcq",
+      "q": "Where should the error handler be registered?",
+      "options": [
+        "After all routes and other middleware",
+        "Before all routes",
+        "Anywhere, order does not matter",
+        "Inside each route"
+      ],
+      "answer": 0,
+      "explain": "Errors travel forward through the chain. A handler placed above the routes would never see their errors."
+    },
+    {
+      "type": "predict",
+      "q": "A client asks for GET /boom. What JSON does it receive?",
+      "code": "app.get('/boom', () => {\n  throw new Error('Oops');\n});\n\napp.use((err, req, res, next) => {\n  res.status(500).json({ error: err.message });\n});",
+      "language": "javascript",
+      "answer": "{\"error\":\"Oops\"}",
+      "accept": ["{ \"error\": \"Oops\" }", "{error:\"Oops\"}", "{error: \"Oops\"}"],
+      "explain": "Throwing inside a route sends the error to the handler, which answers with status 500 and the message as JSON."
+    },
+    {
+      "type": "mcq",
+      "q": "In Express 5, what happens when an `async` route handler throws or its awaited promise rejects?",
+      "options": [
+        "Express passes the error to the error handler automatically",
+        "The whole server always crashes",
+        "The error is silently ignored and the request hangs",
+        "You must wrap every handler in try/catch"
+      ],
+      "answer": 0,
+      "explain": "Express 5 forwards rejected promises from handlers to your error middleware, so no extra `try/catch` or wrapper function is needed. In Express 4 this did not happen."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the handler so it uses the error's own status when it has one and 500 otherwise.",
+      "template": "app.use((err, req, res, next) => {\n  res.status(err.___ || ___).json({ error: err.message });\n});",
+      "blanks": [["status"], ["500"]],
+      "explain": "`err.status || 500` lets errors such as a bad-JSON error (400) keep their own code, while unexpected errors default to 500."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "The routes are written. Add the missing handlers at the **bottom** of `app.js`, after the routes:\n\n- A catch-all middleware (ordinary, with `req` and `res` only) that answers any unmatched path with status `404` and JSON `{ \"error\": \"Not found\" }`.\n- An error-handling middleware (four parameters) that answers with status `err.status` if the error has one, otherwise `500`, and JSON `{ \"error\": err.message }`.\n\nThen `/boom`, `/async-boom` and `/forbidden` should all answer with JSON errors instead of HTML. Leave `module.exports = app;` at the bottom.",
+    "hints": [
+      "Both are added with `app.use(...)` below the routes. The 404 handler takes `(req, res)`, the error handler must take all four: `(err, req, res, next)`.",
+      "In the error handler send `res.status(err.status || 500).json({ error: err.message })`. The 404 handler is just `res.status(404).json({ error: 'Not found' })`.",
+      "app.use((req, res) => {\n  res.status(404).json({ error: 'Not found' });\n});\n\napp.use((err, req, res, next) => {\n  res.status(err.status || 500).json({ error: err.message });\n});"
+    ]
+  }
+}

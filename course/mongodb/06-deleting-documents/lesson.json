@@ -1,0 +1,63 @@
+{
+  "title": "Deleting documents",
+  "minutes": 12,
+  "summary": "Remove documents with deleteOne and deleteMany, and understand why the filter must be exact.",
+  "docs": [
+    { "title": "MongoDB: Delete documents", "url": "https://www.mongodb.com/docs/manual/tutorial/remove-documents/" },
+    { "title": "MongoDB: db.collection.deleteMany()", "url": "https://www.mongodb.com/docs/manual/reference/method/db.collection.deleteMany/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `db.tasks.deleteMany({})` do?",
+      "options": [
+        "Nothing, because the filter is empty",
+        "Deletes the first task",
+        "Deletes every task in the collection",
+        "Throws an error"
+      ],
+      "answer": 2,
+      "explain": "An empty filter matches all documents, so every document is deleted. Always double check the filter before you run a delete."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the method so that only one matching task is removed.",
+      "template": "db.tasks.___({ title: 'Old draft' })",
+      "blanks": [["deleteOne"]],
+      "explain": "`deleteOne` removes the first match only. `deleteMany` would remove them all."
+    },
+    {
+      "type": "mcq",
+      "q": "You mistype a field name in a delete filter, for example `{ dnoe: true }`. What happens?",
+      "options": [
+        "MongoDB warns you about the unknown field",
+        "Every document is deleted",
+        "The filter matches nothing, so nothing is deleted and no error appears",
+        "The collection is dropped"
+      ],
+      "answer": 2,
+      "explain": "MongoDB does not check field names. A filter for a field that no document has matches nothing. Look at `deletedCount` to notice this."
+    },
+    {
+      "type": "order",
+      "q": "Put these steps in the safest order for deleting finished tasks.",
+      "lines": [
+        "db.tasks.find({ done: true })",
+        "Read the result and check these are the tasks you want to remove",
+        "db.tasks.deleteMany({ done: true })",
+        "Check deletedCount in the response"
+      ],
+      "explain": "Preview with `find` using the same filter, confirm the result, delete, then confirm the number removed."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "The `tasks` collection has fields `title` and `done`. Clean it up:\n\n- Delete **all** tasks that are done (`done: true`).\n- Delete **only one** of the two tasks titled `'Old draft'`.\n\nTasks that are not done must stay, except for that one Old draft.",
+    "hints": [
+      "You need two delete calls with two different filters.",
+      "Use `deleteMany` for the finished tasks, and `deleteOne` for the duplicated title so that the second copy survives.",
+      "db.tasks.deleteMany({ done: true })\ndb.tasks.deleteOne({ title: 'Old draft' })"
+    ]
+  }
+}

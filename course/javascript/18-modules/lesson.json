@@ -1,0 +1,59 @@
+{
+  "title": "Modules",
+  "minutes": 15,
+  "summary": "Split code into files with module.exports and require, and know how ES modules differ.",
+  "docs": [
+    { "title": "MDN: JavaScript modules", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" },
+    { "title": "MDN: export", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export" },
+    { "title": "Node.js: CommonJS modules", "url": "https://nodejs.org/api/modules.html" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "In a CommonJS file, which line makes a function named `add` available to other files?",
+      "options": ["require(add);", "module.exports = { add };", "import add;", "export.add();"],
+      "answer": 1,
+      "explain": "`module.exports` holds whatever the file offers to others. Setting it to `{ add }` shares the `add` function."
+    },
+    {
+      "type": "fill",
+      "q": "Load the `add` function from a file named math.js in the same folder.",
+      "template": "const { add } = ___('./math.js');",
+      "blanks": [["require"]],
+      "explain": "`require` reads the file and returns its `module.exports`. Destructuring then picks out `add`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which statement about ES modules is true?",
+      "options": [
+        "They use import and export statements",
+        "They use require and module.exports only",
+        "They cannot be used in browsers",
+        "They share every variable between files automatically"
+      ],
+      "answer": 0,
+      "explain": "ES modules use `import` and `export`. Browsers support them, and so does Node.js when a file is marked as a module. Nothing is shared unless it is exported."
+    },
+    {
+      "type": "predict",
+      "q": "File `tools.js` contains `const secret = 5; module.exports = { open: 1 };`. Another file runs `console.log(require('./tools.js').secret);`. What prints?",
+      "code": "// tools.js\nconst secret = 5;\nmodule.exports = { open: 1 };\n\n// main.js\nconsole.log(require('./tools.js').secret);",
+      "language": "js",
+      "answer": "undefined",
+      "explain": "Only what is placed on `module.exports` leaves the file. `secret` stays private, so reading it gives `undefined`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "welcome.js",
+    "task": "A helper file `helpers.js` already exists in the working folder. It exports a function `shout(text)`.\n\nIn `welcome.js`:\n\n- Load `shout` from `helpers.js` with `require` (the starter shows the path).\n- Write `welcome(name)` which returns `shout('welcome, ' + name)`.\n- Export `welcome` and a number `VERSION` equal to `1` using `module.exports`.",
+    "hints": [
+      "The helper is already loaded in the starter. You still need to write the function and the export.",
+      "`module.exports = { welcome, VERSION };` is an object listing everything the file shares. Call `helpers.shout(...)` inside welcome.",
+      "const VERSION = 1;\n\nfunction welcome(name) {\n  return helpers.shout('welcome, ' + name);\n}\n\nmodule.exports = { welcome, VERSION };"
+    ],
+    "fixtures": {
+      "helpers.js": "function shout(text) {\n  return '** ' + text.toUpperCase() + ' **';\n}\n\nmodule.exports = { shout };\n"
+    }
+  }
+}

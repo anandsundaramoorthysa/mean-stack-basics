@@ -1,0 +1,73 @@
+{
+  "title": "Buffers and streams",
+  "minutes": 18,
+  "summary": "Understand Buffer bytes and process a readable stream chunk by chunk to count lines.",
+  "docs": [
+    { "title": "Node.js API: Buffer", "url": "https://nodejs.org/api/buffer.html" },
+    { "title": "Node.js API: Stream", "url": "https://nodejs.org/api/stream.html" },
+    { "title": "Node.js: Backpressuring in streams", "url": "https://nodejs.org/en/learn/modules/backpressuring-in-streams" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is a Buffer?",
+      "options": [
+        "A fixed-size block of raw bytes",
+        "A kind of loop",
+        "A function that waits for events",
+        "A file on the disk"
+      ],
+      "answer": 0,
+      "explain": "A `Buffer` holds binary data, such as the bytes of a file or a network message. Turn it into text with `buffer.toString()`."
+    },
+    {
+      "type": "predict",
+      "q": "What does this print? The letter e with an accent takes two bytes in UTF-8.",
+      "code": "console.log(Buffer.byteLength('héllo'));",
+      "language": "js",
+      "answer": "6",
+      "explain": "`'héllo'` has 5 characters, but `é` needs 2 bytes, so the size is 6 bytes. Characters and bytes are not the same thing."
+    },
+    {
+      "type": "mcq",
+      "q": "Why read a 5 GB log file as a stream instead of with readFile?",
+      "options": [
+        "Streams are always faster for small files",
+        "A stream handles the file in small chunks, so memory use stays small",
+        "readFile cannot read text",
+        "Streams compress the file"
+      ],
+      "answer": 1,
+      "explain": "`readFile` loads the whole file into memory. A stream hands you one **chunk** at a time, so even a huge file needs only a little memory."
+    },
+    {
+      "type": "mcq",
+      "q": "A stream delivers the chunks 'ab\\ncd' and 'e\\nfg'. What is the safe way to find the lines?",
+      "options": [
+        "Split each chunk on '\\n' separately",
+        "Join all chunks into one text first (or keep the unfinished last line), then split",
+        "Only look at the first chunk",
+        "Count the chunks"
+      ],
+      "answer": 1,
+      "explain": "A chunk can end in the middle of a line. Here the word `cde` is split across two chunks. Splitting each chunk separately would break it into `cd` and `e`."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the loop that goes through every chunk of a readable stream.",
+      "template": "async function run(stream) {\n  for ___ (const chunk of stream) {\n    console.log(chunk.length);\n  }\n}",
+      "blanks": [["await"]],
+      "explain": "`for await (const chunk of stream)` waits for each chunk to arrive and gives it to the loop body. In a CommonJS file it must sit inside an `async` function."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "streams.js",
+    "task": "In `streams.js`, write and export two functions.\n\n- `byteLength(text)` returns the size of the text in bytes (UTF-8).\n- `countLines(stream)` is **async**. It receives a readable stream and resolves to the number of non-empty lines in all the data. A line can be split across two chunks. Chunks may be strings or Buffers.\n\nUse `for await (const chunk of stream)`.",
+    "hints": [
+      "Collect the text of all chunks into one string, then count the lines at the end. `String(chunk)` works for strings and Buffers.",
+      "`let text = ''; for await (const chunk of stream) { text += chunk; }` then split on `\\n` and keep the lines that are not empty. `Buffer.byteLength(text)` does the first function.",
+      "async function countLines(stream) {\n  let text = '';\n  for await (const chunk of stream) {\n    text += chunk.toString();\n  }\n  return text.split('\\n').filter((line) => line.trim() !== '').length;\n}\n\nfunction byteLength(text) {\n  return Buffer.byteLength(text);\n}\n\nmodule.exports = { byteLength, countLines };"
+    ]
+  }
+}

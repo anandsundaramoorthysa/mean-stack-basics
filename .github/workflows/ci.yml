@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - name: Compile
+        run: npm run compile
+      - name: Unit tests
+        run: npm test
+      - name: Install Chromium for HTML and CSS lesson checks
+        run: npx playwright-core install --with-deps chromium
+      - name: Validate course (starters fail, solutions pass)
+        run: node out/tools/validate.js
+      - name: Package VSIX
+        run: npx --yes @vscode/vsce package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vsix
+          path: "*.vsix"
+          if-no-files-found: error
+
+  links:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - run: npm run compile
+      - name: Check official documentation links
+        run: node out/tools/validate.js --links

@@ -1,0 +1,66 @@
+{
+  "title": "Display and position",
+  "minutes": 16,
+  "summary": "Choose how elements flow with display, and place one element on top of another with position.",
+  "docs": [
+    { "title": "MDN: display", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/display" },
+    { "title": "MDN: position", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/position" },
+    { "title": "MDN: Positioning", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Positioning" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is true of a **block** element such as `div` or `p`?",
+      "options": ["It sits in a line with its neighbours", "It starts on a new line and takes the full available width", "Width and height are ignored", "It is invisible"],
+      "answer": 1,
+      "explain": "Block elements stack vertically and stretch across their container. Inline elements such as `span` or `a` flow within a line of text."
+    },
+    {
+      "type": "mcq",
+      "q": "Why would you use `display: inline-block` on a button-like link?",
+      "options": ["It hides the link", "It keeps the link in the line but lets width and height apply", "It makes the link a block on its own line", "It removes the text"],
+      "answer": 1,
+      "explain": "`inline-block` sits in the line like text but behaves like a box inside, so width and height work properly, like they do on a block."
+    },
+    {
+      "type": "fill",
+      "q": "Remove an element from the page completely, without leaving a gap.",
+      "template": ".note { display: ___; }",
+      "blanks": [["none"]],
+      "explain": "`display: none` takes the element out of the layout. (`visibility: hidden` hides it but keeps its space.)"
+    },
+    {
+      "type": "order",
+      "q": "To place a badge in the top right corner of a card, put these steps in order.",
+      "lines": [".card { position: relative; }", ".badge {", "  position: absolute;", "  top: 0;", "  right: 0;", "}"],
+      "explain": "The parent becomes the reference with `position: relative`. The child is then offset from the parent's corner with `absolute` plus `top` and `right`."
+    },
+    {
+      "type": "mcq",
+      "q": "An absolutely positioned element is placed relative to...",
+      "options": ["the browser window always", "its nearest ancestor that has a position other than static", "the previous sibling", "the body only"],
+      "answer": 1,
+      "explain": "If no ancestor is positioned, it uses the initial containing block, which is roughly the first screenful of the page. Setting `position: relative` on the parent is the usual way to control this."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Control flow and position. Work in `index.html`.\n\n- `.badge` is a `span`. Make it `display: inline-block` with a `width` of 100px.\n- `.menu-link` is an `a`. Make it `display: block`.\n- `.hidden-note` must be removed from the layout (`display: none`).\n- `.panel` gets `position: relative`. `.corner` inside it gets `position: absolute`, `top: 0` and `right: 0`.",
+    "hints": [
+      "Five elements, each needing one or two declarations. Start with `display`.",
+      "The parent needs `position: relative` so the child's `top` and `right` are measured from the parent.",
+      ".badge {\n  display: inline-block;\n  width: 100px;\n}\n.menu-link {\n  display: block;\n}\n.hidden-note {\n  display: none;\n}\n.panel {\n  position: relative;\n}\n.corner {\n  position: absolute;\n  top: 0;\n  right: 0;\n}"
+    ],
+    "checks": [
+      { "name": ".badge is inline-block", "selector": ".badge", "style": { "prop": "display", "equals": "inline-block" }, "hint": "Add display: inline-block; to .badge." },
+      { "name": ".badge is 100px wide", "selector": ".badge", "style": { "prop": "width", "equals": "100px" }, "hint": "Width only works on inline-block or block. Add width: 100px;." },
+      { "name": ".menu-link is a block", "selector": ".menu-link", "style": { "prop": "display", "equals": "block" }, "hint": "Add display: block; to .menu-link." },
+      { "name": ".hidden-note is removed from the layout", "selector": ".hidden-note", "style": { "prop": "display", "equals": "none" }, "hint": "Add display: none; to .hidden-note." },
+      { "name": ".panel is position: relative", "selector": ".panel", "style": { "prop": "position", "equals": "relative" }, "hint": "Add position: relative; to .panel." },
+      { "name": ".corner is position: absolute", "selector": ".corner", "style": { "prop": "position", "equals": "absolute" }, "hint": "Add position: absolute; to .corner." },
+      { "name": ".corner is at the top and right", "selector": ".corner", "style": { "prop": "top", "equals": "0px" }, "hint": "Add top: 0; and right: 0; to .corner." },
+      { "name": ".corner right offset is 0", "selector": ".corner", "style": { "prop": "right", "equals": "0px" }, "hint": "Add right: 0; to .corner." }
+    ]
+  }
+}

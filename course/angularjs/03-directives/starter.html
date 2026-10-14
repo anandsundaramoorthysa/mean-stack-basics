@@ -1,0 +1,20 @@
+<div ng-app="shopApp" ng-controller="ShopController">
+  <ul>
+    <li></li>
+  </ul>
+  <p>No items</p>
+  <button>Toggle</button>
+</div>
+
+<script>
+  angular.module('shopApp', []).controller('ShopController', function ($scope) {
+    $scope.items = [
+      { name: 'Pen', inStock: true },
+      { name: 'Ruler', inStock: false }
+    ];
+    $scope.show = true;
+    $scope.toggle = function () {
+      $scope.show = !$scope.show;
+    };
+  });
+</script>

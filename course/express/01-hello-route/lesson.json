@@ -1,0 +1,65 @@
+{
+  "title": "Your first route",
+  "minutes": 12,
+  "summary": "Answer a browser request with app.get and res.send.",
+  "docs": [
+    {
+      "title": "Express: Hello world",
+      "url": "https://expressjs.com/en/starter/hello-world.html"
+    },
+    {
+      "title": "Express: Basic routing",
+      "url": "https://expressjs.com/en/starter/basic-routing.html"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which method does a browser use when you type an address and press Enter?",
+      "options": [
+        "GET",
+        "POST",
+        "DELETE",
+        "PUT"
+      ],
+      "answer": 0,
+      "explain": "Typing an address makes the browser ask for a page with GET."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the route so it answers requests for the home page.",
+      "template": "app.___('/', (req, res) => {\n  res.___('Welcome');\n});",
+      "blanks": [
+        [
+          "get"
+        ],
+        [
+          "send"
+        ]
+      ],
+      "explain": "`app.get` registers a GET route and `res.send` sends the answer."
+    },
+    {
+      "type": "mcq",
+      "q": "In `(req, res) => { ... }`, which one do you use to send the answer?",
+      "options": [
+        "req",
+        "res",
+        "app",
+        "express"
+      ],
+      "answer": 1,
+      "explain": "`res` is the response. `req` is the request that came in."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "In `app.js`, add a GET route for `/` that sends the text `Hello from Express`.\n\nLeave `module.exports = app;` at the bottom.",
+    "hints": [
+      "Use `app.get('/', ...)` and give it a function with `req` and `res`.",
+      "Inside the function call `res.send(...)` with the text in quotes.",
+      "// Put this above module.exports in app.js\napp.get('/', (req, res) => {\n  res.send('Hello from Express');\n});"
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "title": "Regular expressions basics",
+  "minutes": 18,
+  "summary": "Describe text patterns with regular expressions to test, find and replace text.",
+  "docs": [
+    { "title": "MDN: Regular expressions guide", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions" },
+    { "title": "MDN: RegExp", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp" },
+    { "title": "MDN: Regular expression syntax cheat sheet", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Cheatsheet" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "console.log(/^\\d{3}$/.test('456'));",
+      "language": "js",
+      "answer": "true",
+      "explain": "`^` and `$` mark the start and end, and `\\d{3}` means exactly three digits. `'456'` fits."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "console.log('a1b22c333'.match(/\\d+/g).length);",
+      "language": "js",
+      "answer": "3",
+      "explain": "`\\d+` matches one or more digits in a row, and the `g` flag finds every such run: `1`, `22` and `333`."
+    },
+    {
+      "type": "mcq",
+      "q": "What does the pattern `/colou?r/` match?",
+      "options": ["Only color", "Only colour", "Both color and colour", "Neither"],
+      "answer": 2,
+      "explain": "`?` makes the letter before it optional, so the `u` may be present or absent."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the pattern so it matches one or more whitespace characters.",
+      "template": "'a   b'.replace(/___+/g, ' ')",
+      "blanks": [["\\s"]],
+      "explain": "`\\s` is any whitespace character and `+` means one or more, so any run of spaces collapses into one."
+    },
+    {
+      "type": "mcq",
+      "q": "What does the `g` flag do?",
+      "options": [
+        "Makes the pattern ignore upper and lower case",
+        "Finds all matches instead of stopping at the first",
+        "Makes the pattern greedy",
+        "Turns the pattern into a string"
+      ],
+      "answer": 1,
+      "explain": "`g` means global. Without it, `match` and `replace` handle only the first match. The case-insensitive flag is `i`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "regex.js",
+    "task": "In `regex.js`, write four functions using regular expressions:\n\n- `isPhone(text)` is `true` only for exactly 10 digits and nothing else, such as `'9876543210'`.\n- `findNumbers(text)` returns an array of all numbers in the text, as numbers: `'a1b22'` gives `[1, 22]`. Return `[]` if there are none.\n- `isCollegeEmail(text)` is `true` when the text looks like `name@college.edu`: one or more letters, digits, dots or underscores before the `@`, and it ends with `@college.edu`.\n- `cleanSpaces(text)` replaces every run of whitespace with one space and removes spaces at the ends.",
+    "hints": [
+      "Write a pattern between slashes, like `/^\\d{10}$/`, and test text with `pattern.test(text)`. The `^` and `$` anchors force the whole text to match.",
+      "`text.match(/\\d+/g)` returns an array of strings or `null` when nothing matches, so use `?? []` and then `.map(Number)`. For spaces use `text.replace(/\\s+/g, ' ').trim()`.",
+      "function isPhone(text) {\n  return /^\\d{10}$/.test(text);\n}\n\nfunction findNumbers(text) {\n  return (text.match(/\\d+/g) ?? []).map(Number);\n}\n\nfunction isCollegeEmail(text) {\n  return /^[\\w.]+@college\\.edu$/.test(text);\n}\n\nfunction cleanSpaces(text) {\n  return text.replace(/\\s+/g, ' ').trim();\n}"
+    ]
+  }
+}

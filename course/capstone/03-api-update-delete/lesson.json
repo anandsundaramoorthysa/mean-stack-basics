@@ -1,0 +1,51 @@
+{
+  "title": "API routes: update and delete",
+  "minutes": 18,
+  "summary": "Add PUT and DELETE routes that use a route parameter and answer 404 for unknown ids.",
+  "docs": [
+    { "title": "Express: Routing (route parameters)", "url": "https://expressjs.com/en/guide/routing.html" },
+    { "title": "MDN: 404 Not Found", "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/404" },
+    { "title": "MDN: Array find()", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "For the request `DELETE /students/7`, what does this print?",
+      "code": "app.delete('/students/:id', (req, res) => {\n  console.log(typeof req.params.id);\n  res.end();\n});",
+      "language": "js",
+      "answer": "string",
+      "explain": "Route parameters are always strings, even when they look like numbers. Convert with `Number(...)` before comparing with numeric ids."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `students.findIndex(...)` return when nothing matches?",
+      "options": ["undefined", "0", "-1", "null"],
+      "answer": 2,
+      "explain": "`findIndex` returns -1 for no match. The value 0 is a real index (the first item), so check `=== -1`."
+    },
+    {
+      "type": "bug",
+      "q": "This route can never find a student. Click the faulty line.",
+      "code": "app.delete('/students/:id', (req, res) => {\n  const index = students.findIndex((s) => s.id === req.params.id);\n  if (index === -1) return res.status(404).end();\n  students.splice(index, 1);\n  res.status(204).end();\n});",
+      "answerLines": [2],
+      "explain": "`s.id` is a number but `req.params.id` is a string, and `===` never treats `2` and `'2'` as equal. Use `Number(req.params.id)`."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the successful DELETE answer: success, with no body.",
+      "template": "res.status(___).end();",
+      "blanks": [["204"]],
+      "explain": "204 means No Content: the work succeeded and there is nothing to send back."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "Add two routes to `app.js`. Use the existing `validate` function.\n\n- `PUT /students/:id`: unknown id answers **404**; invalid body answers **400**; otherwise update `name`, `department` and `marks` of that student and answer 200 with the updated student.\n- `DELETE /students/:id`: unknown id answers **404**; otherwise remove the student and answer **204**.\n\nRemember that `req.params.id` is a string.",
+    "hints": [
+      "Both routes start the same way: find the student with the id from `req.params.id` (converted to a number) and answer 404 if it is missing.",
+      "For PUT use `students.find(...)`, then `validate(req.body)`, then `Object.assign(student, { name, department, marks })`. For DELETE use `findIndex` and `students.splice(index, 1)`, then `res.status(204).end()`.",
+      "app.put('/students/:id', (req, res) => {\n  const student = students.find((s) => s.id === Number(req.params.id));\n  if (!student) return res.status(404).json({ error: 'student not found' });\n  const error = validate(req.body);\n  if (error) return res.status(400).json({ error });\n  const { name, department, marks } = req.body;\n  Object.assign(student, { name, department, marks });\n  res.json(student);\n});\n\napp.delete('/students/:id', (req, res) => {\n  const index = students.findIndex((s) => s.id === Number(req.params.id));\n  if (index === -1) return res.status(404).json({ error: 'student not found' });\n  students.splice(index, 1);\n  res.status(204).end();\n});"
+    ]
+  }
+}

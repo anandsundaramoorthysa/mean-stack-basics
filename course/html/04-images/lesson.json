@@ -1,0 +1,129 @@
+{
+  "title": "Images",
+  "minutes": 13,
+  "summary": "Add pictures with img, write useful alt text, and caption them with figure.",
+  "docs": [
+    {
+      "title": "MDN: Images in HTML",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_images"
+    },
+    {
+      "title": "MDN: The img element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img"
+    },
+    {
+      "title": "MDN: The figure element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/figure"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is the **main purpose** of the alt attribute?",
+      "options": [
+        "To make the image load faster",
+        "To describe the image for people who cannot see it",
+        "To set the image size",
+        "To give the image a border"
+      ],
+      "answer": 1,
+      "explain": "Alt text stands in for the image when it cannot be seen: screen readers read it, and browsers show it if loading fails."
+    },
+    {
+      "type": "fill",
+      "q": "Fill in the attribute that holds the image file path.",
+      "template": "<img ___=\"photo.jpg\" alt=\"My dog\">",
+      "blanks": [
+        [
+          "src"
+        ]
+      ],
+      "explain": "`src` (source) tells the browser which file to fetch."
+    },
+    {
+      "type": "mcq",
+      "q": "Which alt text is the best for a photo of a girl reading under a tree?",
+      "options": [
+        "image",
+        "photo.jpg",
+        "A student reading a book under a tree",
+        "Image of a photo of a picture"
+      ],
+      "answer": 2,
+      "explain": "Good alt text is a short, meaningful description. File names and words like \"image\" tell the listener nothing."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that is wrong.",
+      "code": "<figure>\n  <img src=\"lab.jpg\" alt=\"Computer lab\">\n  <figcaption>The lab</figcaption>\n</img>\n</figure>",
+      "answerLines": [
+        4
+      ],
+      "explain": "`<img>` is a void element and never has a closing tag."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Add a captioned picture to `index.html`.\n\n- A `<figure>` containing an `<img>` and a `<figcaption>`.\n- The image `src` is `images/campus.jpg`.\n- The image has a meaningful, non-empty `alt`.\n- The image has `width` and `height` attributes.\n- The figcaption says `Our campus in the morning`.",
+    "hints": [
+      "The pieces nest like this: figure, then img and figcaption inside it.",
+      "img is a void element: <img src=\"...\" alt=\"...\" width=\"...\" height=\"...\"> with no closing tag.",
+      "<figure>\n  <img src=\"images/campus.jpg\" alt=\"The campus building at sunrise\" width=\"400\" height=\"300\">\n  <figcaption>Our campus in the morning</figcaption>\n</figure>"
+    ],
+    "checks": [
+      {
+        "name": "The page contains a figure",
+        "hint": "Wrap the image and caption in <figure>...</figure>.",
+        "selector": "figure",
+        "count": {
+          "min": 1
+        }
+      },
+      {
+        "name": "The figure contains an img with src images/campus.jpg",
+        "hint": "Add <img src=\"images/campus.jpg\"> inside the figure.",
+        "selector": "figure img",
+        "attr": {
+          "name": "src",
+          "equals": "images/campus.jpg"
+        }
+      },
+      {
+        "name": "The image has non-empty alt text",
+        "hint": "Describe the picture in the alt attribute.",
+        "selector": "figure img",
+        "attr": {
+          "name": "alt",
+          "regex": "\\S"
+        }
+      },
+      {
+        "name": "The image has a width attribute",
+        "hint": "Add width=\"400\" (or another number).",
+        "selector": "figure img",
+        "attr": {
+          "name": "width",
+          "regex": "^\\d+$"
+        }
+      },
+      {
+        "name": "The image has a height attribute",
+        "hint": "Add height=\"300\" (or another number).",
+        "selector": "figure img",
+        "attr": {
+          "name": "height",
+          "regex": "^\\d+$"
+        }
+      },
+      {
+        "name": "The figcaption says \"Our campus in the morning\"",
+        "hint": "Add <figcaption>Our campus in the morning</figcaption> inside the figure.",
+        "selector": "figure figcaption",
+        "text": {
+          "equals": "Our campus in the morning"
+        }
+      }
+    ]
+  }
+}

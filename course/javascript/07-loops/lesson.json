@@ -1,0 +1,60 @@
+{
+  "title": "Loops",
+  "minutes": 16,
+  "summary": "Repeat work with for and while loops, and control them with break and continue.",
+  "docs": [
+    { "title": "MDN: for statement", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for" },
+    { "title": "MDN: while statement", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/while" },
+    { "title": "MDN: break", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/break" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the three numbers separated by spaces.",
+      "code": "for (let i = 1; i <= 3; i++) {\n  console.log(i);\n}",
+      "language": "js",
+      "answer": "1 2 3",
+      "accept": ["1\n2\n3"],
+      "explain": "`i` starts at 1, the body runs while `i <= 3`, and `i++` adds 1 after each round."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "let total = 0;\nfor (let i = 1; i <= 4; i++) {\n  total = total + i;\n}\nconsole.log(total);",
+      "language": "js",
+      "answer": "10",
+      "explain": "The loop adds 1 + 2 + 3 + 4. This \"keep a running total\" pattern is one of the most common in programming."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `continue` do inside a loop?",
+      "options": ["Stops the whole loop", "Skips the rest of this round and moves to the next round", "Restarts the program", "Does nothing"],
+      "answer": 1,
+      "explain": "`continue` jumps to the next round. `break` is the one that stops the loop completely."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that causes an infinite loop.",
+      "code": "for (let i = 0; i < 3; i--) {\n  console.log(i);\n}",
+      "answerLines": [1],
+      "explain": "`i--` makes `i` smaller each round (0, -1, -2 ...), so `i < 3` is always true and the loop never ends. Use `i++` to count upwards."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the loop so it counts from 0 up to 4.",
+      "template": "for (let i = 0; i ___ 5; i___) {",
+      "blanks": [["<"], ["++"]],
+      "explain": "The loop must continue while `i < 5`, and `i++` increases `i` by one after each round. Using `<=` would also print 5."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "loops.js",
+    "task": "In `loops.js`, write and export three functions:\n\n- `sumTo(n)` returns 1 + 2 + ... + n, using a `for` loop. `sumTo(0)` is `0`.\n- `countdown(n)` returns an array counting down from `n` to `1`, using a `while` loop. `countdown(3)` is `[3, 2, 1]`.\n- `firstSquareOver(limit)` returns the first whole number (starting from 1) whose square is greater than `limit`. Use a loop with `break`.",
+    "hints": [
+      "Each function repeats a step. Decide what changes each round and what the loop condition is.",
+      "sumTo: start `total` at 0 and add `i` in a for loop. countdown: `while (n >= 1)`, push `n`, then `n--`. firstSquareOver: loop `i` from 1 and `break` when `i * i > limit`.",
+      "function sumTo(n) {\n  let total = 0;\n  for (let i = 1; i <= n; i++) {\n    total += i;\n  }\n  return total;\n}\nfunction countdown(n) {\n  const result = [];\n  while (n >= 1) {\n    result.push(n);\n    n--;\n  }\n  return result;\n}\nfunction firstSquareOver(limit) {\n  let i = 1;\n  while (true) {\n    if (i * i > limit) {\n      break;\n    }\n    i++;\n  }\n  return i;\n}\nmodule.exports = { sumTo, countdown, firstSquareOver };"
+    ]
+  }
+}

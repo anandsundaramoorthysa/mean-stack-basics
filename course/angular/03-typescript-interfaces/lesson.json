@@ -1,0 +1,114 @@
+{
+  "title": "TypeScript: interfaces",
+  "minutes": 15,
+  "summary": "Describe the shape of an object with an interface and a union type.",
+  "docs": [
+    {
+      "title": "TypeScript Handbook: Object Types",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/objects.html"
+    },
+    {
+      "title": "TypeScript Handbook: Everyday Types (unions)",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is an interface used for?",
+      "options": [
+        "To run code when an object is created",
+        "To describe the shape (property names and types) of an object",
+        "To import a file",
+        "To store data in the browser"
+      ],
+      "answer": 1,
+      "explain": "An interface only describes a shape. It disappears when the code is compiled, so it adds nothing to the running app."
+    },
+    {
+      "type": "fill",
+      "q": "Make `email` an optional property.",
+      "template": "interface Student { name: string; email___ string; }",
+      "blanks": [
+        [
+          "?:",
+          "? :"
+        ]
+      ],
+      "explain": "A question mark before the colon (`email?: string`) means the property may be missing."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line TypeScript will reject.",
+      "code": "interface Student { id: number; name: string; }\nconst a: Student = { id: 1, name: 'Asha' };\nconst b: Student = { id: 2 };\nconst c: Student = { id: 3, name: 'Ravi' };",
+      "answerLines": [
+        3
+      ],
+      "explain": "`b` is missing the required property `name`, so it does not match the `Student` shape."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `type Grade = 'A' | 'B'` allow?",
+      "options": [
+        "Any string",
+        "Only the text 'A' or the text 'B'",
+        "A number",
+        "An array of letters"
+      ],
+      "answer": 1,
+      "explain": "The `|` symbol builds a **union**: a value of type `Grade` must be exactly one of the listed options."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "student.ts",
+    "task": "Complete `student.ts`.\n\n- Create an `interface Student` with `id: number`, `name: string` and an optional `email` of type `string`.\n- Create a type `Grade` that is the union of `'A'`, `'B'` and `'C'`.\n- Give the existing `topper` constant the type `Student`.\n- Write a function `describe` that takes `s: Student`, returns a `string`, and builds the text from `s.id` and `s.name`.",
+    "hints": [
+      "An interface looks like an object with types instead of values: `interface Student { ... }`.",
+      "Optional means `email?: string`. A union uses `|` between quoted texts. Annotate `topper` as `const topper: Student = ...`.",
+      "export interface Student {\n  id: number;\n  name: string;\n  email?: string;\n}\nexport type Grade = 'A' | 'B' | 'C';\nexport const topper: Student = { id: 1, name: 'Asha' };\nexport function describe(s: Student): string {\n  return `${s.id}: ${s.name}`;\n}"
+    ],
+    "checks": [
+      {
+        "name": "There is an interface Student",
+        "hint": "Write: interface Student { ... }",
+        "regex": "interface\\s+Student\\s*\\{"
+      },
+      {
+        "name": "Student has id: number",
+        "hint": "Add id: number; inside the interface.",
+        "regex": "interface\\s+Student\\s*\\{[^}]*\\bid\\s*:\\s*number"
+      },
+      {
+        "name": "Student has name: string",
+        "hint": "Add name: string; inside the interface.",
+        "regex": "interface\\s+Student\\s*\\{[^}]*\\bname\\s*:\\s*string"
+      },
+      {
+        "name": "email is optional and a string",
+        "hint": "Write: email?: string;",
+        "regex": "interface\\s+Student\\s*\\{[^}]*\\bemail\\s*\\?\\s*:\\s*string"
+      },
+      {
+        "name": "Grade is a union of 'A', 'B' and 'C'",
+        "hint": "Write: type Grade = 'A' | 'B' | 'C';",
+        "regex": "type\\s+Grade\\s*=\\s*\\|?\\s*['\"]A['\"]\\s*\\|\\s*['\"]B['\"]\\s*\\|\\s*['\"]C['\"]"
+      },
+      {
+        "name": "topper has the type Student",
+        "hint": "Change it to: const topper: Student = ...",
+        "regex": "topper\\s*:\\s*Student\\s*="
+      },
+      {
+        "name": "describe takes a Student and returns a string",
+        "hint": "Write: function describe(s: Student): string",
+        "regex": "describe\\s*(=\\s*)?\\(\\s*s\\s*:\\s*Student\\s*\\)\\s*:\\s*string"
+      },
+      {
+        "name": "describe uses s.id and s.name",
+        "hint": "Build the text from s.id and s.name.",
+        "regex": "s\\.id[\\s\\S]*s\\.name"
+      }
+    ]
+  }
+}

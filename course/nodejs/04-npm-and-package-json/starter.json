@@ -1,0 +1,6 @@
+{
+  "name": "student-api",
+  "version": "1.0.0",
+  "description": "A small server for student marks",
+  "main": "index.js"
+}

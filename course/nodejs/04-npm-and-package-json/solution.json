@@ -1,0 +1,16 @@
+{
+  "name": "student-api",
+  "version": "1.0.0",
+  "description": "A small server for student marks",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

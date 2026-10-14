@@ -1,0 +1,120 @@
+{
+  "title": "Lists",
+  "minutes": 14,
+  "summary": "Write bulleted, numbered, nested and description lists.",
+  "docs": [
+    {
+      "title": "MDN: HTML text fundamentals (lists)",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Lists"
+    },
+    {
+      "title": "MDN: The ul element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/ul"
+    },
+    {
+      "title": "MDN: The dl element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dl"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which element should you use for the **steps** of a recipe?",
+      "options": [
+        "<ul>",
+        "<ol>",
+        "<dl>",
+        "<li>"
+      ],
+      "answer": 1,
+      "explain": "Steps have an order, so use an ordered list. `<li>` is an item, not a list."
+    },
+    {
+      "type": "fill",
+      "q": "Fill in the element for a single list item.",
+      "template": "<ul>\n  <___>Rice</___>\n</ul>",
+      "blanks": [
+        [
+          "li"
+        ],
+        [
+          "li"
+        ]
+      ],
+      "explain": "Each item in `ul` or `ol` is an `<li>`."
+    },
+    {
+      "type": "mcq",
+      "q": "In a description list, which element holds the **meaning** of a term?",
+      "options": [
+        "<dt>",
+        "<dd>",
+        "<li>",
+        "<dl>"
+      ],
+      "answer": 1,
+      "explain": "`dt` is the term, `dd` is the description, and `dl` wraps the whole list."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that breaks the rules for a list.",
+      "code": "<ul>\n  <li>Tea</li>\n  <p>Coffee</p>\n  <li>Milk</li>\n</ul>",
+      "answerLines": [
+        3
+      ],
+      "explain": "Only `<li>` may be a direct child of `<ul>`. Change the paragraph to `<li>Coffee</li>`."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Build four lists in `index.html`.\n\n- A `<ul>` with at least 3 items.\n- An `<ol>` with at least 3 items.\n- One item that contains a nested list (a `ul` or `ol` inside an `li`).\n- A `<dl>` with at least 2 `dt` terms, each followed by a `dd`.",
+    "hints": [
+      "Start with the ul and ol, and give each three li items.",
+      "For a nested list, do not close the li yet. Put a new ul inside it, then close the li. For dl, alternate dt and dd.",
+      "<ul>\n  <li>Pen</li><li>Ruler</li>\n  <li>Bag\n    <ul><li>Zip</li></ul>\n  </li>\n</ul>\n<ol><li>One</li><li>Two</li><li>Three</li></ol>\n<dl>\n  <dt>HTML</dt><dd>Structure</dd>\n  <dt>CSS</dt><dd>Style</dd>\n</dl>"
+    ],
+    "checks": [
+      {
+        "name": "A ul has at least 3 items",
+        "hint": "Add <li> items directly inside the <ul>.",
+        "selector": "ul > li",
+        "count": {
+          "min": 3
+        }
+      },
+      {
+        "name": "An ol has at least 3 items",
+        "hint": "Add an <ol> with three <li> items.",
+        "selector": "ol > li",
+        "count": {
+          "min": 3
+        }
+      },
+      {
+        "name": "A list is nested inside a list item",
+        "hint": "Put a <ul> or <ol> inside an <li>.",
+        "selector": "li > ul, li > ol",
+        "count": {
+          "min": 1
+        }
+      },
+      {
+        "name": "A dl has at least 2 terms (dt)",
+        "hint": "Add <dt> terms directly inside the <dl>.",
+        "selector": "dl > dt",
+        "count": {
+          "min": 2
+        }
+      },
+      {
+        "name": "A dl has at least 2 descriptions (dd)",
+        "hint": "Follow each <dt> with a <dd>.",
+        "selector": "dl > dd",
+        "count": {
+          "min": 2
+        }
+      }
+    ]
+  }
+}

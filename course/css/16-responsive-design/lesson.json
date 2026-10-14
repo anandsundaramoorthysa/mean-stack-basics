@@ -1,0 +1,66 @@
+{
+  "title": "Responsive design",
+  "minutes": 17,
+  "summary": "Make a layout adapt to the screen with the viewport meta tag and media queries.",
+  "docs": [
+    { "title": "MDN: Responsive design", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_design" },
+    { "title": "MDN: Using media queries", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries" },
+    { "title": "MDN: Viewport meta tag", "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Viewport_meta_element" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Why does a mobile-friendly page need `<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">`?",
+      "options": ["It adds a border to the screen", "Without it, phones pretend to be about 980px wide and shrink the page", "It makes images load faster", "It turns on JavaScript"],
+      "answer": 1,
+      "explain": "Without the tag, mobile browsers lay the page out on a wide virtual screen and zoom out. The tag asks for the real device width."
+    },
+    {
+      "type": "mcq",
+      "q": "When does this rule apply? `@media (min-width: 600px) { ... }`",
+      "options": ["Only when the window is exactly 600px", "When the window is 600px wide or wider", "When the window is 600px wide or narrower", "Never"],
+      "answer": 1,
+      "explain": "`min-width` means this width and up. `max-width: 600px` means this width and down."
+    },
+    {
+      "type": "predict",
+      "q": "The window is 800px wide. What is the final `flex-direction`?",
+      "code": ".layout { flex-direction: column; }\n@media (min-width: 600px) {\n  .layout { flex-direction: row; }\n}",
+      "language": "css",
+      "answer": "row",
+      "explain": "800px is at least 600px, so the media rule applies. It comes later, so it overrides the base rule."
+    },
+    {
+      "type": "fill",
+      "q": "Write the media query that targets screens at most 500px wide.",
+      "template": "@media (___-width: 500px) { }",
+      "blanks": [["max"]],
+      "explain": "`max-width` is the upper limit. Phones usually fall in this range."
+    },
+    {
+      "type": "mcq",
+      "q": "What does a \"mobile-first\" stylesheet do?",
+      "options": ["Writes the small-screen styles as the base, then adds min-width queries for larger screens", "Hides the desktop version", "Uses only pixel units", "Uses no media queries"],
+      "answer": 0,
+      "explain": "Mobile-first starts simple and layers on complexity as space allows. It keeps the base CSS small."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Make the layout responsive. The frame is 800px wide, so wide-screen rules apply. Work in `index.html`.\n\n- Add `<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">` inside `<head>`.\n- `.layout` is a flex container that stacks in a column by default (already written).\n- Add `@media (min-width: 600px)` that sets `.layout` to `flex-direction: row`.\n- Add `@media (max-width: 500px)` that hides `.sidebar` with `display: none`.",
+    "hints": [
+      "Media queries wrap normal rules: `@media (condition) { selector { ... } }`.",
+      "min-width applies when the window is at least that wide. At 800px the min-width rule is active but the max-width rule is not.",
+      "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n@media (min-width: 600px) {\n  .layout {\n    flex-direction: row;\n  }\n}\n@media (max-width: 500px) {\n  .sidebar {\n    display: none;\n  }\n}"
+    ],
+    "checks": [
+      { "name": "The viewport meta tag is present", "source": { "regex": "<meta(?=[^>]*name=[\"']viewport[\"'])(?=[^>]*width=device-width)[^>]*>", "flags": "i" }, "hint": "Add the viewport meta tag inside head." },
+      { "name": "A min-width: 600px media query exists", "source": { "regex": "@media[^{]*\\(\\s*min-width\\s*:\\s*600px\\s*\\)", "flags": "i" }, "hint": "Write @media (min-width: 600px) { ... }." },
+      { "name": "A max-width: 500px media query exists", "source": { "regex": "@media[^{]*\\(\\s*max-width\\s*:\\s*500px\\s*\\)", "flags": "i" }, "hint": "Write @media (max-width: 500px) { ... }." },
+      { "name": "At 800px wide, .layout is a row", "selector": ".layout", "style": { "prop": "flex-direction", "equals": "row" }, "hint": "Inside the min-width: 600px query set .layout { flex-direction: row; }." },
+      { "name": "At 800px wide, the sidebar is still visible", "selector": ".sidebar", "style": { "prop": "display", "equals": "block" }, "hint": "The sidebar should be hidden only inside the max-width: 500px query." },
+      { "name": "The max-width query hides the sidebar", "source": { "regex": "max-width\\s*:\\s*500px\\s*\\)\\s*\\{[^@]*\\.sidebar\\s*\\{[^}]*display\\s*:\\s*none", "flags": "i" }, "hint": "Inside the max-width: 500px query add .sidebar { display: none; }." }
+    ]
+  }
+}

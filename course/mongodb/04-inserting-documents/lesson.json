@@ -1,0 +1,59 @@
+{
+  "title": "Inserting documents",
+  "minutes": 12,
+  "summary": "Add one or many documents to a collection with insertOne and insertMany.",
+  "docs": [
+    { "title": "MongoDB: Insert documents", "url": "https://www.mongodb.com/docs/manual/tutorial/insert-documents/" },
+    { "title": "MongoDB: db.collection.insertMany()", "url": "https://www.mongodb.com/docs/manual/reference/method/db.collection.insertMany/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What do you pass to `insertMany`?",
+      "options": [
+        "One object",
+        "An array of objects",
+        "A string of comma separated values",
+        "A filter and an update"
+      ],
+      "answer": 1,
+      "explain": "`insertMany` expects an array, for example `[ { ... }, { ... } ]`. `insertOne` is the one that takes a single object."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the method to add exactly one student.",
+      "template": "db.students.___({ name: 'Asha', marks: 91 })",
+      "blanks": [["insertOne"]],
+      "explain": "`insertOne` adds a single document."
+    },
+    {
+      "type": "mcq",
+      "q": "You insert a document without an `_id`. What happens?",
+      "options": [
+        "The insert fails",
+        "MongoDB adds a unique ObjectId as the _id",
+        "The document is saved with _id set to null",
+        "MongoDB uses the first field as the _id"
+      ],
+      "answer": 1,
+      "explain": "MongoDB generates a unique `ObjectId` for any document that does not bring its own `_id`."
+    },
+    {
+      "type": "bug",
+      "q": "One of these three lines fails when it runs. Which one?",
+      "code": "db.products.insertOne({ name: 'Pen', price: 10 })\ndb.products.insertOne({ name: 'Ruler', price: 20 })\ndb.products.insertMany({ name: 'Eraser', price: 5 })",
+      "answerLines": [3],
+      "explain": "`insertMany` needs an array, so line 3 must be `insertMany([{ name: 'Eraser', price: 5 }])`. The first two lines correctly pass a single object to `insertOne`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "The `products` collection already holds one product. Add three more:\n\n- Use `insertOne` to add `{ name: 'Pen', price: 10, stock: 100 }`.\n- Use `insertMany` to add `{ name: 'Eraser', price: 5, stock: 300 }` and `{ name: 'Ruler', price: 20, stock: 150 }`.\n\nPrices and stock must be numbers.",
+    "hints": [
+      "You need two statements, one after the other. The first adds one document, the second adds two.",
+      "`insertOne` takes an object. `insertMany` takes an array of objects, so use square brackets.",
+      "db.products.insertOne({ name: 'Pen', price: 10, stock: 100 })\ndb.products.insertMany([\n  { name: 'Eraser', price: 5, stock: 300 },\n  { name: 'Ruler', price: 20, stock: 150 }\n])"
+    ]
+  }
+}

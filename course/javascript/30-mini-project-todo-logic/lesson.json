@@ -1,0 +1,74 @@
+{
+  "title": "Mini project: to-do list logic",
+  "minutes": 30,
+  "summary": "Combine closures, arrays and objects to build a small to-do list module with add, toggle, remove and filter.",
+  "docs": [
+    {
+      "title": "MDN: Array.prototype.filter()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter"
+    },
+    {
+      "title": "MDN: Array.prototype.find()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find"
+    },
+    {
+      "title": "MDN: Closures",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const todos = [\n  { id: 1, done: true },\n  { id: 2, done: false },\n  { id: 3, done: false }\n];\nconsole.log(todos.filter((t) => !t.done).length);",
+      "language": "js",
+      "answer": "2",
+      "explain": "`filter` keeps the items for which the function returns true. Two todos have `done` equal to false."
+    },
+    {
+      "type": "mcq",
+      "q": "Which line flips the `done` value of a task object named `t`?",
+      "options": [
+        "t.done = t.done;",
+        "t.done = !t.done;",
+        "t.done == !t.done;",
+        "!t.done;"
+      ],
+      "answer": 1,
+      "explain": "`!` turns true into false and false into true. Assigning the result back toggles the value."
+    },
+    {
+      "type": "fill",
+      "q": "Remove the task with the given id by keeping all the others.",
+      "template": "items = items.___((t) => t.id !== id);",
+      "blanks": [
+        [
+          "filter"
+        ]
+      ],
+      "explain": "`filter` builds a new array without the unwanted item. That is the usual way to delete from an array by value."
+    },
+    {
+      "type": "mcq",
+      "q": "Why does the module return `items.slice()` (a copy) from `list()` instead of `items` itself?",
+      "options": [
+        "A copy is faster",
+        "So outside code cannot change the hidden array by accident",
+        "slice sorts the array",
+        "JavaScript does not allow returning arrays"
+      ],
+      "answer": 1,
+      "explain": "If you returned the real array, any caller could push or delete things behind your back. Returning a copy keeps the data private, one of the benefits of closures."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "todo.js",
+    "task": "In `todo.js`, finish `createTodoList()`. It returns an object with these functions, all sharing a hidden array of todos:\n\n- `add(text)` trims the text. If it is empty, it returns `null` and adds nothing. Otherwise it adds `{ id, text, done: false }` and returns that todo. Ids are 1, 2, 3, ... in order and are never reused, even after a removal.\n- `toggle(id)` flips `done` of the matching todo and returns `true`. If the id does not exist it returns `false`.\n- `remove(id)` deletes the matching todo and returns `true`, or `false` if it does not exist.\n- `list(filter)` returns a new array. `'all'` (the default) gives every todo, `'active'` only those not done, `'done'` only those done.\n- `remaining()` returns how many todos are not done.",
+    "hints": [
+      "Keep `let items = [];` and `let nextId = 1;` inside `createTodoList`, and return an object whose functions use them. That is a closure.",
+      "Use `items.find((t) => t.id === id)` to locate a todo. `remove` can compare the array length before and after `filter`. `list` can use `filter` for the two cases and `slice()` for all.",
+      "function createTodoList() {\n  let items = [];\n  let nextId = 1;\n\n  function add(text) {\n    const clean = text.trim();\n    if (clean === '') return null;\n    const todo = { id: nextId, text: clean, done: false };\n    nextId = nextId + 1;\n    items.push(todo);\n    return todo;\n  }\n\n  function toggle(id) {\n    const todo = items.find((t) => t.id === id);\n    if (!todo) return false;\n    todo.done = !todo.done;\n    return true;\n  }\n\n  function remove(id) {\n    const before = items.length;\n    items = items.filter((t) => t.id !== id);\n    return items.length < before;\n  }\n\n  function list(filter = 'all') {\n    if (filter === 'active') return items.filter((t) => !t.done);\n    if (filter === 'done') return items.filter((t) => t.done);\n    return items.slice();\n  }\n\n  function remaining() {\n    return items.filter((t) => !t.done).length;\n  }\n\n  return { add, toggle, remove, list, remaining };\n}\n\nmodule.exports = { createTodoList };"
+    ]
+  }
+}

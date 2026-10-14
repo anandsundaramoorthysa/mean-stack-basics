@@ -1,0 +1,144 @@
+{
+  "title": "Text and headings",
+  "minutes": 14,
+  "summary": "Structure text with headings, paragraphs, emphasis, line breaks and dividers.",
+  "docs": [
+    {
+      "title": "MDN: Headings and paragraphs",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Headings_and_paragraphs"
+    },
+    {
+      "title": "MDN: The heading elements (h1 to h6)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+    },
+    {
+      "title": "MDN: The strong element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/strong"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which element is the right choice for the **main title** of a page?",
+      "options": [
+        "<p>",
+        "<h6>",
+        "<h1>",
+        "<strong>"
+      ],
+      "answer": 2,
+      "explain": "`<h1>` is the top-level heading. `<h6>` is the lowest level, and `<p>` is only for ordinary paragraphs."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the code so the word is stressed (shown in italics).",
+      "template": "<p>I <___>really</___> like HTML.</p>",
+      "blanks": [
+        [
+          "em"
+        ],
+        [
+          "em"
+        ]
+      ],
+      "explain": "`<em>` means emphasis. Use `<strong>` when the text is important rather than stressed."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that is wrong.",
+      "code": "<p>12 College Road\n<br></br>\nChennai</p>",
+      "answerLines": [
+        2
+      ],
+      "explain": "`<br>` is a void element, so it has no closing tag. Write just `<br>`."
+    },
+    {
+      "type": "order",
+      "q": "Arrange these headings in the order a well-structured page would use them.",
+      "lines": [
+        "<h1>Study Guide</h1>",
+        "<h2>Week 1</h2>",
+        "<h3>Monday</h3>",
+        "<h2>Week 2</h2>"
+      ],
+      "explain": "Levels go down one step at a time under their parent, and a new `h2` starts a new section after the `h3` items of the previous one."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Build a small notes page in `index.html`.\n\n- One `<h1>` that says `Study Notes` (already there).\n- At least two `<h2>` headings and one `<h3>` heading.\n- At least two `<p>` paragraphs.\n- Inside a paragraph, use `<strong>` on one phrase and `<em>` on another.\n- A `<br>` inside a paragraph and an `<hr>` between sections.",
+    "hints": [
+      "Add a second paragraph and two sections, each starting with an h2. Put the h3 under one of them.",
+      "strong and em go inside a paragraph, around the words you want to mark. br and hr are written alone, with no closing tag.",
+      "<h2>Monday</h2>\n<h3>Maths</h3>\n<p>Finish <strong>exercise 4</strong> and read <em>slowly</em>.</p>\n<hr>\n<h2>Tuesday</h2>\n<p>Room 12<br>Block B</p>"
+    ],
+    "checks": [
+      {
+        "name": "The h1 says \"Study Notes\"",
+        "hint": "Keep exactly one h1 with the text Study Notes.",
+        "selector": "h1",
+        "count": 1,
+        "text": {
+          "equals": "Study Notes"
+        }
+      },
+      {
+        "name": "There are at least two h2 headings",
+        "hint": "Add more <h2>...</h2> headings.",
+        "selector": "h2",
+        "count": {
+          "min": 2
+        }
+      },
+      {
+        "name": "There is an h3 heading",
+        "hint": "Add an <h3> under one of your h2 sections.",
+        "selector": "h3",
+        "count": {
+          "min": 1
+        }
+      },
+      {
+        "name": "There are at least two paragraphs",
+        "hint": "Write each paragraph inside its own <p>...</p>.",
+        "selector": "p",
+        "count": {
+          "min": 2
+        }
+      },
+      {
+        "name": "A paragraph contains a strong element",
+        "hint": "Wrap a phrase in <strong> inside a <p>.",
+        "selector": "p strong",
+        "count": {
+          "min": 1
+        }
+      },
+      {
+        "name": "A paragraph contains an em element",
+        "hint": "Wrap a word in <em> inside a <p>.",
+        "selector": "p em",
+        "count": {
+          "min": 1
+        }
+      },
+      {
+        "name": "A br line break is used",
+        "hint": "Add <br> inside a paragraph. It has no closing tag.",
+        "selector": "p br",
+        "count": {
+          "min": 1
+        }
+      },
+      {
+        "name": "An hr divider is used",
+        "hint": "Add <hr> between two sections.",
+        "selector": "hr",
+        "count": {
+          "min": 1
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "title": "Template-driven forms",
+  "minutes": 18,
+  "summary": "Build a simple form with FormsModule, [(ngModel)], required and ngSubmit.",
+  "docs": [
+    {
+      "title": "Angular: Template-driven forms",
+      "url": "https://angular.dev/guide/forms/template-driven-forms"
+    },
+    {
+      "title": "Angular: Forms overview",
+      "url": "https://angular.dev/guide/forms"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `[(ngModel)]=\"name\"` do?",
+      "options": [
+        "Reads `name` once",
+        "Keeps the input and the class property `name` in sync in both directions",
+        "Only listens for clicks",
+        "Creates a new class"
+      ],
+      "answer": 1,
+      "explain": "It is **two-way binding**: typing updates `name`, and changing `name` updates the input. It is a combination of `[ngModel]` and `(ngModelChange)`."
+    },
+    {
+      "type": "fill",
+      "q": "Import the module that provides ngModel into a standalone component.",
+      "template": "imports: [___],",
+      "blanks": [
+        [
+          "FormsModule"
+        ]
+      ],
+      "explain": "`FormsModule` from `@angular/forms` contains `ngModel` and `ngForm`. Without it, `[(ngModel)]` is an unknown property."
+    },
+    {
+      "type": "mcq",
+      "q": "An input inside a `<form>` uses ngModel. What else must it have?",
+      "options": [
+        "An id attribute",
+        "A name attribute",
+        "A class attribute",
+        "A title attribute"
+      ],
+      "answer": 1,
+      "explain": "Inside a form, each ngModel control registers itself under its `name` attribute. Without it Angular throws an error."
+    },
+    {
+      "type": "mcq",
+      "q": "With `#f=\"ngForm\"` on the form, how do you disable the button while the form is not valid?",
+      "options": [
+        "<button [disabled]=\"f.invalid\">",
+        "<button disabled=\"f\">",
+        "<button (disabled)=\"f\">",
+        "<button [valid]=\"f\">"
+      ],
+      "answer": 0,
+      "explain": "The template variable `f` stands for the form. Its `invalid` property is true while a rule such as `required` is broken."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "signup.component.ts",
+    "task": "Finish `signup.component.ts`.\n\n- Import `FormsModule` from `@angular/forms` and list it in `imports`.\n- The form has `#f=\"ngForm\"` and `(ngSubmit)=\"save()\"`.\n- The input uses `[(ngModel)]=\"name\"`, has a `name` attribute, and is `required`.\n- The button has `[disabled]=\"f.invalid\"`.\n- The class has `name = ''` and a method `save()`.",
+    "hints": [
+      "Start with the import and the `imports` list, then fill in the template.",
+      "Every control inside the form needs `name=\"...\"` as well as `[(ngModel)]`. The form variable is declared as `#f=\"ngForm\"`.",
+      "<form #f=\"ngForm\" (ngSubmit)=\"save()\">\n  <input name=\"studentName\" [(ngModel)]=\"name\" required />\n  <button [disabled]=\"f.invalid\">Save</button>\n</form>"
+    ],
+    "checks": [
+      {
+        "name": "FormsModule is imported from @angular/forms",
+        "hint": "import { FormsModule } from '@angular/forms';",
+        "regex": "import\\s*\\{[^}]*\\bFormsModule\\b[^}]*\\}\\s*from\\s*['\"]@angular/forms['\"]"
+      },
+      {
+        "name": "FormsModule is in the component's imports",
+        "hint": "Add imports: [FormsModule] to @Component.",
+        "regex": "imports\\s*:\\s*\\[[^\\]]*\\bFormsModule\\b"
+      },
+      {
+        "name": "The form declares #f=\"ngForm\" and (ngSubmit)=\"save()\"",
+        "hint": "Write <form #f=\"ngForm\" (ngSubmit)=\"save()\">.",
+        "regex": "<form(?=[^>]*#f\\s*=\\s*[\"']ngForm[\"'])(?=[^>]*\\(ngSubmit\\)\\s*=\\s*[\"']save\\(\\s*\\)[\"'])[^>]*>"
+      },
+      {
+        "name": "The input is bound with [(ngModel)]=\"name\"",
+        "hint": "Add [(ngModel)]=\"name\" to the input.",
+        "regex": "<input[^>]*\\[\\(ngModel\\)\\]\\s*=\\s*[\"']name[\"']"
+      },
+      {
+        "name": "The input has a name attribute",
+        "hint": "Add name=\"studentName\" to the input.",
+        "regex": "<input[^>]*\\sname\\s*=\\s*[\"'][^\"']+[\"']"
+      },
+      {
+        "name": "The input is required",
+        "hint": "Add the attribute required to the input.",
+        "regex": "<input[^>]*\\srequired\\b"
+      },
+      {
+        "name": "The button is disabled while the form is invalid",
+        "hint": "Add [disabled]=\"f.invalid\" to the button.",
+        "regex": "<button[^>]*\\[disabled\\]\\s*=\\s*[\"']f\\.invalid[\"']"
+      },
+      {
+        "name": "The class has name = '' and a save() method",
+        "hint": "Add name = ''; and save() { ... } to the class.",
+        "regex": "(?=[\\s\\S]*\\bname\\s*(:\\s*string\\s*)?=\\s*(''|\"\"))(?=[\\s\\S]*\\bsave\\s*\\(\\s*\\)\\s*(:\\s*void\\s*)?\\{)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "title": "The cascade and specificity",
+  "minutes": 16,
+  "summary": "Predict which rule wins when several rules style the same element.",
+  "docs": [
+    { "title": "MDN: Cascade, specificity and inheritance", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Handling_conflicts" },
+    { "title": "MDN: Specificity", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity" },
+    { "title": "MDN: The cascade", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What colour is the paragraph? (Class `note`.)",
+      "code": "p { color: blue; }\n.note { color: green; }",
+      "language": "css",
+      "answer": "green",
+      "explain": "Both rules match, but a class selector is more specific than a type selector, so green wins even though it is not last."
+    },
+    {
+      "type": "predict",
+      "q": "What colour is the paragraph?",
+      "code": ".note { color: green; }\n.note { color: orange; }",
+      "language": "css",
+      "answer": "orange",
+      "explain": "The selectors are equally specific, so the one written later wins."
+    },
+    {
+      "type": "mcq",
+      "q": "Which selector is the most specific?",
+      "options": ["p", ".note", "#main", "p.note"],
+      "answer": 2,
+      "explain": "Roughly: an id beats a class, a class beats a type. `#main` outranks `p.note`, which has one class and one type."
+    },
+    {
+      "type": "mcq",
+      "q": "Why do most developers avoid `!important`?",
+      "options": ["It is not supported by browsers", "It overrides normal specificity, so later fixes need more !important", "It only works on colours", "It makes the page slower"],
+      "answer": 1,
+      "explain": "`!important` jumps the queue. Soon you need it everywhere to beat your own earlier rules. Raise specificity or reorder rules instead."
+    },
+    {
+      "type": "fill",
+      "q": "Which selector would beat `.note` for an element with `id=\"special\"`?",
+      "template": "___special { color: red; }",
+      "blanks": [["#"]],
+      "explain": "An id selector beats a class selector, regardless of order."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Some rules already exist in the style block. Add rules to win the conflicts **without** using `!important`. Work in `index.html`.\n\n- The paragraph with `id=\"special\"` must be red even though it also has class `note`.\n- The other `note` paragraphs must stay green.\n- Add a second `.late` rule after the existing one so `.late` has a `pink` background.",
+    "hints": [
+      "Two rules with the same specificity are decided by order. A more specific selector wins regardless of order.",
+      "Use `#special` to beat `.note`. Put the new `.late` rule below the old one.",
+      "/* an id selector is more specific than a class selector, so it wins */\n#special {\n  color: red;\n}\n.late {\n  background-color: pink;\n}"
+    ],
+    "checks": [
+      { "name": "The #special paragraph is red", "selector": "#special", "style": { "prop": "color", "equals": "red" }, "hint": "Add #special { color: red; } because an id is more specific than a class." },
+      { "name": "Other .note paragraphs stay green", "selector": "p.note:not(#special)", "scope": "all", "style": { "prop": "color", "equals": "green" }, "hint": "Do not change the .note rule. Target #special instead." },
+      { "name": "The .late element has a pink background", "selector": ".late", "style": { "prop": "background-color", "equals": "pink" }, "hint": "Add a new .late { background-color: pink; } rule after the existing one." },
+      { "name": "!important is not used", "source": { "notIncludes": "!important" }, "hint": "Win by specificity and order, not by !important." }
+    ]
+  }
+}

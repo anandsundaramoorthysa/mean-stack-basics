@@ -1,0 +1,49 @@
+{
+  "title": "Modules with require",
+  "minutes": 14,
+  "summary": "Split code into files with module.exports and load it with require.",
+  "docs": [
+    { "title": "Node.js API: Modules (CommonJS)", "url": "https://nodejs.org/api/modules.html" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "A file contains `function add(a, b) { return a + b; }` and nothing else. Another file does `const m = require('./add');`. What is `m`?",
+      "options": ["The add function", "An empty object {}", "undefined", "The text of the file"],
+      "answer": 1,
+      "explain": "Everything in a file is private unless you export it. With no `module.exports`, `require` returns an empty object."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the two lines so another file can use `square`.",
+      "template": "function square(n) { return n * n; }\nmodule.___ = { ___ };",
+      "blanks": [["exports"], ["square"]],
+      "explain": "`module.exports` holds whatever the file shares. Here it is an object with one property, `square`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which require loads your own file named utils.js in the same folder?",
+      "options": ["require('utils')", "require('./utils')", "require(utils)", "require('utils.js/')"],
+      "answer": 1,
+      "explain": "A path that starts with `./` means a file relative to the current file. Without `./`, Node looks for a built-in module or an installed package called `utils`."
+    },
+    {
+      "type": "predict",
+      "q": "Suppose `counter.js` has `let n = 0; module.exports = () => ++n;` and the code below runs. What is printed? Write the two numbers separated by a space.",
+      "code": "const next = require('./counter');\nconst again = require('./counter');\nconsole.log(next(), again());",
+      "language": "js",
+      "answer": "1 2",
+      "explain": "Node runs a file once and caches the result. Both variables point to the same function and the same `n`, so the count goes 1 then 2."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "grades.js",
+    "task": "`grades.js` is a **module**. Finish it so other files can use it.\n\n- Write `average(marks)` that returns the average of an array of numbers (return `0` for an empty array).\n- Write `isPassing(mark)` that returns `true` when the mark is at least `passMark`.\n- Export `average`, `isPassing` and `passMark` (value `40`) with `module.exports`.",
+    "hints": [
+      "Both functions are only half written. Fill them in, then share them at the bottom of the file.",
+      "Use `reduce` or a loop to add the marks, then divide by `marks.length`. Guard the empty array first. End the file with `module.exports = { ... };`.",
+      "const passMark = 40;\n\nfunction average(marks) {\n  if (marks.length === 0) return 0;\n  return marks.reduce((sum, m) => sum + m, 0) / marks.length;\n}\n\nfunction isPassing(mark) {\n  return mark >= passMark;\n}\n\nmodule.exports = { average, isPassing, passMark };"
+    ]
+  }
+}

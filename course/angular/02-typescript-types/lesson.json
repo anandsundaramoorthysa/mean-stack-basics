@@ -1,0 +1,103 @@
+{
+  "title": "TypeScript: types",
+  "minutes": 15,
+  "summary": "Add types to variables, arrays and functions so mistakes are caught before the app runs.",
+  "docs": [
+    {
+      "title": "TypeScript Handbook: Everyday Types",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
+    },
+    {
+      "title": "TypeScript for JavaScript programmers",
+      "url": "https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which line is valid TypeScript for a variable that must hold a whole or decimal number?",
+      "options": [
+        "let marks: Number = 'high';",
+        "let marks: number = 82;",
+        "let marks = number(82);",
+        "let marks: numeric = 82;"
+      ],
+      "answer": 1,
+      "explain": "The primitive type is the lowercase `number`. It covers whole and decimal values. The type goes after the name, separated by a colon."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the type of an array of text values.",
+      "template": "const cities: ___[] = ['Delhi', 'Pune'];",
+      "blanks": [
+        [
+          "string"
+        ]
+      ],
+      "explain": "`string[]` means an array where every item is a string. `Array<string>` means the same."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that TypeScript will report as an error.",
+      "code": "let age: number = 18;\nlet name: string = 'Ravi';\nage = 'nineteen';\nname = 'Ravi K';",
+      "answerLines": [
+        3
+      ],
+      "explain": "`age` was declared as a number, so assigning the text 'nineteen' is a type error. TypeScript tells you this in the editor, before the code runs."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `: number` after the parentheses mean in `function double(n: number): number`?",
+      "options": [
+        "The function takes two numbers",
+        "The function returns a number",
+        "The function must be called twice",
+        "The parameter is optional"
+      ],
+      "answer": 1,
+      "explain": "The type after the parameter list is the return type. The type inside the parentheses (`n: number`) is the parameter type."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "types.ts",
+    "task": "Complete `types.ts` by adding types.\n\n- Annotate `studentName` as a `string`.\n- Annotate `marks` as a `number`.\n- Annotate `passed` as a `boolean`.\n- Annotate `subjects` as an array of strings.\n- Type the function `average`: parameters `a` and `b` are numbers and it returns a number.",
+    "hints": [
+      "A type annotation is written after the name: `name: type`.",
+      "For the array use `string[]`. For the function put types on both parameters and after the closing parenthesis.",
+      "export const studentName: string = 'Asha';\nexport const marks: number = 82;\nexport const passed: boolean = true;\nexport const subjects: string[] = ['Maths', 'Physics'];\nexport function average(a: number, b: number): number {\n  return (a + b) / 2;\n}"
+    ],
+    "checks": [
+      {
+        "name": "studentName is typed as string",
+        "hint": "Write: const studentName: string = 'Asha';",
+        "regex": "studentName\\s*:\\s*string\\s*=\\s*['\"]Asha['\"]"
+      },
+      {
+        "name": "marks is typed as number",
+        "hint": "Write: const marks: number = 82;",
+        "regex": "marks\\s*:\\s*number\\s*=\\s*82"
+      },
+      {
+        "name": "passed is typed as boolean",
+        "hint": "Write: const passed: boolean = true;",
+        "regex": "passed\\s*:\\s*boolean\\s*=\\s*true"
+      },
+      {
+        "name": "subjects is an array of strings",
+        "hint": "Use string[] (or Array<string>) after the name.",
+        "regex": "subjects\\s*:\\s*(string\\s*\\[\\s*\\]|Array\\s*<\\s*string\\s*>)\\s*=\\s*\\["
+      },
+      {
+        "name": "average has number parameters and a number return type",
+        "hint": "Write: function average(a: number, b: number): number",
+        "regex": "average\\s*(=\\s*)?\\(\\s*a\\s*:\\s*number\\s*,\\s*b\\s*:\\s*number\\s*\\)\\s*:\\s*number"
+      },
+      {
+        "name": "average returns the mean of a and b",
+        "hint": "Return (a + b) / 2.",
+        "regex": "\\(\\s*a\\s*\\+\\s*b\\s*\\)\\s*/\\s*2"
+      }
+    ]
+  }
+}

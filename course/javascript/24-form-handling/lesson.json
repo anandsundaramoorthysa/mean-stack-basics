@@ -1,0 +1,63 @@
+{
+  "title": "Form handling",
+  "minutes": 18,
+  "summary": "Read form fields on submit, check the values and show a message to the user.",
+  "docs": [
+    { "title": "MDN: HTMLFormElement submit event", "url": "https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event" },
+    { "title": "MDN: Event.preventDefault()", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault" },
+    { "title": "MDN: HTMLInputElement", "url": "https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Why do we call `event.preventDefault()` in a submit handler?",
+      "options": [
+        "To stop the browser from reloading the page when the form is sent",
+        "To delete the form",
+        "To make the form submit faster",
+        "To clear the input boxes"
+      ],
+      "answer": 0,
+      "explain": "By default a submitted form makes the browser navigate away or reload. `preventDefault()` cancels that so your JavaScript can handle the data."
+    },
+    {
+      "type": "predict",
+      "q": "The user typed 25 into `<input id=\"age\" type=\"number\">`. What does this program print?",
+      "code": "const age = document.querySelector('#age').value;\nconsole.log(typeof age);",
+      "language": "js",
+      "answer": "string",
+      "explain": "An input's `value` is always a string, even for number fields. Convert it with `Number(...)` before comparing sizes."
+    },
+    {
+      "type": "mcq",
+      "q": "Which expression removes spaces from both ends of the text typed in `field`?",
+      "options": ["field.value.trim()", "field.trim", "trim(field.value)", "field.value.strip()"],
+      "answer": 0,
+      "explain": "`trim()` is a string method. It is a good habit to trim user input before checking it, so a box containing only spaces counts as empty."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the listener that runs when the form is submitted.",
+      "template": "form.addEventListener('___', (event) => {\n  event.preventDefault();\n});",
+      "blanks": [["submit"]],
+      "explain": "Listen for `submit` on the form, not `click` on the button. That also covers pressing Enter inside a field."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line with the mistake. The goal is to reject ages below 18.",
+      "code": "form.addEventListener('submit', (event) => {\n  event.preventDefault();\n  const age = Number(ageBox.value);\n  if (age > 18) {\n    message.textContent = 'You must be 18 or older.';\n  }\n});",
+      "answerLines": [4],
+      "explain": "The condition is reversed. It reports an error for adults. It should be `age < 18`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "form.js",
+    "task": "The page has `<form id=\"signup\">` with `<input id=\"email\">`, `<input id=\"age\">` and `<p id=\"message\">`.\n\nIn `form.js`, when the form is submitted:\n\n- Stop the browser's default behaviour.\n- If the trimmed email does not contain `@`, show `Please enter a valid email.` in `#message`.\n- Otherwise, if the age (as a number) is less than 18, show `You must be 18 or older.`\n- Otherwise show `Welcome, ` followed by the trimmed email and `!`.",
+    "hints": [
+      "Listen for the `submit` event on `#signup` and call `event.preventDefault()` first.",
+      "Read `emailBox.value.trim()` and `Number(ageBox.value)`. Check the email first with `includes('@')`, then the age, using `if / else if / else`.",
+      "const form = document.querySelector('#signup');\nconst emailBox = document.querySelector('#email');\nconst ageBox = document.querySelector('#age');\nconst message = document.querySelector('#message');\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n  const email = emailBox.value.trim();\n  const age = Number(ageBox.value);\n  if (!email.includes('@')) {\n    message.textContent = 'Please enter a valid email.';\n  } else if (age < 18) {\n    message.textContent = 'You must be 18 or older.';\n  } else {\n    message.textContent = 'Welcome, ' + email + '!';\n  }\n});"
+    ]
+  }
+}

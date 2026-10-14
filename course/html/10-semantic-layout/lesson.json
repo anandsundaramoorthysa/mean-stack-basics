@@ -1,0 +1,134 @@
+{
+  "title": "Semantic page layout",
+  "minutes": 15,
+  "summary": "Describe the parts of a page with header, nav, main, section, article, aside and footer.",
+  "docs": [
+    {
+      "title": "MDN: Document and website structure",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Structuring_documents"
+    },
+    {
+      "title": "MDN: The main element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/main"
+    },
+    {
+      "title": "MDN: The article element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/article"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "How many `<main>` elements should a page normally have?",
+      "options": [
+        "None",
+        "Exactly one",
+        "One per section",
+        "As many as needed"
+      ],
+      "answer": 1,
+      "explain": "`main` marks the central content of the page, so there should be one visible `main` per page."
+    },
+    {
+      "type": "mcq",
+      "q": "Which element is best for a single blog post that could be shared on its own?",
+      "options": [
+        "<section>",
+        "<aside>",
+        "<article>",
+        "<nav>"
+      ],
+      "answer": 2,
+      "explain": "`article` is for self-contained content. `section` groups related content within a page."
+    },
+    {
+      "type": "fill",
+      "q": "Fill in the element for the group of main menu links.",
+      "template": "<___>\n  <a href=\"/\">Home</a>\n  <a href=\"/about\">About</a>\n</___>",
+      "blanks": [
+        [
+          "nav"
+        ],
+        [
+          "nav"
+        ]
+      ],
+      "explain": "`nav` marks major navigation blocks."
+    },
+    {
+      "type": "order",
+      "q": "Put these in the order they usually appear inside `body`.",
+      "lines": [
+        "<header>",
+        "<nav>",
+        "<main>",
+        "<aside>",
+        "<footer>"
+      ],
+      "explain": "A common order is header, then navigation, the main content, an aside, and the footer at the end. Some pages put the aside inside main, but this order is the common one."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Turn the content of `index.html` into a semantic layout.\n\n- A `<header>` that is a direct child of `body` and contains the `<h1>`.\n- A `<nav>` inside the header with at least 3 links.\n- Exactly one `<main>`, containing at least 2 `<section>` elements.\n- An `<article>` and an `<aside>` inside `main`.\n- A `<footer>` that is a direct child of `body` and has some text.",
+    "hints": [
+      "Sketch the outline: header, main, footer as three children of body.",
+      "nav goes inside header. section, article and aside go inside main. Each section should start with a heading.",
+      "<header>\n  <h1>Campus News</h1>\n  <nav><a href=\"#news\">News</a> <a href=\"#events\">Events</a> <a href=\"#contact\">Contact</a></nav>\n</header>\n<main>\n  <section id=\"news\"><h2>News</h2><article><h3>Sports day</h3><p>...</p></article></section>\n  <section id=\"events\"><h2>Events</h2></section>\n  <aside><p>Related</p></aside>\n</main>\n<footer><p>Campus News</p></footer>"
+    ],
+    "checks": [
+      {
+        "name": "A header is a direct child of body and contains the h1",
+        "hint": "Wrap the h1 in <header> directly inside <body>.",
+        "selector": "body > header h1"
+      },
+      {
+        "name": "The header contains a nav with at least 3 links",
+        "hint": "Put a <nav> with three <a> links inside the header.",
+        "selector": "header nav a",
+        "count": {
+          "min": 3
+        }
+      },
+      {
+        "name": "There is exactly one main element",
+        "hint": "Use a single <main>.",
+        "selector": "main",
+        "count": 1
+      },
+      {
+        "name": "The main element has at least 2 sections",
+        "hint": "Add two <section> elements inside <main>.",
+        "selector": "main section",
+        "count": {
+          "min": 2
+        }
+      },
+      {
+        "name": "The main element contains an article",
+        "hint": "Add an <article> inside <main>.",
+        "selector": "main article",
+        "count": {
+          "min": 1
+        }
+      },
+      {
+        "name": "The main element contains an aside",
+        "hint": "Add an <aside> inside <main>.",
+        "selector": "main aside",
+        "count": {
+          "min": 1
+        }
+      },
+      {
+        "name": "A footer is a direct child of body and has text",
+        "hint": "Add <footer><p>...</p></footer> as the last part of the body.",
+        "selector": "body > footer",
+        "text": {
+          "regex": "\\S"
+        }
+      }
+    ]
+  }
+}

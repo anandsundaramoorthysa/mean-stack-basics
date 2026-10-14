@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Profile card</title>
+    <style>
+      :root {
+        --accent: #0057b8;
+      }
+      body {
+        background-color: #f0f2f5;
+      }
+      .card {
+        box-sizing: border-box;
+        max-width: 360px;
+        margin: 40px auto;
+        padding: 24px;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      .avatar {
+        width: 96px;
+        height: 96px;
+        margin: 0 auto 16px;
+        border-radius: 50%;
+        background-color: var(--accent);
+      }
+      .name {
+        margin: 0;
+        font-size: 24px;
+        text-align: center;
+      }
+      .role {
+        color: dimgray;
+        text-align: center;
+      }
+      .skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+      }
+      .skills li {
+        padding: 4px 12px;
+        border-radius: 999px;
+        background-color: #e0e7f1;
+      }
+      .btn {
+        display: block;
+        padding: 12px;
+        text-align: center;
+        color: white;
+        text-decoration: none;
+        background-color: var(--accent);
+        transition: background-color 0.3s;
+      }
+      .btn:hover {
+        background-color: #003a7a;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="avatar"></div>
+      <h1 class="name">Anita Rao</h1>
+      <p class="role">First-year Computer Science student</p>
+      <ul class="skills">
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>JavaScript</li>
+      </ul>
+      <a class="btn" href="#">Contact me</a>
+    </div>
+  </body>
+</html>

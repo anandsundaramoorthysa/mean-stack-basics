@@ -1,0 +1,102 @@
+{
+  "title": "TypeScript: classes",
+  "minutes": 15,
+  "summary": "Write a class with typed properties, a constructor and a method, since every Angular component is a class.",
+  "docs": [
+    {
+      "title": "TypeScript Handbook: Classes",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/classes.html"
+    },
+    {
+      "title": "TypeScript Handbook: Object Types",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/objects.html"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which keyword creates an object from a class?",
+      "options": [
+        "make",
+        "create",
+        "new",
+        "class"
+      ],
+      "answer": 2,
+      "explain": "`new Student('Asha', 72)` runs the constructor and returns a fresh object."
+    },
+    {
+      "type": "fill",
+      "q": "Fill in the keyword that hides a property from code outside the class.",
+      "template": "class Account { ___ balance: number = 0; }",
+      "blanks": [
+        [
+          "private"
+        ]
+      ],
+      "explain": "`private` allows access only inside the class. `public` (the default) allows access everywhere."
+    },
+    {
+      "type": "predict",
+      "q": "What does this print?",
+      "code": "class Box {\n  constructor(public size: number) {}\n  double(): number {\n    return this.size * 2;\n  }\n}\nconsole.log(new Box(4).double());",
+      "language": "ts",
+      "answer": "8",
+      "explain": "`public size` in the constructor creates a property `size` set to 4. `double()` returns 4 * 2."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `class Student implements Person` promise?",
+      "options": [
+        "Student inherits all code from Person",
+        "Student has at least the properties and methods Person describes",
+        "Person is deleted",
+        "Student can never change"
+      ],
+      "answer": 1,
+      "explain": "`implements` checks that the class matches the interface. Unlike `extends`, it copies no code."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "student.ts",
+    "task": "Complete the `Student` class in `student.ts`.\n\n- The class `implements Person`.\n- The constructor takes `public name: string` and `private marks: number`.\n- Add a method `isPassed()` that returns a `boolean`: true when `this.marks >= 40`.\n- At the bottom create `const asha = new Student('Asha', 72);`.",
+    "hints": [
+      "Put the class keyword line first: `export class Student implements Person {`.",
+      "A constructor parameter with `public` or `private` in front becomes a property automatically.",
+      "export class Student implements Person {\n  constructor(public name: string, private marks: number) {}\n\n  isPassed(): boolean {\n    return this.marks >= 40;\n  }\n}\n\nexport const asha = new Student('Asha', 72);"
+    ],
+    "checks": [
+      {
+        "name": "Student implements Person",
+        "hint": "Write: class Student implements Person",
+        "regex": "class\\s+Student\\s+implements\\s+Person"
+      },
+      {
+        "name": "The constructor has a public name: string",
+        "hint": "Use constructor(public name: string, ...).",
+        "regex": "constructor\\s*\\([^)]*\\bpublic\\s+(readonly\\s+)?name\\s*:\\s*string"
+      },
+      {
+        "name": "The constructor has a private marks: number",
+        "hint": "Use private marks: number as the second parameter.",
+        "regex": "constructor\\s*\\([^)]*\\bprivate\\s+(readonly\\s+)?marks\\s*:\\s*number"
+      },
+      {
+        "name": "isPassed() returns a boolean",
+        "hint": "Write: isPassed(): boolean { ... }",
+        "regex": "isPassed\\s*\\(\\s*\\)\\s*:\\s*boolean"
+      },
+      {
+        "name": "isPassed compares this.marks with 40",
+        "hint": "Return this.marks >= 40;",
+        "regex": "return\\s+this\\.marks\\s*>=\\s*40"
+      },
+      {
+        "name": "An object asha is created with new Student('Asha', 72)",
+        "hint": "Write: const asha = new Student('Asha', 72);",
+        "regex": "asha\\s*(:\\s*Student\\s*)?=\\s*new\\s+Student\\s*\\(\\s*['\"]Asha['\"]\\s*,\\s*72\\s*\\)"
+      }
+    ]
+  }
+}

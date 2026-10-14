@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Display and position</title>
+    <style>
+      .panel {
+        height: 100px;
+        border: 1px solid #999;
+        position: relative;
+      }
+      .badge {
+        display: inline-block;
+        width: 100px;
+      }
+      .menu-link {
+        display: block;
+      }
+      .hidden-note {
+        display: none;
+      }
+      .corner {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Status: <span class="badge">New</span> <span class="badge">Open</span></p>
+    <a class="menu-link" href="#">Home</a>
+    <a class="menu-link" href="#">About</a>
+    <p class="hidden-note">You should not see this note.</p>
+    <div class="panel">
+      <span class="corner">X</span>
+      Panel content
+    </div>
+  </body>
+</html>

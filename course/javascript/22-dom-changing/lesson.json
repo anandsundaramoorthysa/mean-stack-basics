@@ -1,0 +1,56 @@
+{
+  "title": "Changing the page",
+  "minutes": 16,
+  "summary": "Create elements with JavaScript, style them with classList and attributes, and add them to the page.",
+  "docs": [
+    { "title": "MDN: document.createElement()", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement" },
+    { "title": "MDN: Element.classList", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Element/classList" },
+    { "title": "MDN: Element.setAttribute()", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute" },
+    { "title": "MDN: Element.append()", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Element/append" }
+  ],
+  "quiz": [
+    {
+      "type": "order",
+      "q": "Put these steps in the right order to add a new list item to the page.",
+      "lines": [
+        "const list = document.querySelector('#list');",
+        "const item = document.createElement('li');",
+        "item.textContent = 'Asha';",
+        "list.append(item);"
+      ],
+      "explain": "Find the parent, create the element, fill it, and only then attach it. An element that is never appended stays invisible."
+    },
+    {
+      "type": "mcq",
+      "q": "Which line adds the CSS class `done` to an element named `item`?",
+      "options": ["item.class = 'done';", "item.classList.add('done');", "item.addClass('done');", "item.className.push('done');"],
+      "answer": 1,
+      "explain": "`classList` has `add`, `remove`, `toggle` and `contains`. It adds one class without disturbing the others."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the line so the link points to the course website.",
+      "template": "link.___('href', 'https://example.com');",
+      "blanks": [["setAttribute"]],
+      "explain": "`setAttribute(name, value)` sets any HTML attribute. Use `getAttribute(name)` to read it back."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const box = document.createElement('div');\nbox.classList.add('card');\nbox.classList.add('big');\nbox.classList.remove('card');\nconsole.log(box.classList.contains('card'));",
+      "language": "js",
+      "answer": "false",
+      "explain": "The class `card` was added and then removed, so `contains('card')` is `false`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "change.js",
+    "task": "The page has an empty `<ul id=\"list\">`. The starter already has an array `names`.\n\nIn `change.js`, for each name:\n\n- create an `li` and set its text to the name,\n- add the class `student`,\n- set the attribute `data-name` to the name,\n- append it to `#list`.\n\nThen add the extra class `first` to the first `li` only.",
+    "hints": [
+      "Use a loop over `names`. Inside it, create the element with `document.createElement('li')`.",
+      "`item.classList.add('student')` adds a class and `item.setAttribute('data-name', name)` adds the attribute. `list.append(item)` puts it on the page. After the loop, select the first `.student` and add `first`.",
+      "const list = document.querySelector('#list');\nfor (const name of names) {\n  const item = document.createElement('li');\n  item.textContent = name;\n  item.classList.add('student');\n  item.setAttribute('data-name', name);\n  list.append(item);\n}\ndocument.querySelector('.student').classList.add('first');"
+    ]
+  }
+}

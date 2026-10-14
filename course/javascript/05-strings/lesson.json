@@ -1,0 +1,59 @@
+{
+  "title": "Strings",
+  "minutes": 15,
+  "summary": "Build text with template literals and use length, trim, toUpperCase and other string methods.",
+  "docs": [
+    { "title": "MDN: Template literals", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals" },
+    { "title": "MDN: String", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const name = 'Meena';\nconsole.log(`Hi ${name}!`);",
+      "language": "js",
+      "answer": "Hi Meena!",
+      "explain": "Inside backticks, `${...}` is replaced by the value of the expression."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "console.log('JavaScript'.length);",
+      "language": "js",
+      "answer": "10",
+      "explain": "`length` counts every character: J-a-v-a-S-c-r-i-p-t is 10."
+    },
+    {
+      "type": "mcq",
+      "q": "Which quotes allow `${...}` placeholders?",
+      "options": ["Single quotes '...'", "Double quotes \"...\"", "Backticks `...`", "All three"],
+      "answer": 2,
+      "explain": "Only backtick strings (template literals) understand `${...}`. In single or double quotes it is just plain text."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the code to turn the text into capital letters.",
+      "template": "'mean'.___()",
+      "blanks": [["toUpperCase"]],
+      "explain": "`toUpperCase()` returns a new string in capitals. Remember the round brackets, because it is a method call."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print? (The quotes are not part of the answer.)",
+      "code": "const s = '  hi  ';\ns.trim();\nconsole.log(s.length);",
+      "language": "js",
+      "answer": "6",
+      "explain": "Strings never change. `s.trim()` returns a new string, but the result was thrown away, so `s` still has 6 characters."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "strings.js",
+    "task": "In `strings.js`, write and export two functions:\n\n- `greet(name)` returns `Hello, <name>! Your name has <n> letters.` where `<n>` is the length of the name. Build it with a **template literal**.\n- `shout(text)` removes spaces at both ends, converts to upper case and adds `!` at the end. `shout('  hi there ')` gives `'HI THERE!'`.",
+    "hints": [
+      "Both functions return a string. `greet` needs placeholders, `shout` needs two string methods.",
+      "Use backticks with `${name}` and `${name.length}` for greet. For shout combine `trim()` and `toUpperCase()`, then add `'!'`.",
+      "function greet(name) {\n  return `Hello, ${name}! Your name has ${name.length} letters.`;\n}\nfunction shout(text) {\n  return text.trim().toUpperCase() + '!';\n}\nmodule.exports = { greet, shout };"
+    ]
+  }
+}

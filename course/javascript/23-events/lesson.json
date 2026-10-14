@@ -1,0 +1,57 @@
+{
+  "title": "Events",
+  "minutes": 16,
+  "summary": "React to clicks and typing with addEventListener and handler functions.",
+  "docs": [
+    { "title": "MDN: Introduction to events", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Events" },
+    { "title": "MDN: EventTarget.addEventListener()", "url": "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener" },
+    { "title": "MDN: Element input event", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Element/input_event" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `button.addEventListener('click', show)` do?",
+      "options": [
+        "Calls show immediately",
+        "Runs show every time the button is clicked",
+        "Runs show once after one second",
+        "Deletes the button"
+      ],
+      "answer": 1,
+      "explain": "You hand the browser a function and it calls it later, each time the event happens. This is called a callback."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that runs the handler too early.",
+      "code": "function show() {\n  console.log('clicked');\n}\nconst button = document.querySelector('button');\nbutton.addEventListener('click', show());",
+      "answerLines": [5],
+      "explain": "`show()` with brackets calls the function right now and passes its result to the listener. Pass the function itself: `show`, with no brackets."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the listener so it reacts every time the user types in the box.",
+      "template": "box.addEventListener('___', (event) => {\n  console.log(event.target.___);\n});",
+      "blanks": [["input"], ["value"]],
+      "explain": "The `input` event fires on each change while typing. `event.target` is the element, and its `value` is the current text."
+    },
+    {
+      "type": "predict",
+      "q": "The page has a button with id `b`. The user clicks it twice. What does this program print in total? Write the numbers separated by a space.",
+      "code": "let count = 0;\ndocument.querySelector('#b').addEventListener('click', () => {\n  count = count + 1;\n  console.log(count);\n});",
+      "language": "js",
+      "answer": "1 2",
+      "accept": ["1\n2"],
+      "explain": "The handler runs once per click. `count` lives outside the handler, so it keeps growing between clicks (a closure at work)."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "events.js",
+    "task": "The page has `<button id=\"add\">`, `<span id=\"count\">0</span>`, `<input id=\"name\">` and `<p id=\"preview\">`.\n\nIn `events.js`:\n\n- Every click on `#add` increases the number shown in `#count` by 1.\n- Every time the user types in `#name`, set the text of `#preview` to `Hello, ` followed by the current value of the input.",
+    "hints": [
+      "Select the elements first, then call `addEventListener` on the button and on the input.",
+      "Keep the counter in a variable outside the click handler (or read `Number(count.textContent)`). In the input handler use `nameBox.value`.",
+      "const add = document.querySelector('#add');\nconst count = document.querySelector('#count');\nconst nameBox = document.querySelector('#name');\nconst preview = document.querySelector('#preview');\n\nlet clicks = 0;\nadd.addEventListener('click', () => {\n  clicks = clicks + 1;\n  count.textContent = clicks;\n});\n\nnameBox.addEventListener('input', () => {\n  preview.textContent = 'Hello, ' + nameBox.value;\n});"
+    ]
+  }
+}

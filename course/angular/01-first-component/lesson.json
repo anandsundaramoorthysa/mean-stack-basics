@@ -1,0 +1,49 @@
+{
+  "title": "Your first component",
+  "minutes": 15,
+  "summary": "A component is a class plus a template, marked with the @Component decorator.",
+  "docs": [
+    { "title": "Angular: Components", "url": "https://angular.dev/guide/components" },
+    { "title": "Angular: Essentials", "url": "https://angular.dev/essentials/components" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does the `selector` of a component do?",
+      "options": ["Names the TypeScript file", "Defines the HTML tag used to place the component", "Sets the page title", "Chooses a CSS colour"],
+      "answer": 1,
+      "explain": "The selector is the custom tag name, for example `app-greeting`, that you write in other templates."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the interpolation that shows the value of `name`.",
+      "template": "<p>Welcome, ___ name ___</p>",
+      "blanks": [["{{"], ["}}"]],
+      "explain": "Interpolation uses double curly braces: `{{ name }}`."
+    },
+    {
+      "type": "predict",
+      "q": "A component has `name = 'Meena'` and the template `<h1>Hi {{ name }}</h1>`. What text appears in the heading?",
+      "code": "name = 'Meena';",
+      "language": "ts",
+      "answer": "Hi Meena",
+      "explain": "Angular replaces `{{ name }}` with the value `Meena`."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "greeting.component.ts",
+    "task": "Complete `greeting.component.ts`.\n\n- Give the component the selector `app-greeting`.\n- Use the template `<h1>Hello {{ name }}</h1>`.\n- Add a property `name` set to `'Angular'`.",
+    "hints": [
+      "Everything goes inside the `@Component({ ... })` settings and the class body.",
+      "Add `selector: 'app-greeting'` and `template: ...` to the settings. In the class write `name = 'Angular';`.",
+      "@Component({\n  selector: 'app-greeting',\n  template: `<h1>Hello {{ name }}</h1>`,\n})\nexport class GreetingComponent {\n  name = 'Angular';\n}"
+    ],
+    "checks": [
+      { "name": "It uses the @Component decorator", "regex": "@Component\\s*\\(", "hint": "Keep the @Component decorator above the class." },
+      { "name": "The selector is app-greeting", "regex": "selector\\s*:\\s*['\"]app-greeting['\"]", "hint": "Add selector: 'app-greeting' to the decorator." },
+      { "name": "The template shows Hello {{ name }} in an h1", "regex": "<h1>\\s*Hello\\s*\\{\\{\\s*name\\s*\\}\\}\\s*</h1>", "hint": "The template should be <h1>Hello {{ name }}</h1>." },
+      { "name": "The class has name set to 'Angular'", "regex": "name\\s*(:\\s*string\\s*)?=\\s*['\"]Angular['\"]", "hint": "Inside the class write: name = 'Angular';" }
+    ]
+  }
+}

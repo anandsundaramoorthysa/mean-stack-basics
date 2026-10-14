@@ -1,0 +1,106 @@
+{
+  "title": "HttpClient",
+  "minutes": 20,
+  "summary": "Call a server from a service with HttpClient and turn the result into a signal.",
+  "docs": [
+    {
+      "title": "Angular: Making HTTP requests",
+      "url": "https://angular.dev/guide/http"
+    },
+    {
+      "title": "Angular: Setting up HttpClient",
+      "url": "https://angular.dev/guide/http/setup"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which function in the app configuration sets up and configures `HttpClient` (it is required before Angular 21 and still used for options such as interceptors)?",
+      "options": [
+        "provideHttpClient()",
+        "provideRouter()",
+        "HttpModule",
+        "fetch()"
+      ],
+      "answer": 0,
+      "explain": "Put `provideHttpClient()` in the `providers` of `app.config.ts`. Before Angular 21 this was required for `inject(HttpClient)`; since 21 the client is available by default and this function is for configuring it."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the call that asks the server for a list of students.",
+      "template": "this.http.___<Student[]>('/api/students')",
+      "blanks": [
+        [
+          "get"
+        ]
+      ],
+      "explain": "`get<T>(url)` sends an HTTP GET request. The type in angle brackets describes the data you expect back."
+    },
+    {
+      "type": "mcq",
+      "q": "`http.get(...)` returns an Observable. When does the request actually go out?",
+      "options": [
+        "Immediately when get() is called",
+        "When something subscribes to the Observable, for example `subscribe()`, `toSignal()` or the async pipe",
+        "Only when the app is built",
+        "Never; it is only a description"
+      ],
+      "answer": 1,
+      "explain": "Observables are lazy. Nothing is sent until there is a subscriber. If you never subscribe, no request is made."
+    },
+    {
+      "type": "mcq",
+      "q": "Which method sends a new student to the server?",
+      "options": [
+        "http.get",
+        "http.post",
+        "http.read",
+        "http.find"
+      ],
+      "answer": 1,
+      "explain": "POST creates data on the server. The second argument is the body, for example `http.post<Student>('/api/students', student)`."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "students-api.ts",
+    "task": "Finish `students-api.ts`.\n\n- Import `HttpClient` and `provideHttpClient` from `@angular/common/http`.\n- In `StudentApi`, get the client with `inject(HttpClient)`.\n- `getAll()` returns `this.http.get<Student[]>('/api/students')`.\n- `add(student: Student)` returns `this.http.post<Student>('/api/students', student)`.\n- In `appConfig`, add `provideHttpClient()` to `providers`.\n- In the component set `students = toSignal(this.api.getAll(), { initialValue: [] })`.",
+    "hints": [
+      "The service needs the client, then two methods that return the request. Do not subscribe inside the service.",
+      "`get<Student[]>(url)` and `post<Student>(url, body)`. In the config the providers list is an array.",
+      "private http = inject(HttpClient);\ngetAll(): Observable<Student[]> {\n  return this.http.get<Student[]>('/api/students');\n}\nadd(student: Student) {\n  return this.http.post<Student>('/api/students', student);\n}\n...\nproviders: [provideHttpClient()]\n...\nstudents = toSignal(this.api.getAll(), { initialValue: [] });"
+    ],
+    "checks": [
+      {
+        "name": "HttpClient and provideHttpClient are imported from @angular/common/http",
+        "hint": "import { HttpClient, provideHttpClient } from '@angular/common/http';",
+        "regex": "import\\s*\\{(?=[^}]*\\bHttpClient\\b)(?=[^}]*\\bprovideHttpClient\\b)[^}]*\\}\\s*from\\s*['\"]@angular/common/http['\"]"
+      },
+      {
+        "name": "The service injects HttpClient",
+        "hint": "Write private http = inject(HttpClient);",
+        "regex": "\\b(\\w+)\\s*(:\\s*HttpClient\\s*)?=\\s*inject\\s*\\(\\s*HttpClient\\s*\\)"
+      },
+      {
+        "name": "getAll() sends a GET request for Student[]",
+        "hint": "Return this.http.get<Student[]>('/api/students').",
+        "regex": "return\\s+this\\.\\w+\\.get\\s*<\\s*Student\\s*\\[\\s*\\]\\s*>\\s*\\(\\s*['\"]/api/students['\"]\\s*\\)"
+      },
+      {
+        "name": "add() sends a POST request with the student",
+        "hint": "Return this.http.post<Student>('/api/students', student).",
+        "regex": "return\\s+this\\.\\w+\\.post\\s*<\\s*Student\\s*>\\s*\\(\\s*['\"]/api/students['\"]\\s*,\\s*student\\s*\\)"
+      },
+      {
+        "name": "appConfig provides the HTTP client",
+        "hint": "Write providers: [provideHttpClient()].",
+        "regex": "providers\\s*:\\s*\\[[^\\]]*provideHttpClient\\s*\\("
+      },
+      {
+        "name": "The component turns the request into a signal with toSignal",
+        "hint": "Write students = toSignal(this.api.getAll(), { initialValue: [] });",
+        "regex": "\\bstudents\\s*=\\s*toSignal\\s*\\(\\s*this\\.\\w+\\.getAll\\s*\\(\\s*\\)\\s*,\\s*\\{\\s*initialValue\\s*:\\s*\\[\\s*\\]\\s*\\}\\s*\\)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "title": "Text and fonts",
+  "minutes": 14,
+  "summary": "Control the font, size, weight, line spacing, alignment and decoration of text.",
+  "docs": [
+    { "title": "MDN: Fundamental text and font styling", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Text_styling/Fundamentals" },
+    { "title": "MDN: font-family", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/font-family" },
+    { "title": "MDN: text-decoration", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Why does `font-family: Arial, sans-serif;` list two values?",
+      "options": ["The browser mixes both fonts", "The second is a fallback if the first is not installed", "sans-serif is a colour", "It is a typing mistake"],
+      "answer": 1,
+      "explain": "The browser tries fonts left to right and uses the first one available. End the list with a generic family such as `sans-serif`."
+    },
+    {
+      "type": "fill",
+      "q": "Centre the text of a paragraph.",
+      "template": "p { text-align: ___; }",
+      "blanks": [["center"]],
+      "explain": "`text-align` accepts `left`, `right`, `center` and `justify`. Note the American spelling: `center`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which declaration removes the underline from links?",
+      "options": ["a { text-decoration: none; }", "a { font-weight: none; }", "a { underline: off; }", "a { text-align: none; }"],
+      "answer": 0,
+      "explain": "Underlines come from `text-decoration`. Set it to `none` to remove it, or `underline` to add one."
+    },
+    {
+      "type": "predict",
+      "q": "A paragraph has `font-size: 20px` and `line-height: 1.5`. What is the line height in px?",
+      "code": "p {\n  font-size: 20px;\n  line-height: 1.5;\n}",
+      "language": "css",
+      "answer": "30px",
+      "accept": ["30", "30 px"],
+      "explain": "A unitless line-height multiplies the font size: 1.5 times 20px is 30px. Unitless values scale nicely with the text."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Style the article text. Work in `index.html`.\n\n- `h1`: `font-size` 32px, centred (`text-align: center`).\n- `p`: `font-family` ending with the generic `sans-serif`, `font-size` 18px, `line-height` 1.5.\n- `.lead`: `font-weight` bold.\n- `a`: no underline (`text-decoration: none`).",
+    "hints": [
+      "Each of these is a plain property: font-size, text-align, font-family, line-height, font-weight, text-decoration.",
+      "Write one rule per selector. A unitless line-height such as 1.5 is multiplied by the font size.",
+      "h1 {\n  font-size: 32px;\n  text-align: center;\n}\np {\n  font-family: Arial, sans-serif;\n  font-size: 18px;\n  line-height: 1.5;\n}\n.lead {\n  font-weight: bold;\n}\na {\n  text-decoration: none;\n}"
+    ],
+    "checks": [
+      { "name": "The h1 is 32px", "selector": "h1", "style": { "prop": "font-size", "equals": "32px" }, "hint": "Add h1 { font-size: 32px; }." },
+      { "name": "The h1 is centred", "selector": "h1", "style": { "prop": "text-align", "equals": "center" }, "hint": "Add text-align: center; to the h1 rule." },
+      { "name": "Paragraphs are 18px", "selector": "p", "scope": "all", "style": { "prop": "font-size", "equals": "18px" }, "hint": "Add p { font-size: 18px; }." },
+      { "name": "Paragraphs have a line height of 27px (1.5 times 18px)", "selector": "p", "style": { "prop": "line-height", "equals": "27px" }, "hint": "Add line-height: 1.5; to the p rule." },
+      { "name": "Paragraphs list a sans-serif font family", "selector": "p", "style": { "prop": "font-family", "regex": "sans-serif" }, "hint": "Write font-family: Arial, sans-serif; (end with the generic sans-serif)." },
+      { "name": ".lead is bold", "selector": ".lead", "style": { "prop": "font-weight", "min": 700 }, "hint": "Add .lead { font-weight: bold; }." },
+      { "name": "Links have no underline", "selector": "a", "style": { "prop": "text-decoration-line", "equals": "none" }, "hint": "Add a { text-decoration: none; }." }
+    ]
+  }
+}

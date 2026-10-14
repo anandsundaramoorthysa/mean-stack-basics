@@ -1,0 +1,338 @@
+{
+  "name": "mean-stack-basics",
+  "displayName": "MEAN Stack Basics",
+  "description": "Learn HTML, CSS, JavaScript, Node.js, Express, MongoDB and Angular inside VS Code with interactive lessons, quizzes and automatic code checking. Works offline. AI help is optional.",
+  "version": "1.0.0",
+  "publisher": "AnandSundaramoorthySa",
+  "author": {
+    "name": "Anand Sundaramoorthy SA"
+  },
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#14324D",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anandsundaramoorthysa/mean-stack-basics.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anandsundaramoorthysa/mean-stack-basics/issues"
+  },
+  "homepage": "https://github.com/anandsundaramoorthysa/mean-stack-basics#readme",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Education",
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "learn",
+    "tutorial",
+    "course",
+    "beginner",
+    "html",
+    "css",
+    "javascript",
+    "node",
+    "express",
+    "mongodb",
+    "angular",
+    "mean",
+    "education",
+    "quiz"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "meanStackBasics.openCourse",
+        "title": "Open Course",
+        "category": "ms",
+        "icon": "$(mortar-board)"
+      },
+      {
+        "command": "meanStackBasics.continue",
+        "title": "Continue Learning",
+        "category": "ms",
+        "icon": "$(play)"
+      },
+      {
+        "command": "meanStackBasics.find",
+        "title": "Find a Lesson",
+        "category": "ms",
+        "icon": "$(search)"
+      },
+      {
+        "command": "meanStackBasics.openLesson",
+        "title": "Open Lesson",
+        "category": "ms"
+      },
+      {
+        "command": "meanStackBasics.check",
+        "title": "Check My Code",
+        "category": "ms",
+        "icon": "$(check)"
+      },
+      {
+        "command": "meanStackBasics.openExercise",
+        "title": "Open Exercise File",
+        "category": "ms",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "meanStackBasics.resetLesson",
+        "title": "Reset Lesson Progress",
+        "category": "ms",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "meanStackBasics.resetProgress",
+        "title": "Reset All Progress",
+        "category": "ms"
+      },
+      {
+        "command": "meanStackBasics.certificate",
+        "title": "Export Certificate",
+        "category": "ms",
+        "icon": "$(verified)"
+      },
+      {
+        "command": "meanStackBasics.report",
+        "title": "Export Progress Report",
+        "category": "ms",
+        "icon": "$(notebook)"
+      },
+      {
+        "command": "meanStackBasics.ai.setKey",
+        "title": "AI: Set API Key",
+        "category": "ms"
+      },
+      {
+        "command": "meanStackBasics.ai.clearKey",
+        "title": "AI: Clear API Key",
+        "category": "ms"
+      },
+      {
+        "command": "meanStackBasics.ai.test",
+        "title": "AI: Test Connection",
+        "category": "ms"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "meanStackBasics.find",
+        "key": "ctrl+alt+m",
+        "mac": "cmd+alt+m"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "meanStackBasics",
+          "title": "MEAN Stack Basics",
+          "icon": "media/sidebar.svg"
+        }
+      ]
+    },
+    "views": {
+      "meanStackBasics": [
+        {
+          "id": "meanStackBasics.course",
+          "name": "Course",
+          "contextualTitle": "MEAN Stack Basics"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "meanStackBasics.openLesson",
+          "when": "false"
+        },
+        {
+          "command": "meanStackBasics.resetLesson",
+          "when": "false"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "meanStackBasics.continue",
+          "when": "view == meanStackBasics.course",
+          "group": "navigation@1"
+        },
+        {
+          "command": "meanStackBasics.find",
+          "when": "view == meanStackBasics.course",
+          "group": "navigation@2"
+        },
+        {
+          "command": "meanStackBasics.report",
+          "when": "view == meanStackBasics.course",
+          "group": "overflow@1"
+        },
+        {
+          "command": "meanStackBasics.certificate",
+          "when": "view == meanStackBasics.course",
+          "group": "overflow@2"
+        },
+        {
+          "command": "meanStackBasics.resetProgress",
+          "when": "view == meanStackBasics.course",
+          "group": "overflow@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "meanStackBasics.resetLesson",
+          "when": "view == meanStackBasics.course && viewItem == lesson",
+          "group": "inline"
+        },
+        {
+          "command": "meanStackBasics.certificate",
+          "when": "view == meanStackBasics.course && viewItem == trackComplete",
+          "group": "inline"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "MEAN Stack Basics",
+      "properties": {
+        "meanStackBasics.courseFolder": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "markdownDescription": "Folder where exercise files are created. Leave empty to use `MEAN Stack Basics` inside your home folder."
+        },
+        "meanStackBasics.ai.enabled": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Turn on the optional **Stuck?** helper. It sends your code, the failing check and the lesson summary to the AI service you configure below. Off by default."
+        },
+        "meanStackBasics.ai.baseUrl": {
+          "type": "string",
+          "default": "http://localhost:11434/v1",
+          "markdownDescription": "Base URL of any OpenAI-compatible chat API, for example `http://localhost:11434/v1` (Ollama), `http://localhost:1234/v1` (LM Studio) or `https://api.openai.com/v1`."
+        },
+        "meanStackBasics.ai.model": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Model name to request, for example `qwen2.5-coder:3b` or `gpt-4o-mini`."
+        },
+        "meanStackBasics.ai.maxTokens": {
+          "type": "number",
+          "default": 400,
+          "minimum": 50,
+          "maximum": 2000,
+          "description": "Upper limit on the length of each AI reply."
+        },
+        "meanStackBasics.ai.maxTokensParam": {
+          "type": "string",
+          "default": "max_tokens",
+          "enum": [
+            "max_tokens",
+            "max_completion_tokens"
+          ],
+          "description": "Name of the request field that limits reply length. Some newer hosted models require max_completion_tokens."
+        },
+        "meanStackBasics.ai.dailyLimit": {
+          "type": "number",
+          "default": 50,
+          "minimum": 1,
+          "maximum": 500,
+          "description": "Maximum AI requests per day, counted on this machine."
+        }
+      }
+    },
+    "walkthroughs": [
+      {
+        "id": "meanStackBasics.gettingStarted",
+        "title": "Get started with MEAN Stack Basics",
+        "description": "A short tour of lessons, exercises and checking.",
+        "steps": [
+          {
+            "id": "open",
+            "title": "Open the course",
+            "description": "The course map lists every track from HTML to Angular. Pick a lesson or press Continue.\n[Open course](command:meanStackBasics.openCourse)",
+            "media": {
+              "markdown": "media/walkthrough/open.md"
+            },
+            "completionEvents": [
+              "onCommand:meanStackBasics.openCourse"
+            ]
+          },
+          {
+            "id": "lesson",
+            "title": "Read, predict, answer",
+            "description": "Each lesson is short. Read the idea, then answer the quick questions. Wrong answers explain why.\n[Continue learning](command:meanStackBasics.continue)",
+            "media": {
+              "markdown": "media/walkthrough/lesson.md"
+            },
+            "completionEvents": [
+              "onCommand:meanStackBasics.continue",
+              "onCommand:meanStackBasics.openLesson"
+            ]
+          },
+          {
+            "id": "check",
+            "title": "Write code and check it",
+            "description": "Open the exercise file, edit it, then press Check My Code. Results appear in the lesson page.\n[Check my code](command:meanStackBasics.check)",
+            "media": {
+              "markdown": "media/walkthrough/check.md"
+            },
+            "completionEvents": [
+              "onCommand:meanStackBasics.check"
+            ]
+          },
+          {
+            "id": "ai",
+            "title": "Optional: ask for a hint",
+            "description": "AI help is off by default. Turn it on only if you want hints from an AI service you choose.\n[Open AI settings](command:workbench.action.openSettings?%5B%22meanStackBasics.ai%22%5D)",
+            "media": {
+              "markdown": "media/walkthrough/ai.md"
+            },
+            "completionEvents": [
+              "onSettingChanged:meanStackBasics.ai.enabled"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "vitest run",
+    "validate": "npm run compile && node out/tools/validate.js",
+    "validate:links": "npm run compile && node out/tools/validate.js --links",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "linkedom": "^0.18.13",
+    "markdown-it": "^14.1.0",
+    "mingo": "^7.2.4"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.9.2",
+    "playwright-core": "^1.50.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.1.8"
+  }
+}

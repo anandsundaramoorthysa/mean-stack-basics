@@ -1,0 +1,79 @@
+{
+  "title": "Mini project: a profile card",
+  "minutes": 25,
+  "summary": "Combine variables, the box model, text styling, flexbox and transitions to build a polished profile card.",
+  "docs": [
+    { "title": "MDN: CSS styling basics", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics" },
+    { "title": "MDN: Using CSS custom properties", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties" },
+    { "title": "MDN: margin", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/margin" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "How do you centre a fixed-width block horizontally in its parent?",
+      "options": ["text-align: center on the block", "margin-left: auto and margin-right: auto (margin: 0 auto)", "position: center", "float: middle"],
+      "answer": 1,
+      "explain": "A block with a set width and automatic left and right margins splits the leftover space equally. `text-align` only centres the text inside."
+    },
+    {
+      "type": "mcq",
+      "q": "Which makes a list show without bullets?",
+      "options": ["list-style: none", "bullets: off", "display: bulletless", "text-decoration: none"],
+      "answer": 0,
+      "explain": "`list-style: none` removes the markers. Lists also have default padding, so many developers add `padding: 0` as well."
+    },
+    {
+      "type": "fill",
+      "q": "Read the variable `--accent` in the declaration.",
+      "template": "background-color: ___(--accent);",
+      "blanks": [["var"]],
+      "explain": "Define `--accent` once in `:root`, read it anywhere with `var(--accent)`."
+    },
+    {
+      "type": "order",
+      "q": "Order these steps for styling the card sensibly.",
+      "lines": ["Define variables in :root", "Set the page background and base text", "Style the card box", "Style the pieces inside it", "Add hover and transition effects"],
+      "explain": "Start with global decisions (variables, page), then the container, then its contents, and finish with details like hover effects."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Style the HTML into a profile card. The markup is done; write the CSS. Work in `index.html`.\n\n- `:root` defines `--accent` and the button uses `var(--accent)` as its `background-color`.\n- `body` has `background-color: #f0f2f5`.\n- `.card`: `max-width` 360px, centred with `margin: 40px auto`, `padding` 24px, white background, `border-radius` 16px, a `box-shadow`, `box-sizing: border-box`.\n- `.avatar`: 96px by 96px circle with a background colour, centred with `margin: 0 auto 16px`.\n- `.name`: `font-size` 24px, `text-align: center`, `margin` 0. `.role`: `color: dimgray`, centred.\n- `.skills`: no bullets, no padding, `display: flex`, `flex-wrap: wrap`, `gap: 8px`. Each `.skills li` has `padding: 4px 12px`, a `border-radius` of 999px and a light `background-color`.\n- `.btn`: `display: block`, centred text, white `color`, no underline, `padding` 12px, a `transition`, and a `:hover` rule that darkens it.",
+    "hints": [
+      "Work top to bottom: variables, page, card, then each inner part. Check often and fix one failing item at a time.",
+      "Centre the card with `margin: 40px auto`. The skills list needs list-style none, padding 0, then display flex with wrap and gap.",
+      ":root { --accent: #0057b8; }\nbody { background-color: #f0f2f5; }\n.card {\n  box-sizing: border-box;\n  max-width: 360px;\n  margin: 40px auto;\n  padding: 24px;\n  background-color: white;\n  border-radius: 16px;\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);\n}\n.avatar { width: 96px; height: 96px; margin: 0 auto 16px; border-radius: 50%; background-color: var(--accent); }\n.name { margin: 0; font-size: 24px; text-align: center; }\n.role { color: dimgray; text-align: center; }\n.skills { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; }\n.skills li { padding: 4px 12px; border-radius: 999px; background-color: #e0e7f1; }\n.btn { display: block; padding: 12px; text-align: center; color: white; text-decoration: none; background-color: var(--accent); transition: background-color 0.3s; }\n.btn:hover { background-color: #003a7a; }"
+    ],
+    "checks": [
+      { "name": "--accent is defined in :root", "source": { "regex": ":root\\s*\\{[^}]*--accent\\s*:", "flags": "i" }, "hint": "Add :root { --accent: #0057b8; }." },
+      { "name": "The page background is #f0f2f5", "selector": "body", "style": { "prop": "background-color", "equals": "#f0f2f5" }, "hint": "Add body { background-color: #f0f2f5; }." },
+      { "name": "The card is at most 360px wide", "selector": ".card", "style": { "prop": "max-width", "equals": "360px" }, "hint": "Add max-width: 360px; to .card." },
+      { "name": "The card is centred with auto margins", "selector": ".card", "style": { "prop": "margin-left", "min": 100 }, "hint": "Use margin: 40px auto; so the side margins share the free space." },
+      { "name": "The card has 24px padding", "selector": ".card", "style": { "prop": "padding-top", "equals": "24px" }, "hint": "Add padding: 24px; to .card." },
+      { "name": "The card is white with 16px rounded corners", "selector": ".card", "style": { "prop": "border-top-left-radius", "equals": "16px" }, "hint": "Add border-radius: 16px; and background-color: white; to .card." },
+      { "name": "The card background is white", "selector": ".card", "style": { "prop": "background-color", "equals": "white" }, "hint": "Add background-color: white; to .card." },
+      { "name": "The card has a shadow", "selector": ".card", "style": { "prop": "box-shadow", "regex": "^(?!none)" }, "hint": "Add box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);." },
+      { "name": "The avatar is a 96px circle", "selector": ".avatar", "style": { "prop": "width", "equals": "96px" }, "hint": "Give .avatar width: 96px; height: 96px; border-radius: 50%;." },
+      { "name": "The avatar has round corners (50%)", "selector": ".avatar", "style": { "prop": "border-top-left-radius", "equals": "50%" }, "hint": "Add border-radius: 50%; to .avatar." },
+      { "name": "The avatar has a background colour", "selector": ".avatar", "style": { "prop": "background-color", "regex": "^(?!rgba\\(0, 0, 0, 0\\))" }, "hint": "Give .avatar a background-color so the circle is visible." },
+      { "name": "The name is 24px, centred", "selector": ".name", "style": { "prop": "font-size", "equals": "24px" }, "hint": "Add .name { font-size: 24px; text-align: center; margin: 0; }." },
+      { "name": "The name text is centred", "selector": ".name", "style": { "prop": "text-align", "equals": "center" }, "hint": "Add text-align: center; to .name." },
+      { "name": "The role is dimgray", "selector": ".role", "style": { "prop": "color", "equals": "dimgray" }, "hint": "Add .role { color: dimgray; text-align: center; }." },
+      { "name": "The skills list has no bullets", "selector": ".skills", "style": { "prop": "list-style-type", "equals": "none" }, "hint": "Add list-style: none; to .skills." },
+      { "name": "The skills list is a wrapping flex container", "selector": ".skills", "style": { "prop": "flex-wrap", "equals": "wrap" }, "hint": "Add display: flex; flex-wrap: wrap; to .skills." },
+      { "name": "The skills list uses a flex display", "selector": ".skills", "style": { "prop": "display", "equals": "flex" }, "hint": "Add display: flex; to .skills." },
+      { "name": "The skills list has an 8px gap", "selector": ".skills", "style": { "prop": "column-gap", "equals": "8px" }, "hint": "Add gap: 8px; and padding: 0; to .skills." },
+      { "name": "The skills list has no padding", "selector": ".skills", "style": { "prop": "padding-left", "equals": "0px" }, "hint": "Add padding: 0; to .skills." },
+      { "name": "Each skill has a background colour", "selector": ".skills li", "scope": "all", "style": { "prop": "background-color", "regex": "^(?!rgba\\(0, 0, 0, 0\\))" }, "hint": "Add a light background-color to .skills li." },
+      { "name": "Each skill is a pill with 12px side padding", "selector": ".skills li", "scope": "all", "style": { "prop": "padding-left", "equals": "12px" }, "hint": "Add .skills li { padding: 4px 12px; }." },
+      { "name": "Each skill has fully rounded corners", "selector": ".skills li", "scope": "all", "style": { "prop": "border-top-left-radius", "min": 100 }, "hint": "Add border-radius: 999px; to .skills li." },
+      { "name": "The button is a block", "selector": ".btn", "style": { "prop": "display", "equals": "block" }, "hint": "Add display: block; to .btn." },
+      { "name": "The button text is white and centred", "selector": ".btn", "style": { "prop": "color", "equals": "white" }, "hint": "Add color: white; and text-align: center; to .btn." },
+      { "name": "The button has no underline", "selector": ".btn", "style": { "prop": "text-decoration-line", "equals": "none" }, "hint": "Add text-decoration: none; to .btn." },
+      { "name": "The button background uses var(--accent)", "source": { "regex": "\\.btn\\s*\\{[^}]*background-color\\s*:\\s*var\\(\\s*--accent\\s*\\)", "flags": "i" }, "hint": "Write background-color: var(--accent); in the .btn rule." },
+      { "name": "The button has a transition", "selector": ".btn", "style": { "prop": "transition-duration", "regex": "^(?!0s$)" }, "hint": "Add transition: background-color 0.3s; to .btn." },
+      { "name": "The button has a :hover rule", "source": { "regex": "\\.btn:hover\\s*\\{[^}]*background", "flags": "i" }, "hint": "Add .btn:hover { background-color: #003a7a; }." }
+    ]
+  }
+}

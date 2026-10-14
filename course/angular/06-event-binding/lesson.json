@@ -1,0 +1,98 @@
+{
+  "title": "Event binding",
+  "minutes": 12,
+  "summary": "React to clicks with (click) and call a method that changes the component's data.",
+  "docs": [
+    {
+      "title": "Angular: Adding event listeners",
+      "url": "https://angular.dev/guide/templates/event-listeners"
+    },
+    {
+      "title": "Angular: Templates overview",
+      "url": "https://angular.dev/guide/templates"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which syntax runs `save()` when a button is clicked?",
+      "options": [
+        "<button [click]=\"save()\">",
+        "<button {{click}}=\"save()\">",
+        "<button (click)=\"save()\">",
+        "<button onclick=\"save\">"
+      ],
+      "answer": 2,
+      "explain": "Parentheses bind to an event: `(click)=\"save()\"`. Square brackets are for properties, and plain `onclick` is not how Angular listens."
+    },
+    {
+      "type": "fill",
+      "q": "Finish the method so it adds one to `votes`.",
+      "template": "vote() {\n  ___.votes++;\n}",
+      "blanks": [
+        [
+          "this"
+        ]
+      ],
+      "explain": "Inside a class method, `this` is the component. `this.votes` is the property."
+    },
+    {
+      "type": "mcq",
+      "q": "What is `$event` in `(input)=\"onType($event)\"`?",
+      "options": [
+        "The name of the component",
+        "The event object the browser created",
+        "A signal",
+        "The previous value of the input"
+      ],
+      "answer": 1,
+      "explain": "`$event` carries details about what happened, for example the DOM event with `target.value` for typed text."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that has a mistake. The click should call the method.",
+      "code": "template: `\n  <button (click)=\"vote\">Vote</button>\n  <p>{{ votes }}</p>\n`",
+      "answerLines": [
+        2
+      ],
+      "explain": "`vote` without parentheses only names the method. Write `(click)=\"vote()\"` to call it."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "vote.component.ts",
+    "task": "Finish `vote.component.ts`.\n\n- The first button uses `(click)=\"vote()\"` and the second uses `(click)=\"reset()\"`.\n- `vote()` adds one to `this.votes`.\n- `reset()` sets `this.votes` back to `0`.",
+    "hints": [
+      "Each button needs an event binding, and the class needs the two methods.",
+      "Inside a method use `this.votes`. For adding one you can write `this.votes++`.",
+      "template: `\n  <button (click)=\"vote()\">Vote</button>\n  <button (click)=\"reset()\">Reset</button>\n  <p>Votes: {{ votes }}</p>\n`,\n...\nvote() {\n  this.votes++;\n}\nreset() {\n  this.votes = 0;\n}"
+    ],
+    "checks": [
+      {
+        "name": "The class has votes starting at 0",
+        "hint": "Keep votes = 0; in the class.",
+        "regex": "\\bvotes\\s*(:\\s*number\\s*)?=\\s*0"
+      },
+      {
+        "name": "A button has (click)=\"vote()\"",
+        "hint": "Add (click)=\"vote()\" to the first button.",
+        "regex": "\\(click\\)\\s*=\\s*[\"']vote\\(\\s*\\)[\"']"
+      },
+      {
+        "name": "A button has (click)=\"reset()\"",
+        "hint": "Add (click)=\"reset()\" to the second button.",
+        "regex": "\\(click\\)\\s*=\\s*[\"']reset\\(\\s*\\)[\"']"
+      },
+      {
+        "name": "vote() adds one to this.votes",
+        "hint": "Write vote() { this.votes++; }",
+        "regex": "\\bvote\\s*\\(\\s*\\)\\s*(:\\s*void\\s*)?\\{[^}]*this\\.votes\\s*(\\+\\+|\\+=\\s*1|=\\s*this\\.votes\\s*\\+\\s*1)"
+      },
+      {
+        "name": "reset() sets this.votes to 0",
+        "hint": "Write reset() { this.votes = 0; }",
+        "regex": "\\breset\\s*\\(\\s*\\)\\s*(:\\s*void\\s*)?\\{[^}]*this\\.votes\\s*=\\s*0"
+      }
+    ]
+  }
+}

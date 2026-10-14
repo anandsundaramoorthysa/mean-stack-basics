@@ -1,0 +1,77 @@
+{
+  "title": "Angular service and student list",
+  "minutes": 20,
+  "summary": "Fetch students with an HttpClient service and show them in a component with signals and @for.",
+  "docs": [
+    { "title": "Angular: Making HTTP requests", "url": "https://angular.dev/guide/http" },
+    { "title": "Angular: Dependency injection", "url": "https://angular.dev/guide/di" },
+    { "title": "Angular: Control flow", "url": "https://angular.dev/guide/templates/control-flow" },
+    { "title": "Angular: Signals", "url": "https://angular.dev/guide/signals" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Why is the HTTP code placed in a service and not directly in the component?",
+      "options": [
+        "Components cannot make requests at all",
+        "A service can be shared and reused, and keeps the component focused on the page",
+        "Services are faster than components",
+        "Angular requires every class to have a service"
+      ],
+      "answer": 1,
+      "explain": "Several components may need students. One service means one place to change the URL or the logic."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the line that asks Angular for the HTTP tool.",
+      "template": "private http = ___(HttpClient);",
+      "blanks": [["inject"]],
+      "explain": "`inject(...)` is the current way to receive a dependency in a field of a class."
+    },
+    {
+      "type": "predict",
+      "q": "A signal is created as `count = signal(5);`. What expression reads its value in a template?",
+      "code": "count = signal(5);",
+      "language": "ts",
+      "answer": "count()",
+      "accept": ["{{ count() }}", "{{count()}}"],
+      "explain": "A signal is a function. Calling it with no arguments reads the current value."
+    },
+    {
+      "type": "bug",
+      "q": "The list never shows anything. Click the faulty line.",
+      "code": "constructor() {\n  this.service.getAll();\n}",
+      "answerLines": [2],
+      "explain": "An Observable from HttpClient is lazy: no request is sent until you call `.subscribe(...)`. Subscribe and `set` the signal inside it."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `track student.id` do in `@for`?",
+      "options": ["Sorts the students by id", "Tells Angular how to recognise each item between updates", "Hides the id on screen", "Makes the id required"],
+      "answer": 1,
+      "explain": "A stable identity lets Angular reuse the existing HTML for unchanged items instead of rebuilding the whole list."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "students.ts",
+    "task": "Complete `students.ts` (service and component in one file for practice).\n\n- `StudentsService` is `@Injectable({ providedIn: 'root' })` and uses `inject(HttpClient)`.\n- Its `getAll()` returns `http.get<Student[]>(...)` for `http://localhost:3000/students`.\n- `StudentListComponent` has the selector `app-student-list` and injects the service.\n- It keeps the students in a `signal`, filled with `.subscribe(...)` and `.set(...)`.\n- The template lists them with `@for (... of students(); track student.id)` and shows `{{ student.name }}`.",
+    "hints": [
+      "Add the decorators above the two classes, and fill each class using the TODO comments in order.",
+      "The service field is `private http = inject(HttpClient);`. The component field is `students = signal<Student[]>([]);` and the constructor subscribes to `this.service.getAll()`.",
+      "@Injectable({ providedIn: 'root' })\nexport class StudentsService {\n  private http = inject(HttpClient);\n  getAll() {\n    return this.http.get<Student[]>('http://localhost:3000/students');\n  }\n}\n\n@Component({\n  selector: 'app-student-list',\n  template: `\n    <ul>\n      @for (student of students(); track student.id) {\n        <li>{{ student.name }}</li>\n      }\n    </ul>\n  `,\n})\nexport class StudentListComponent {\n  private service = inject(StudentsService);\n  students = signal<Student[]>([]);\n  constructor() {\n    this.service.getAll().subscribe((list) => this.students.set(list));\n  }\n}"
+    ],
+    "checks": [
+      { "name": "The service uses @Injectable with providedIn root", "regex": "@Injectable\\s*\\(\\s*\\{\\s*providedIn\\s*:\\s*['\"]root['\"]\\s*,?\\s*\\}\\s*\\)", "hint": "Add @Injectable({ providedIn: 'root' }) above StudentsService." },
+      { "name": "The service gets HttpClient with inject()", "regex": "inject\\s*\\(\\s*HttpClient\\s*\\)", "hint": "Write: private http = inject(HttpClient);" },
+      { "name": "getAll() sends GET to the /students URL", "regex": "\\.get\\s*(<[^>]*>)?\\s*\\(\\s*['\"`][^'\"`]*/students['\"`]", "hint": "Return this.http.get<Student[]>('http://localhost:3000/students');" },
+      { "name": "The component has the selector app-student-list", "regex": "selector\\s*:\\s*['\"]app-student-list['\"]", "hint": "Add @Component({ selector: 'app-student-list', ... }) above the class." },
+      { "name": "The component injects StudentsService", "regex": "inject\\s*\\(\\s*StudentsService\\s*\\)", "hint": "Write: private service = inject(StudentsService);" },
+      { "name": "The students are kept in a signal", "regex": "students\\s*=\\s*signal\\s*(<[^>]*>)?\\s*\\(", "hint": "Write: students = signal<Student[]>([]);" },
+      { "name": "The component subscribes and sets the signal", "regex": "\\.subscribe\\s*\\([\\s\\S]*students\\.set\\s*\\(", "hint": "Call this.service.getAll().subscribe((list) => this.students.set(list));" },
+      { "name": "The template uses @for over students() tracked by id", "regex": "@for\\s*\\(\\s*\\w+\\s+of\\s+students\\(\\)\\s*;\\s*track\\s+\\w+\\.id\\s*\\)", "hint": "Write @for (student of students(); track student.id) { ... } in the template." },
+      { "name": "Each student's name is shown", "regex": "\\{\\{\\s*\\w+\\.name\\s*\\}\\}", "hint": "Inside the loop, show the name with {{ student.name }}." },
+      { "name": "It does not use the old *ngFor", "regex": "\\*ngFor", "not": true, "hint": "Use the built-in @for block instead of *ngFor." }
+    ]
+  }
+}

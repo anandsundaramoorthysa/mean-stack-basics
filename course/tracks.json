@@ -1,0 +1,59 @@
+{
+  "tracks": [
+    {
+      "id": "html",
+      "title": "HTML",
+      "summary": "Structure web pages with elements, links, lists, tables and forms.",
+      "docsHome": { "title": "MDN: HTML", "url": "https://developer.mozilla.org/en-US/docs/Web/HTML" }
+    },
+    {
+      "id": "css",
+      "title": "CSS",
+      "summary": "Style pages with selectors, the box model, flexbox, grid and responsive design.",
+      "docsHome": { "title": "MDN: CSS", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS" }
+    },
+    {
+      "id": "javascript",
+      "title": "JavaScript",
+      "summary": "Variables, functions, arrays, objects, the DOM, events and asynchronous code.",
+      "docsHome": { "title": "MDN: JavaScript", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript" }
+    },
+    {
+      "id": "nodejs",
+      "title": "Node.js",
+      "summary": "Run JavaScript outside the browser: modules, files, events and HTTP.",
+      "docsHome": { "title": "Node.js Learn", "url": "https://nodejs.org/en/learn" }
+    },
+    {
+      "id": "express",
+      "title": "Express",
+      "summary": "Build web servers and REST APIs with routing, middleware and error handling.",
+      "docsHome": { "title": "Express documentation", "url": "https://expressjs.com/" }
+    },
+    {
+      "id": "mongodb",
+      "title": "MongoDB",
+      "summary": "Store and query documents: CRUD, operators, aggregation and data modelling.",
+      "docsHome": { "title": "MongoDB Manual", "url": "https://www.mongodb.com/docs/manual/" }
+    },
+    {
+      "id": "angular",
+      "title": "Angular",
+      "summary": "Build front ends with TypeScript, components, templates, signals, services and routing.",
+      "docsHome": { "title": "Angular documentation", "url": "https://angular.dev/" }
+    },
+    {
+      "id": "angularjs",
+      "title": "AngularJS (legacy)",
+      "summary": "A short module for the end-of-life AngularJS 1.x, for codebases and courses that still use it.",
+      "docsHome": { "title": "AngularJS documentation", "url": "https://docs.angularjs.org/" },
+      "legacy": true
+    },
+    {
+      "id": "capstone",
+      "title": "Capstone: MEAN project",
+      "summary": "Put it together: an API, a database model and an Angular front end for one small app.",
+      "docsHome": { "title": "Express documentation", "url": "https://expressjs.com/" }
+    }
+  ]
+}

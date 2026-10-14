@@ -1,0 +1,61 @@
+{
+  "title": "Sending JSON and status codes",
+  "minutes": 14,
+  "summary": "Answer with res.json and choose the right status code with res.status and res.sendStatus.",
+  "docs": [
+    { "title": "Express 5 API: res.json", "url": "https://expressjs.com/en/5x/api.html#res.json" },
+    { "title": "Express 5 API: res.status", "url": "https://expressjs.com/en/5x/api.html#res.status" },
+    { "title": "Node.js: HTTP status codes", "url": "https://nodejs.org/api/http.html#httpstatus_codes" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which status code means \"the thing you asked for was created\"?",
+      "options": ["200", "201", "301", "404"],
+      "answer": 1,
+      "explain": "201 Created is the usual answer to a successful POST that adds something. 200 is plain success, 301 is a redirect and 404 means not found."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the line so the server answers with status 404 and a JSON message.",
+      "template": "res.___(404).___({ error: 'Not found' });",
+      "blanks": [["status"], ["json"]],
+      "explain": "`res.status(404)` sets the code and returns `res`, so you can chain `.json(...)` straight after it."
+    },
+    {
+      "type": "mcq",
+      "q": "What status does a route send if you only call `res.json({ ok: true })` and never set one?",
+      "options": ["200", "201", "204", "500"],
+      "answer": 0,
+      "explain": "The default status is 200 (OK). You only need `res.status(...)` when you want a different one."
+    },
+    {
+      "type": "order",
+      "q": "Put the lines in order to build a route that answers a POST with 201 and JSON.",
+      "lines": [
+        "app.post('/api/items', (req, res) => {",
+        "  const item = { id: 1, name: 'pen' };",
+        "  res.status(201).json(item);",
+        "});"
+      ],
+      "explain": "Create the data inside the handler, then send it with `res.status(201).json(item)`."
+    },
+    {
+      "type": "mcq",
+      "q": "A route finished a delete and has nothing to say back. Which call fits best?",
+      "options": ["res.sendStatus(204)", "res.json(204)", "res.send(404)", "res.sendStatus(500)"],
+      "answer": 0,
+      "explain": "204 means \"No Content\": success with an empty body. `res.sendStatus(204)` sets the code and ends the response in one call."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "Add these four routes in `app.js`:\n\n- `GET /api/ping` sends JSON `{ \"message\": \"pong\" }`.\n- `POST /api/ping` answers with status `201` and JSON `{ \"created\": true }`.\n- `GET /api/secret` answers with status `403` and JSON `{ \"error\": \"Forbidden\" }`.\n- `DELETE /api/ping` answers with status `204` and no body.\n\nLeave `module.exports = app;` at the bottom.",
+    "hints": [
+      "Use `app.get`, `app.post` and `app.delete` for the three methods. `res.json(...)` sends an object as JSON.",
+      "Chain the status before the body: `res.status(201).json(...)`. For the empty answer use `res.sendStatus(204)`.",
+      "app.get('/api/ping', (req, res) => {\n  res.json({ message: 'pong' });\n});\napp.post('/api/ping', (req, res) => {\n  res.status(201).json({ created: true });\n});\napp.get('/api/secret', (req, res) => {\n  res.status(403).json({ error: 'Forbidden' });\n});\napp.delete('/api/ping', (req, res) => {\n  res.sendStatus(204);\n});"
+    ]
+  }
+}

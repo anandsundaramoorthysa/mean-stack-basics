@@ -1,0 +1,104 @@
+{
+  "title": "Services and dependency injection",
+  "minutes": 18,
+  "summary": "Put shared logic in an @Injectable service and receive it in a component with inject().",
+  "docs": [
+    {
+      "title": "Angular: Dependency injection",
+      "url": "https://angular.dev/guide/di"
+    },
+    {
+      "title": "Angular: Creating and using services",
+      "url": "https://angular.dev/guide/di/creating-and-using-services"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `@Injectable({ providedIn: 'root' })` do?",
+      "options": [
+        "Makes one shared instance available to the whole app",
+        "Creates a new copy for every component",
+        "Turns the class into a component",
+        "Deletes the service after use"
+      ],
+      "answer": 0,
+      "explain": "`providedIn: 'root'` registers a single instance (a **singleton**) with the app, so every component that asks for it gets the same object."
+    },
+    {
+      "type": "fill",
+      "q": "Ask Angular for the service inside a component.",
+      "template": "private service = ___(StudentService);",
+      "blanks": [
+        [
+          "inject"
+        ]
+      ],
+      "explain": "`inject(StudentService)` returns the shared instance. Write it as a field initialiser at the top of the class."
+    },
+    {
+      "type": "mcq",
+      "q": "Why put logic in a service instead of in a component?",
+      "options": [
+        "Services run faster",
+        "Several components can share the same data and logic, and it is easier to test",
+        "Components cannot hold methods",
+        "It is required by TypeScript"
+      ],
+      "answer": 1,
+      "explain": "Components should focus on the screen. Shared data, rules and server calls belong in services."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that is wrong. A component wants the service.",
+      "code": "export class ListComponent {\n  service = new StudentService();\n  names = this.service.getAll();\n}",
+      "answerLines": [
+        2
+      ],
+      "explain": "Creating the service with `new` gives this component its own copy and bypasses Angular. Use `inject(StudentService)` so the instance is shared."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "students.ts",
+    "task": "Finish `students.ts`.\n\n- Import `Injectable` and `inject` from `@angular/core`.\n- Mark `StudentService` with `@Injectable({ providedIn: 'root' })`.\n- Its method `getAll()` returns `this.students`.\n- In `StudentListComponent` get the service with `inject(StudentService)` and set `names = this.service.getAll()` (any field name for the service is fine, but use it in `names`).",
+    "hints": [
+      "The decorator goes directly above `export class StudentService`.",
+      "In the component, a field such as `private service = inject(StudentService);` must come before the field that uses it.",
+      "@Injectable({ providedIn: 'root' })\nexport class StudentService {\n  private students = ['Asha', 'Ravi', 'Meena'];\n  getAll(): string[] {\n    return this.students;\n  }\n}\n...\nprivate service = inject(StudentService);\nnames = this.service.getAll();"
+    ],
+    "checks": [
+      {
+        "name": "Injectable and inject are imported",
+        "hint": "import { Component, Injectable, inject } from '@angular/core';",
+        "regex": "import\\s*\\{(?=[^}]*\\bInjectable\\b)(?=[^}]*\\binject\\b)[^}]*\\}\\s*from\\s*['\"]@angular/core['\"]"
+      },
+      {
+        "name": "The service is provided in root",
+        "hint": "Write @Injectable({ providedIn: 'root' }) above the class.",
+        "regex": "@Injectable\\s*\\(\\s*\\{\\s*providedIn\\s*:\\s*['\"]root['\"]\\s*,?\\s*\\}\\s*\\)\\s*export\\s+class\\s+StudentService"
+      },
+      {
+        "name": "getAll() returns this.students",
+        "hint": "Write getAll() { return this.students; }",
+        "regex": "\\bgetAll\\s*\\(\\s*\\)\\s*(:\\s*string\\s*\\[\\s*\\]\\s*)?\\{\\s*return\\s+(\\[\\s*\\.\\.\\.\\s*)?this\\.students"
+      },
+      {
+        "name": "The component injects StudentService",
+        "hint": "Write private service = inject(StudentService);",
+        "regex": "\\b(\\w+)\\s*(:\\s*StudentService\\s*)?=\\s*inject\\s*(<\\s*StudentService\\s*>)?\\s*\\(\\s*StudentService\\s*\\)"
+      },
+      {
+        "name": "names comes from the service's getAll()",
+        "hint": "Write names = this.service.getAll();",
+        "regex": "\\bnames\\s*(:\\s*string\\s*\\[\\s*\\]\\s*)?=\\s*this\\.\\w+\\.getAll\\s*\\(\\s*\\)"
+      },
+      {
+        "name": "The service is not created with new",
+        "hint": "Remove new StudentService(). Use inject().",
+        "regex": "new\\s+StudentService",
+        "not": true
+      }
+    ]
+  }
+}

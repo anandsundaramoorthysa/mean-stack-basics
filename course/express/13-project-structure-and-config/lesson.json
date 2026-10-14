@@ -1,0 +1,73 @@
+{
+  "title": "Project structure and config",
+  "minutes": 14,
+  "summary": "Organise an Express project into small files and read settings from process.env with safe defaults.",
+  "docs": [
+    { "title": "Node.js: process.env", "url": "https://nodejs.org/api/process.html#processenv" },
+    { "title": "Node.js: Command-line options (--env-file)", "url": "https://nodejs.org/api/cli.html" },
+    { "title": "Express: Routing", "url": "https://expressjs.com/en/guide/routing.html" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which split is common for an Express project?",
+      "options": [
+        "app.js builds the app and exports it, server.js starts listening",
+        "Everything in one 2000 line file",
+        "One file per HTTP status code",
+        "A separate project for every route"
+      ],
+      "answer": 0,
+      "explain": "Keeping `app` separate from `listen` lets tests import the app without starting a real server, exactly like the exercises in this course."
+    },
+    {
+      "type": "mcq",
+      "q": "Why keep a port number or secret key out of your source code?",
+      "options": [
+        "Different machines need different values, and secrets must not be shared in code",
+        "Numbers are not allowed in JavaScript files",
+        "Node.js cannot read constants",
+        "It makes the code run faster"
+      ],
+      "answer": 0,
+      "explain": "Your laptop, a test server and production all need different settings, and secrets pushed to a public repository can be stolen. Settings go in the environment."
+    },
+    {
+      "type": "predict",
+      "q": "The environment has no PORT variable. What does this print?",
+      "code": "const port = process.env.PORT || 3000;\nconsole.log(port);",
+      "language": "javascript",
+      "answer": "3000",
+      "explain": "An unset variable is `undefined`, which is falsy, so `||` picks the default 3000."
+    },
+    {
+      "type": "mcq",
+      "q": "The environment sets PORT to 8080. What is the type of `process.env.PORT`?",
+      "options": ["string", "number", "boolean", "object"],
+      "answer": 0,
+      "explain": "Environment variables are always strings. Convert with `Number(process.env.PORT)` when you need a number."
+    },
+    {
+      "type": "order",
+      "q": "Put the lines in order for a server.js that loads the app and starts listening.",
+      "lines": [
+        "const app = require('./app');",
+        "const port = Number(process.env.PORT) || 3000;",
+        "app.listen(port, () => {",
+        "  console.log('Listening on ' + port);",
+        "});"
+      ],
+      "explain": "Load the app, work out the port from the environment with a default, then start listening."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "In `app.js`, build a `config` object from environment variables with defaults, and expose it:\n\n- `appName` comes from `process.env.APP_NAME`, default `Task Manager`.\n- `port` comes from `process.env.PORT` converted to a number, default `3000`.\n- `env` comes from `process.env.NODE_ENV`, default `development`.\n- `GET /config` sends the config as JSON: `{ appName, port, env }`.\n\nThe checker sets `APP_NAME` to `Campus API` and leaves the other two unset. Leave `module.exports = app;` at the bottom.",
+    "hints": [
+      "Read a variable with `process.env.NAME`. If it is missing the value is `undefined`, so `process.env.NAME || 'default'` gives a fallback.",
+      "Environment variables are strings, so for the port write `Number(process.env.PORT) || 3000`. Build the object once near the top and send it from the route.",
+      "const config = {\n  appName: process.env.APP_NAME || 'Task Manager',\n  port: Number(process.env.PORT) || 3000,\n  env: process.env.NODE_ENV || 'development',\n};\n\napp.get('/config', (req, res) => {\n  res.json(config);\n});"
+    ]
+  }
+}

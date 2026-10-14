@@ -1,0 +1,70 @@
+{
+  "title": "Services and $http",
+  "minutes": 18,
+  "summary": "Put server calls in a factory, inject it into a controller and fill $scope from an $http response.",
+  "docs": [
+    { "title": "AngularJS: Services", "url": "https://docs.angularjs.org/guide/services" },
+    { "title": "AngularJS: Dependency injection", "url": "https://docs.angularjs.org/guide/di" },
+    { "title": "AngularJS: $http", "url": "https://docs.angularjs.org/api/ng/service/$http" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is **dependency injection**?",
+      "options": ["Copying code from one file into another", "AngularJS giving a function the objects it asks for, by name", "Storing passwords safely", "Loading scripts in the right order"],
+      "answer": 1,
+      "explain": "You write `function ($scope, $http)` and AngularJS supplies those objects. Your code never builds them itself, which also makes testing easier."
+    },
+    {
+      "type": "mcq",
+      "q": "Why put `$http` calls in a service instead of the controller?",
+      "options": ["Controllers cannot use $http", "A service can be reused by many controllers and keeps controllers small", "Services run faster", "It is required by the browser"],
+      "answer": 1,
+      "explain": "Controllers should prepare data for one view. Shared logic such as talking to the server belongs in a service that any controller can ask for."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the call that reads the data from a successful response.",
+      "template": "$http.get('/api/students').___(function (response) { $scope.students = response.___; });",
+      "blanks": [["then"], ["data"]],
+      "explain": "`$http.get` returns a promise. `.then` runs when the reply arrives, and the body of the reply is in `response.data`."
+    },
+    {
+      "type": "order",
+      "q": "Put the lines in order to define a factory that returns an object with one method.",
+      "lines": [
+        ".factory('StudentService', function ($http) {",
+        "  return {",
+        "    getAll: function () { return $http.get('/api/students'); }",
+        "  };",
+        "});"
+      ],
+      "explain": "A factory is a function that returns the object other code will use. AngularJS runs it once and hands the same object to everyone who asks."
+    },
+    {
+      "type": "bug",
+      "q": "The controller wants to use StudentService but crashes. Click the faulty line.",
+      "code": "angular.module('app')\n  .controller('ListController', function ($scope) {\n    StudentService.getAll();\n  });",
+      "answerLines": [2],
+      "explain": "A dependency must be named in the parameter list: `function ($scope, StudentService)`. Otherwise `StudentService` does not exist inside the function."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "app.js",
+    "task": "Complete `app.js`.\n\n- Add a factory named `StudentService` that receives `$http`.\n- Its `getAll` method returns `$http.get('/api/students')`.\n- Make `ListController` receive `StudentService`.\n- Call `StudentService.getAll().then(...)` and store `response.data` in `$scope.students`.",
+    "hints": [
+      "The factory returns an object. The controller names both $scope and StudentService as parameters.",
+      "Inside the controller: StudentService.getAll().then(function (response) { ... }). The data you want is response.data.",
+      "angular.module('studentApp')\n  .factory('StudentService', function ($http) {\n    return { getAll: function () { return $http.get('/api/students'); } };\n  })\n  .controller('ListController', function ($scope, StudentService) {\n    StudentService.getAll().then(function (response) {\n      $scope.students = response.data;\n    });\n  });"
+    ],
+    "checks": [
+      { "name": "A factory named StudentService exists", "hint": "Add .factory('StudentService', function ($http) { ... }).", "regex": "\\.\\s*factory\\s*\\(\\s*['\"]StudentService['\"]" },
+      { "name": "The factory receives $http", "hint": "Give the factory function a parameter named $http.", "regex": "factory\\s*\\(\\s*['\"]StudentService['\"]\\s*,\\s*(function\\s*\\(\\s*\\$http\\s*\\)|\\[\\s*['\"]\\$http['\"]|\\(\\s*\\$http\\s*\\)\\s*=>)" },
+      { "name": "getAll calls $http.get('/api/students')", "hint": "Return $http.get('/api/students') from getAll.", "regex": "\\$http\\s*\\.\\s*get\\s*\\(\\s*['\"]/api/students['\"]" },
+      { "name": "ListController receives StudentService", "hint": "Change the controller to function ($scope, StudentService).", "regex": "controller\\s*\\(\\s*['\"]ListController['\"]\\s*,\\s*(function\\s*\\(\\s*\\$scope\\s*,\\s*StudentService\\s*\\)|\\[\\s*['\"]\\$scope['\"]\\s*,\\s*['\"]StudentService['\"]|\\(\\s*\\$scope\\s*,\\s*StudentService\\s*\\)\\s*=>)" },
+      { "name": "The controller calls getAll() and uses then", "hint": "Write StudentService.getAll().then(function (response) { ... }).", "regex": "StudentService\\s*\\.\\s*getAll\\s*\\(\\s*\\)\\s*\\.\\s*then\\s*\\(" },
+      { "name": "$scope.students is set from the response data", "hint": "Inside then, write $scope.students = response.data;", "regex": "\\$scope\\s*\\.\\s*students\\s*=\\s*\\w+\\s*\\.\\s*data" }
+    ]
+  }
+}

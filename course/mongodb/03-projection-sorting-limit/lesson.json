@@ -1,0 +1,72 @@
+{
+  "title": "Projection, sorting and limit",
+  "minutes": 14,
+  "summary": "Choose which fields to return and order, skip and limit the results to build pages.",
+  "docs": [
+    { "title": "MongoDB: Project fields to return from a query", "url": "https://www.mongodb.com/docs/manual/tutorial/project-fields-from-query-results/" },
+    { "title": "MongoDB: cursor.sort()", "url": "https://www.mongodb.com/docs/manual/reference/method/cursor.sort/" },
+    { "title": "MongoDB: cursor.limit()", "url": "https://www.mongodb.com/docs/manual/reference/method/cursor.limit/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which call returns the students with the **highest** marks first?",
+      "options": [
+        "db.students.find({}).sort({ marks: 1 })",
+        "db.students.find({}).sort({ marks: -1 })",
+        "db.students.find({}).limit({ marks: -1 })",
+        "db.students.find({ marks: -1 })"
+      ],
+      "answer": 1,
+      "explain": "`-1` means descending (largest first) and `1` means ascending. `limit` only takes a number."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the call so that at most 5 students come back.",
+      "template": "db.students.find({}).___(5)",
+      "blanks": [["limit"]],
+      "explain": "`limit(n)` caps the number of documents returned."
+    },
+    {
+      "type": "predict",
+      "q": "The `scores` collection holds the values 10, 20, 30, 40 and 50 in a field called `v`. What does this return? Type the values separated by spaces.",
+      "code": "db.scores.find({}).sort({ v: 1 }).skip(1).limit(2)",
+      "language": "js",
+      "answer": "20 30",
+      "explain": "After sorting you have 10, 20, 30, 40, 50. `skip(1)` drops 10, and `limit(2)` keeps the next two."
+    },
+    {
+      "type": "order",
+      "q": "Put the pieces in order to build a query for the three best students that shows only name and marks.",
+      "lines": [
+        "db.students",
+        "  .find({}, { name: 1, marks: 1, _id: 0 })",
+        "  .sort({ marks: -1 })",
+        "  .limit(3)"
+      ],
+      "explain": "Start with the collection, call `find` with the filter and projection, then chain `sort` and `limit`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which projection is **not** allowed?",
+      "options": [
+        "{ name: 1, marks: 1 }",
+        "{ name: 1, _id: 0 }",
+        "{ city: 0, marks: 0 }",
+        "{ name: 1, city: 0 }"
+      ],
+      "answer": 3,
+      "explain": "You cannot mix including (`1`) and excluding (`0`) fields in one projection. Only `_id` may be excluded together with included fields."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "The leaderboard shows 3 students per page, best marks first. Write the query for **page 2**.\n\n- Sort by `marks` from highest to lowest.\n- Skip the first page and keep 3 students.\n- Show only `name` and `marks`, and hide `_id`.",
+    "hints": [
+      "Chain `.sort(...)`, `.skip(...)` and `.limit(...)` after `find`. The second argument of `find` is the projection.",
+      "Page 2 with 3 per page means `skip(3)` and `limit(3)`. Sort descending with `{ marks: -1 }`.",
+      "db.students.find({}, { name: 1, marks: 1, _id: 0 }).sort({ marks: -1 }).skip(3).limit(3)"
+    ]
+  }
+}

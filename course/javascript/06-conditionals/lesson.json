@@ -1,0 +1,59 @@
+{
+  "title": "Conditionals",
+  "minutes": 16,
+  "summary": "Make decisions with if, else if, else and switch, and understand truthy and falsy values.",
+  "docs": [
+    { "title": "MDN: if...else", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else" },
+    { "title": "MDN: switch", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch" },
+    { "title": "MDN: Truthy", "url": "https://developer.mozilla.org/en-US/docs/Glossary/Truthy" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const marks = 65;\nif (marks >= 80) {\n  console.log('A');\n} else if (marks >= 60) {\n  console.log('B');\n} else {\n  console.log('C');\n}",
+      "language": "js",
+      "answer": "B",
+      "explain": "The first condition is false, so JavaScript tries the next one. `65 >= 60` is true, so it prints `B` and skips the rest."
+    },
+    {
+      "type": "mcq",
+      "q": "Which of these values is falsy?",
+      "options": ["'0'", "[]", "0", "'false'"],
+      "answer": 2,
+      "explain": "The common falsy values are `false`, `0`, `''` (empty string), `null`, `undefined` and `NaN`. The text `'0'` and an empty array are truthy."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that is wrong. The program should print Adult only when age is 18 or more, but it prints Adult for age 15.",
+      "code": "let age = 15;\nif (age = 18) {\n  console.log('Adult');\n}",
+      "answerLines": [2],
+      "explain": "A single `=` assigns instead of comparing. Write `age >= 18` (or `age === 18`) in the condition."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the two lines separated by a space.",
+      "code": "const day = 'sat';\nswitch (day) {\n  case 'sat':\n    console.log('weekend');\n  case 'sun':\n    console.log('rest');\n    break;\n  default:\n    console.log('work');\n}",
+      "language": "js",
+      "answer": "weekend rest",
+      "accept": ["weekend\nrest"],
+      "explain": "The `sat` case has no `break`, so execution falls through into the next case. Always end each case with `break` unless you want this."
+    },
+    {
+      "type": "order",
+      "q": "Put the lines in order to build a complete if / else.",
+      "lines": ["if (score >= 40) {", "  console.log('pass');", "} else {", "  console.log('fail');", "}"],
+      "explain": "The condition and opening brace come first, then the block for true, then `else`, then the block for false, and finally the closing brace."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "conditionals.js",
+    "task": "In `conditionals.js`, write and export three functions:\n\n- `grade(marks)` returns `'A'` for 80 or more, `'B'` for 60 or more, `'C'` for 40 or more, otherwise `'F'`.\n- `dayType(day)` uses a `switch` and returns `'weekend'` for `'saturday'` and `'sunday'`, and `'weekday'` for anything else.\n- `displayName(name)` returns `name` if it has a value, or `'Guest'` when `name` is falsy (empty text, `null`, `undefined`).",
+    "hints": [
+      "grade needs a chain of conditions checked from the highest limit down. dayType needs a switch with two cases sharing one result.",
+      "Stack `case 'saturday':` and `case 'sunday':` above one `return 'weekend';`. For displayName, `if (name)` is true only for truthy values.",
+      "function grade(marks) {\n  if (marks >= 80) return 'A';\n  if (marks >= 60) return 'B';\n  if (marks >= 40) return 'C';\n  return 'F';\n}\nfunction dayType(day) {\n  switch (day) {\n    case 'saturday':\n    case 'sunday':\n      return 'weekend';\n    default:\n      return 'weekday';\n  }\n}\nfunction displayName(name) {\n  if (name) {\n    return name;\n  }\n  return 'Guest';\n}\nmodule.exports = { grade, dayType, displayName };"
+    ]
+  }
+}

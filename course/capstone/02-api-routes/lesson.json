@@ -1,0 +1,50 @@
+{
+  "title": "API routes: list and add",
+  "minutes": 18,
+  "summary": "Build GET /students and a validated POST /students on an in-memory array.",
+  "docs": [
+    { "title": "Express: Routing", "url": "https://expressjs.com/en/guide/routing.html" },
+    { "title": "Express 5 API: res.status", "url": "https://expressjs.com/en/5x/api.html#res.status" },
+    { "title": "MDN: 400 Bad Request", "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/400" }
+  ],
+  "quiz": [
+    {
+      "type": "fill",
+      "q": "Complete the line that lets Express read JSON request bodies.",
+      "template": "app.use(express.___());",
+      "blanks": [["json"]],
+      "explain": "`express.json()` is middleware that parses a JSON body and stores the result in `req.body`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which status means 'created successfully'?",
+      "options": ["200", "201", "400", "404"],
+      "answer": 1,
+      "explain": "201 is the standard answer to a POST that created something. 200 is a plain OK."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that lets a bad request keep running after the error was sent.",
+      "code": "app.post('/students', (req, res) => {\n  const { name } = req.body ?? {};\n  if (!name) {\n    res.status(400).json({ error: 'name is required' });\n  }\n  students.push({ id: nextId++, name });\n  res.status(201).json({ name });\n});",
+      "answerLines": [4],
+      "explain": "Without `return`, the function continues after the 400 answer, pushes a nameless student and tries to answer again. Write `return res.status(400)...`."
+    },
+    {
+      "type": "mcq",
+      "q": "A client sends no body at all. What is `req.body` in Express 5 with `express.json()`?",
+      "options": ["An empty string", "Possibly undefined, so guard it with `?? {}`", "Always an empty object", "null"],
+      "answer": 1,
+      "explain": "Express 5 leaves `req.body` undefined when no body was parsed. Destructuring `undefined` would throw, so use `req.body ?? {}`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "In `app.js`, add two routes that use the `students` array.\n\n- `GET /students` sends the array as JSON.\n- `POST /students` reads `name` (non-empty string), `department` (non-empty string) and `marks` (a number from 0 to 100) from the body.\n- Invalid data answers **400** with `{ error: '...' }` and stores nothing.\n- Valid data gets `id: nextId++`, is pushed into `students`, and answers **201** with the new student.\n\nKeep `module.exports = app;` at the bottom.",
+    "hints": [
+      "Write `app.get('/students', ...)` first and send the array with `res.json(students)`. Then start `app.post('/students', ...)` and read the fields with `const { name, department, marks } = req.body ?? {};`.",
+      "Check each field with an `if` and `return res.status(400).json({ error: '...' })`. For marks use `typeof marks !== 'number' || marks < 0 || marks > 100`. After the checks build `{ id: nextId++, name, department, marks }`, `push` it, then `res.status(201).json(student)`.",
+      "app.get('/students', (req, res) => {\n  res.json(students);\n});\n\napp.post('/students', (req, res) => {\n  const { name, department, marks } = req.body ?? {};\n  if (typeof name !== 'string' || name.trim() === '') {\n    return res.status(400).json({ error: 'name is required' });\n  }\n  if (typeof department !== 'string' || department.trim() === '') {\n    return res.status(400).json({ error: 'department is required' });\n  }\n  if (typeof marks !== 'number' || marks < 0 || marks > 100) {\n    return res.status(400).json({ error: 'marks must be 0 to 100' });\n  }\n  const student = { id: nextId++, name, department, marks };\n  students.push(student);\n  res.status(201).json(student);\n});"
+    ]
+  }
+}

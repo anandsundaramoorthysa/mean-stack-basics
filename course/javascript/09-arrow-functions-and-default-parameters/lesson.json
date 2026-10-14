@@ -1,0 +1,59 @@
+{
+  "title": "Arrow functions and default parameters",
+  "minutes": 14,
+  "summary": "Write short functions with =>, and give parameters default values.",
+  "docs": [
+    { "title": "MDN: Arrow function expressions", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" },
+    { "title": "MDN: Default parameters", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const triple = n => n * 3;\nconsole.log(triple(4));",
+      "language": "js",
+      "answer": "12",
+      "explain": "With no curly braces, an arrow function returns the value of its single expression automatically."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "function greet(name = 'friend') {\n  return 'Hi ' + name;\n}\nconsole.log(greet());",
+      "language": "js",
+      "answer": "Hi friend",
+      "explain": "No argument was passed, so `name` takes its default value `'friend'`."
+    },
+    {
+      "type": "mcq",
+      "q": "What does this arrow function return?\n\n`const f = (a, b) => { a + b };`",
+      "options": ["a + b", "undefined", "NaN", "It causes a syntax error"],
+      "answer": 1,
+      "explain": "Curly braces make a normal function body, so you must write `return a + b;`. Without `return` the result is `undefined`."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the arrow function that adds two numbers.",
+      "template": "const add = (a, b) ___ a + b;",
+      "blanks": [["=>"]],
+      "explain": "The arrow `=>` separates the parameters from the body."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const pay = (amount, tax = 10) => amount + tax;\nconsole.log(pay(100, 5));",
+      "language": "js",
+      "answer": "105",
+      "explain": "A default is used only when the argument is missing. Here `5` was passed, so it replaces the default `10`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "arrows.js",
+    "task": "In `arrows.js`, define and export these as **arrow functions** stored in `const` variables:\n\n- `double(n)` returns `n * 2`.\n- `add(a, b)` returns `a + b`.\n- `greet(name)` returns `'Hello, ' + name + '!'`, but uses `'friend'` when no name is given.\n- `power(base, exponent)` returns `base` raised to `exponent`, with `exponent` defaulting to `2`.",
+    "hints": [
+      "Write `const double = n => ...;` and the same shape for the others. Defaults go in the brackets as `name = 'friend'`.",
+      "Arrow functions with one expression need no braces and no `return`. Use `base ** exponent` for the power.",
+      "const double = n => n * 2;\nconst add = (a, b) => a + b;\nconst greet = (name = 'friend') => 'Hello, ' + name + '!';\nconst power = (base, exponent = 2) => base ** exponent;\n\nmodule.exports = { double, add, greet, power };"
+    ]
+  }
+}

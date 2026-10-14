@@ -1,0 +1,71 @@
+{
+  "title": "Directives",
+  "minutes": 15,
+  "summary": "Repeat, show, hide, style and react to clicks with ng-repeat, ng-if, ng-show, ng-class and ng-click.",
+  "docs": [
+    { "title": "AngularJS: ngRepeat", "url": "https://docs.angularjs.org/api/ng/directive/ngRepeat" },
+    { "title": "AngularJS: ngIf", "url": "https://docs.angularjs.org/api/ng/directive/ngIf" },
+    { "title": "AngularJS: ngShow", "url": "https://docs.angularjs.org/api/ng/directive/ngShow" },
+    { "title": "AngularJS: ngClick", "url": "https://docs.angularjs.org/api/ng/directive/ngClick" },
+    { "title": "AngularJS: ngClass", "url": "https://docs.angularjs.org/api/ng/directive/ngClass" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is the main difference between `ng-if` and `ng-show`?",
+      "options": ["ng-if removes the element from the page, ng-show only hides it with CSS", "ng-if is for numbers, ng-show is for text", "There is no difference", "ng-show removes the element, ng-if hides it"],
+      "answer": 0,
+      "explain": "`ng-if` adds or removes the element in the DOM. `ng-show` keeps it there and toggles the `ng-hide` CSS class. Use `ng-show` for things that toggle often."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the list so it creates one `li` for each student in `students`.",
+      "template": "<li ng-repeat=\"s ___ students\">{{ s.name }}</li>",
+      "blanks": [["in"]],
+      "explain": "The syntax is `item in collection`."
+    },
+    {
+      "type": "predict",
+      "q": "With `$scope.marks = [70, 85, 90]`, how many list items does this produce? Type the number.",
+      "code": "<li ng-repeat=\"m in marks\">{{ m }}</li>",
+      "language": "html",
+      "answer": "3",
+      "explain": "`ng-repeat` creates one copy of the element per array item, so three."
+    },
+    {
+      "type": "order",
+      "q": "Put the lines in order to make a button that increases a counter.",
+      "lines": [
+        "$scope.count = 0;",
+        "$scope.increase = function () {",
+        "  $scope.count = $scope.count + 1;",
+        "};"
+      ],
+      "explain": "Set the starting value, then define a function on the scope. A template can call it with `ng-click=\"increase()\"`."
+    },
+    {
+      "type": "bug",
+      "q": "The button should call `toggle()` when clicked, but nothing happens. Click the faulty line.",
+      "code": "<div ng-controller=\"MainController\">\n  <button onclick=\"toggle()\">Toggle</button>\n  <p ng-show=\"visible\">Hello</p>\n</div>",
+      "answerLines": [2],
+      "explain": "The plain `onclick` looks for a global function. A scope function needs `ng-click=\"toggle()\"`."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "index.html",
+    "task": "Complete the list in `index.html`.\n\n- Repeat the `<li>` once for every `item` in `items` with `ng-repeat`.\n- Show `{{ item.name }}` inside the `li`.\n- Add `ng-class` to the `li` that is based on `item.inStock`.\n- Show the \"No items\" paragraph only when the list is empty: use `ng-if` with a condition on `items.length`.\n- Make the button call `toggle()` with `ng-click`.",
+    "hints": [
+      "Each directive is an attribute. ng-repeat, ng-class and ng-click each go on the tag they should affect.",
+      "ng-repeat=\"item in items\" on the li. ng-class takes an object such as { out: !item.inStock }. ng-if takes a condition using items.length.",
+      "<li ng-repeat=\"item in items\" ng-class=\"{ out: !item.inStock }\">{{ item.name }}</li>\n<p ng-if=\"items.length === 0\">No items</p>\n<button ng-click=\"toggle()\">Toggle</button>"
+    ],
+    "checks": [
+      { "name": "The li uses ng-repeat over items", "hint": "Add ng-repeat=\"item in items\" to the <li>.", "regex": "<li[^>]*\\b(data-)?ng-repeat\\s*=\\s*[\"']\\s*item\\s+in\\s+items\\b" },
+      { "name": "{{ item.name }} is shown", "hint": "Put {{ item.name }} inside the li.", "regex": "\\{\\{\\s*item\\.name\\s*\\}\\}" },
+      { "name": "ng-class depends on item.inStock", "hint": "Add ng-class=\"{ out: !item.inStock }\" to the li.", "regex": "ng-class\\s*=\\s*\"[^\"]*inStock|ng-class\\s*=\\s*'[^']*inStock" },
+      { "name": "ng-if uses items.length", "hint": "Add ng-if=\"items.length === 0\" to the paragraph.", "regex": "ng-if\\s*=\\s*[\"'][^\"']*items\\.length" },
+      { "name": "The button calls toggle() with ng-click", "hint": "Add ng-click=\"toggle()\" to the button.", "regex": "<button[^>]*\\bng-click\\s*=\\s*[\"']\\s*toggle\\s*\\(\\s*\\)\\s*;?\\s*[\"']" }
+    ]
+  }
+}

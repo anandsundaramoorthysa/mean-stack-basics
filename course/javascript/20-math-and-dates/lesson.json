@@ -1,0 +1,59 @@
+{
+  "title": "Math and dates",
+  "minutes": 18,
+  "summary": "Use the Math object for rounding and random numbers, and the Date object for days and weekdays.",
+  "docs": [
+    { "title": "MDN: Math", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math" },
+    { "title": "MDN: Date", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the three numbers separated by spaces.",
+      "code": "console.log(Math.round(2.5));\nconsole.log(Math.floor(2.9));\nconsole.log(Math.ceil(2.1));",
+      "language": "js",
+      "answer": "3 2 3",
+      "accept": ["3\n2\n3"],
+      "explain": "`round` goes to the nearest whole number (2.5 rounds up), `floor` always goes down and `ceil` always goes up."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "console.log(Math.max(4, 9, 2));",
+      "language": "js",
+      "answer": "9",
+      "explain": "`Math.max` returns the largest of its arguments. To use it on an array, spread the array: `Math.max(...marks)`."
+    },
+    {
+      "type": "mcq",
+      "q": "What range of values can `Math.random()` return?",
+      "options": ["1 to 10", "0 up to but not including 1", "0 to 100", "-1 to 1"],
+      "answer": 1,
+      "explain": "It returns a decimal that is at least 0 and always less than 1. Multiply and round it to get other ranges."
+    },
+    {
+      "type": "mcq",
+      "q": "In JavaScript dates, which number stands for January when you write `new Date(2026, 0, 15)`?",
+      "options": ["1", "0", "12", "January is written as text"],
+      "answer": 1,
+      "explain": "Months are counted from 0, so January is 0 and December is 11. Days of the month still start at 1."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the expression so it gives a random whole number from 0 to 9.",
+      "template": "Math.___(Math.random() * 10)",
+      "blanks": [["floor"]],
+      "explain": "`Math.random() * 10` is between 0 and 9.999..., and `Math.floor` cuts it down to 0 to 9."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "mathdates.js",
+    "task": "In `mathdates.js`, write four functions:\n\n- `roundTo2(n)` rounds a number to 2 decimal places, so `3.14159` becomes `3.14`.\n- `randomInt(min, max)` returns a random whole number from `min` to `max`, both included (use `Math.random`).\n- `daysBetween(a, b)` takes two date strings like `'2026-01-01'` and returns how many days `b` is after `a` (use `new Date(...)`).\n- `isWeekend(year, month, day)` returns `true` for Saturday or Sunday. The month is written the normal way, 1 to 12.",
+    "hints": [
+      "Rounding to 2 places: multiply by 100, round, then divide by 100. For a random range, think of `Math.floor(Math.random() * (max - min + 1)) + min`.",
+      "Subtracting two Date objects gives milliseconds. One day is 24 * 60 * 60 * 1000 ms. For weekends, `getDay()` returns 0 for Sunday and 6 for Saturday, and the Date constructor wants month minus 1.",
+      "function roundTo2(n) {\n  return Math.round(n * 100) / 100;\n}\n\nfunction randomInt(min, max) {\n  return Math.floor(Math.random() * (max - min + 1)) + min;\n}\n\nfunction daysBetween(a, b) {\n  const ms = new Date(b) - new Date(a);\n  return Math.round(ms / (24 * 60 * 60 * 1000));\n}\n\nfunction isWeekend(year, month, day) {\n  const d = new Date(year, month - 1, day).getDay();\n  return d === 0 || d === 6;\n}"
+    ]
+  }
+}

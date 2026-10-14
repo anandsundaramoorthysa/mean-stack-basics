@@ -1,0 +1,62 @@
+{
+  "title": "Reading request bodies",
+  "minutes": 15,
+  "summary": "Accept data sent with POST by adding express.json() and reading req.body.",
+  "docs": [
+    { "title": "Express 5 API: express.json", "url": "https://expressjs.com/en/5x/api.html#express.json" },
+    { "title": "Express 5 API: req.body", "url": "https://expressjs.com/en/5x/api.html#req.body" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Why is new data, such as a whole student record, sent in the request body instead of in the URL?",
+      "options": [
+        "URLs are limited in length and visible, so bigger or private data goes in the request body",
+        "Servers refuse any data in a URL",
+        "Only POST requests have URLs",
+        "The body is faster than the URL"
+      ],
+      "answer": 0,
+      "explain": "A **request body** can hold larger and structured data, such as a whole JSON object, and it does not appear in the address bar or browser history."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the line so Express can read JSON bodies for every route below it.",
+      "template": "app.___(express.___());",
+      "blanks": [["use"], ["json"]],
+      "explain": "`express.json()` is middleware. `app.use` runs it for each request, and it fills `req.body` when the body is JSON."
+    },
+    {
+      "type": "mcq",
+      "q": "In Express 5, what is `req.body` if you forgot `express.json()` and a client posts JSON?",
+      "options": ["The JSON object anyway", "An empty string", "undefined", "null"],
+      "answer": 2,
+      "explain": "Without a body parser nobody reads the body, so `req.body` is `undefined`. Using it, as in `req.body.name`, then throws a TypeError."
+    },
+    {
+      "type": "predict",
+      "q": "The client sends POST /echo with the JSON body `{\"city\":\"Pune\"}`. What does it receive?",
+      "code": "app.use(express.json());\napp.post('/echo', (req, res) => {\n  res.send(req.body.city);\n});",
+      "language": "javascript",
+      "answer": "Pune",
+      "explain": "The parsed object is `{ city: 'Pune' }`, so `req.body.city` is the text Pune."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that makes `req.body` empty for this route.",
+      "code": "const express = require('express');\nconst app = express();\napp.post('/students', (req, res) => {\n  res.status(201).json(req.body);\n});\napp.use(express.json());",
+      "answerLines": [6],
+      "explain": "Middleware only affects routes registered after it. `app.use(express.json())` must come before `app.post`, otherwise the route runs first and the body is never parsed."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "In `app.js`:\n\n- Add `express.json()` so JSON bodies are parsed.\n- `POST /echo` sends back the JSON body it received.\n- `POST /students` takes a body like `{ \"name\": \"Asha\", \"marks\": 82 }`, adds a student to the `students` array with a new `id` (the next number, starting at 1), and answers with status `201` and the new student `{ id, name, marks }`.\n- `GET /students` (already there) lists the array.\n\nLeave `module.exports = app;` at the bottom.",
+    "hints": [
+      "Put `app.use(express.json());` near the top, before your routes. Then the body is available as `req.body`.",
+      "Create the student with `{ id: students.length + 1, name: req.body.name, marks: req.body.marks }`, `students.push(student)` it, then answer with `res.status(201).json(student)`.",
+      "app.use(express.json());\n\napp.post('/echo', (req, res) => {\n  res.json(req.body);\n});\n\napp.post('/students', (req, res) => {\n  const student = { id: students.length + 1, name: req.body.name, marks: req.body.marks };\n  students.push(student);\n  res.status(201).json(student);\n});"
+    ]
+  }
+}

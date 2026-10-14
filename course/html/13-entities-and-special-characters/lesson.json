@@ -1,0 +1,126 @@
+{
+  "title": "Entities and special characters",
+  "minutes": 12,
+  "summary": "Show reserved and special characters such as <, & and the copyright sign with character references.",
+  "docs": [
+    {
+      "title": "MDN: Character reference (glossary)",
+      "url": "https://developer.mozilla.org/en-US/docs/Glossary/Character_reference"
+    },
+    {
+      "title": "MDN: Getting started with HTML (character references)",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Basic_HTML_syntax#entity_references_including_special_characters_in_html"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "fill",
+      "q": "Which entity shows a less-than sign?",
+      "template": "5 ___ 10",
+      "blanks": [
+        [
+          "&lt;"
+        ]
+      ],
+      "explain": "`&lt;` stands for \"less than\" and shows a <."
+    },
+    {
+      "type": "mcq",
+      "q": "Why does `<p>Use <b></p>` misbehave if you wanted to print the characters `<b>`?",
+      "options": [
+        "The browser reads <b> as a tag",
+        "HTML cannot contain letters",
+        "p cannot hold text",
+        "b is not allowed"
+      ],
+      "answer": 0,
+      "explain": "The browser sees `<b>` as the start of a bold tag. Write `&lt;b&gt;` to display it as text."
+    },
+    {
+      "type": "mcq",
+      "q": "Which entity writes the copyright sign?",
+      "options": [
+        "&copy;",
+        "&cr;",
+        "&c;",
+        "&right;"
+      ],
+      "answer": 0,
+      "explain": "`&copy;` is the standard name. `&#169;` also works."
+    },
+    {
+      "type": "predict",
+      "q": "What does the visitor see on the page for this code?",
+      "code": "<p>Fish &amp; Chips</p>",
+      "language": "html",
+      "answer": "Fish & Chips",
+      "explain": "The browser converts `&amp;` into a single ampersand when it draws the text."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Fix up `index.html` using character references.\n\n- Inside `<code>`, show the text `<h1>` (not a real heading).\n- The paragraph with class `brand` must show `Tom & Jerry`; write the ampersand as `&amp;`.\n- The paragraph with class `math` must show `5 < 10`; write the less-than sign as `&lt;`.\n- The footer must show a copyright sign using `&copy;`.",
+    "hints": [
+      "The page will not show real tags, so the text you want must be written with entities instead of < and >.",
+      "Replace < with &lt; and > with &gt; inside the code element. Use &amp; for the ampersand.",
+      "<code>&lt;h1&gt;</code>\n<p class=\"brand\">Tom &amp; Jerry</p>\n<p class=\"math\">5 &lt; 10</p>\n<footer>&copy; 2026 My College</footer>"
+    ],
+    "checks": [
+      {
+        "name": "The code element shows the text <h1>",
+        "hint": "Write &lt;h1&gt; inside <code>.",
+        "selector": "code",
+        "text": {
+          "equals": "<h1>"
+        }
+      },
+      {
+        "name": "The page contains no real h1 element",
+        "hint": "Do not write a real <h1>. Use &lt;h1&gt; so it is only text.",
+        "source": {
+          "notIncludes": "<h1"
+        }
+      },
+      {
+        "name": "p.brand shows \"Tom & Jerry\"",
+        "hint": "The visible text must be Tom & Jerry.",
+        "selector": "p.brand",
+        "text": {
+          "equals": "Tom & Jerry"
+        }
+      },
+      {
+        "name": "The ampersand is written as &amp;",
+        "hint": "In the source, write the & as &amp;.",
+        "source": {
+          "includes": "&amp;"
+        }
+      },
+      {
+        "name": "p.math shows \"5 < 10\"",
+        "hint": "Write 5 &lt; 10.",
+        "selector": "p.math",
+        "text": {
+          "equals": "5 < 10"
+        }
+      },
+      {
+        "name": "The footer shows a copyright sign written as an entity",
+        "hint": "Use &copy; in the footer.",
+        "selector": "footer",
+        "text": {
+          "regex": "\\u00A9"
+        }
+      },
+      {
+        "name": "The source uses &copy; or &#169;",
+        "hint": "Write the sign with &copy; instead of typing it.",
+        "source": {
+          "regex": "&copy;|&#169;|&#xa9;",
+          "flags": "i"
+        }
+      }
+    ]
+  }
+}

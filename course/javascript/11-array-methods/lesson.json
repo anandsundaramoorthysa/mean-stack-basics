@@ -1,0 +1,64 @@
+{
+  "title": "Array methods",
+  "minutes": 20,
+  "summary": "Transform and search arrays with map, filter, reduce, find, includes and sort.",
+  "docs": [
+    { "title": "MDN: Array.prototype.map()", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map" },
+    { "title": "MDN: Array.prototype.filter()", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" },
+    { "title": "MDN: Array.prototype.reduce()", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce" },
+    { "title": "MDN: Array.prototype.sort()", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the array as it appears, for example [1, 2].",
+      "code": "console.log([1, 2, 3].map(n => n * 2));",
+      "language": "js",
+      "answer": "[ 2, 4, 6 ]",
+      "accept": ["[2, 4, 6]", "[2,4,6]"],
+      "explain": "`map` runs the function on every item and collects the results in a new array of the same length."
+    },
+    {
+      "type": "mcq",
+      "q": "Which method keeps only the items that pass a test?",
+      "options": ["map", "reduce", "filter", "find"],
+      "answer": 2,
+      "explain": "`filter` returns a new array of the items for which the function returned true. `find` returns only the first matching item."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const total = [1, 2, 3, 4].reduce((sum, n) => sum + n, 0);\nconsole.log(total);",
+      "language": "js",
+      "answer": "10",
+      "explain": "`reduce` carries a running value (`sum`, starting at 0) through the array and returns the final value."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print?",
+      "code": "const result = [5, 12, 8].find(n => n > 6);\nconsole.log(result);",
+      "language": "js",
+      "answer": "12",
+      "explain": "`find` stops at the first item that passes the test. 5 fails, 12 passes, so 8 is never examined."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the array as it appears.",
+      "code": "console.log([10, 9, 1].sort());",
+      "language": "js",
+      "answer": "[ 1, 10, 9 ]",
+      "accept": ["[1, 10, 9]", "[1,10,9]"],
+      "explain": "Without a compare function, `sort` turns items into text and sorts alphabetically, so '10' comes before '9'. For numbers use `sort((a, b) => a - b)`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "array-methods.js",
+    "task": "In `array-methods.js`, write and export five functions. Use the array methods, not loops.\n\n- `squares(nums)` returns a new array with each number squared (`map`).\n- `passed(marks)` returns only the marks that are 40 or more (`filter`).\n- `sum(nums)` returns the total, `0` for an empty array (`reduce`).\n- `firstLong(words)` returns the first word longer than 5 letters, or `undefined` (`find`).\n- `sortedNumbers(nums)` returns a new array in ascending order and must **not** change the original array (`sort`).",
+    "hints": [
+      "Each function is one method call on the array, with a small arrow function inside.",
+      "`reduce` needs a starting value of 0 as the second argument. `sort` changes the array it is called on, so copy it first with `[...nums]` or `nums.slice()`, and compare with `(a, b) => a - b`.",
+      "const squares = nums => nums.map(n => n * n);\nconst passed = marks => marks.filter(m => m >= 40);\nconst sum = nums => nums.reduce((total, n) => total + n, 0);\nconst firstLong = words => words.find(w => w.length > 5);\nconst sortedNumbers = nums => [...nums].sort((a, b) => a - b);\n\nmodule.exports = { squares, passed, sum, firstLong, sortedNumbers };"
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "title": "Routers",
+  "minutes": 15,
+  "summary": "Group related routes with express.Router and mount the group under a path prefix.",
+  "docs": [
+    { "title": "Express: Routing", "url": "https://expressjs.com/en/guide/routing.html" },
+    { "title": "Express 5 API: Router", "url": "https://expressjs.com/en/5x/api.html#router" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Why split routes into routers?",
+      "options": [
+        "To keep related routes together in smaller, easier to read pieces",
+        "Because Express refuses more than ten routes in one file",
+        "To make requests faster",
+        "Because routers are the only way to use middleware"
+      ],
+      "answer": 0,
+      "explain": "A router is a mini-app that holds a group of related routes, for example everything about books. Your main file stays short."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the code that creates a router and mounts it at /books.",
+      "template": "const router = express.___();\napp.___('/books', router);",
+      "blanks": [["Router"], ["use"]],
+      "explain": "`express.Router()` creates the router (note the capital R) and `app.use(path, router)` mounts it."
+    },
+    {
+      "type": "predict",
+      "q": "The router below is mounted with `app.use('/books', router)`. What does GET /books/list send?",
+      "code": "router.get('/list', (req, res) => {\n  res.send('All books');\n});",
+      "language": "javascript",
+      "answer": "All books",
+      "explain": "The mount path `/books` is added in front of the router's own path `/list`, giving `/books/list`."
+    },
+    {
+      "type": "mcq",
+      "q": "A router is mounted at `/books` and contains `router.get('/', ...)`. Which URL runs that handler?",
+      "options": ["/", "/books", "/books/books", "/router"],
+      "answer": 1,
+      "explain": "Inside a router, `/` means \"the mount path itself\", so the handler answers `/books`."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that causes GET /books/2 to give 404, assuming the router was mounted at /books.",
+      "code": "const router = express.Router();\nrouter.get('/books/:id', (req, res) => {\n  res.json({ id: req.params.id });\n});\nmodule.exports = router;",
+      "answerLines": [2],
+      "explain": "The router is already mounted at `/books`, so the route inside should be `'/:id'`. Writing `/books/:id` makes the real URL `/books/books/:id`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "The `books` array is ready. In `app.js`:\n\n- Create a router with `express.Router()`.\n- In the router, add `GET /` that sends all books as JSON, and `GET /:id` that sends the book with that numeric id as JSON.\n- Mount the router at `/books` with `app.use`.\n\nOther paths such as `GET /` must still give 404. Leave `module.exports = app;` at the bottom.",
+    "hints": [
+      "Create it with `const router = express.Router();` and register routes with `router.get(...)`, just like `app.get`.",
+      "Inside the router use the short paths `'/'` and `'/:id'`, then add `app.use('/books', router);` after the routes are defined.",
+      "const router = express.Router();\n\nrouter.get('/', (req, res) => {\n  res.json(books);\n});\n\nrouter.get('/:id', (req, res) => {\n  res.json(books.find((b) => b.id === Number(req.params.id)));\n});\n\napp.use('/books', router);"
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "title": "Query strings",
+  "minutes": 14,
+  "summary": "Read optional filters from the part of the URL after the question mark using req.query.",
+  "docs": [
+    {
+      "title": "Express 5 API: req.query",
+      "url": "https://expressjs.com/en/5x/api.html#req.query"
+    },
+    {
+      "title": "Express: Routing",
+      "url": "https://expressjs.com/en/guide/routing.html"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "A browser asks for `/search?q=pen`. What does the server send?",
+      "code": "app.get('/search', (req, res) => {\n  res.send('You searched for ' + req.query.q);\n});",
+      "language": "javascript",
+      "answer": "You searched for pen",
+      "explain": "Everything after `?` is the query string. Express turns `q=pen` into `req.query.q`, which is \"pen\"."
+    },
+    {
+      "type": "mcq",
+      "q": "What is `req.query.page` when the browser asks for `/list` with no query string at all?",
+      "options": [
+        "\"\"",
+        "0",
+        "undefined",
+        "An error is thrown"
+      ],
+      "answer": 2,
+      "explain": "A missing key is simply `undefined`. That is why optional filters are written as `if (req.query.page) { ... }` or with a default value."
+    },
+    {
+      "type": "mcq",
+      "q": "Which URL gives `req.query.max` the value \"50\" and `req.query.q` the value \"pen\"?",
+      "options": [
+        "/items?q=pen&max=50",
+        "/items/q=pen/max=50",
+        "/items?q=pen?max=50",
+        "/items:q=pen:max=50"
+      ],
+      "answer": 0,
+      "explain": "The query string starts with one `?`, and `&` separates each `key=value` pair."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line with the mistake. The route should keep products that cost at most the `max` value.",
+      "code": "app.get('/products', (req, res) => {\n  let list = products;\n  if (req.query.max) {\n    list = list.filter((p) => p.price === req.query.max);\n  }\n  res.json(list);\n});",
+      "answerLines": [
+        4
+      ],
+      "explain": "Query values are strings, and `===` never treats the number 50 as equal to the text \"50\". The route would keep nothing. Also, the filter should keep prices *at most* the limit, so write `p.price <= Number(req.query.max)`."
+    },
+    {
+      "type": "mcq",
+      "q": "When should you use a route parameter (`/users/:id`) instead of a query string (`/users?id=1`)?",
+      "options": [
+        "When the value identifies one specific thing",
+        "When the value is an optional filter or sort option",
+        "Never, they do the same",
+        "Only for numbers"
+      ],
+      "answer": 0,
+      "explain": "A common rule: the path says which resource you want, the query string refines it with optional extras such as filters, sorting and page numbers."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "In `app.js`, add a `GET /products` route that sends a JSON array and supports two optional filters:\n\n- With no query string it sends every product.\n- `?q=pen` keeps only products whose name contains the text, ignoring upper and lower case.\n- `?max=50` keeps only products whose price is at most that number.\n- Both filters can be used together.\n\nThe `products` array is already in the file. Leave `module.exports = app;` at the bottom.",
+    "hints": [
+      "Start with `let list = products;`, then narrow it down with `if` statements, one per filter, and finish with `res.json(list)`.",
+      "For the text filter, compare lower-case versions: `p.name.toLowerCase().includes(req.query.q.toLowerCase())`. For the price filter, convert with `Number(req.query.max)`.",
+      "app.get('/products', (req, res) => {\n  let list = products;\n  if (req.query.q) {\n    const q = req.query.q.toLowerCase();\n    list = list.filter((p) => p.name.toLowerCase().includes(q));\n  }\n  if (req.query.max) {\n    list = list.filter((p) => p.price <= Number(req.query.max));\n  }\n  res.json(list);\n});"
+    ]
+  }
+}

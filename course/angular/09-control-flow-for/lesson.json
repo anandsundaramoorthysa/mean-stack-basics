@@ -1,0 +1,98 @@
+{
+  "title": "Control flow: @for",
+  "minutes": 15,
+  "summary": "Repeat a template for each item in a list with @for, track, $index and @empty.",
+  "docs": [
+    {
+      "title": "Angular: Control flow",
+      "url": "https://angular.dev/guide/templates/control-flow"
+    },
+    {
+      "title": "Angular: Repeat content with @for",
+      "url": "https://angular.dev/guide/templates/control-flow#repeat-content-with-the-for-block"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Why does @for require a `track` expression?",
+      "options": [
+        "To sort the list",
+        "To tell Angular which item is which, so it can reuse page elements when the list changes",
+        "To limit the list to ten items",
+        "To make the loop run backwards"
+      ],
+      "answer": 1,
+      "explain": "Tracking by a unique value such as `id` lets Angular move or update only the changed rows instead of rebuilding all of them."
+    },
+    {
+      "type": "fill",
+      "q": "Finish the loop so each student is tracked by its id.",
+      "template": "@for (s of students; ___ s.id) { <li>{{ s.name }}</li> }",
+      "blanks": [
+        [
+          "track"
+        ]
+      ],
+      "explain": "The loop header is `item of list; track expression`."
+    },
+    {
+      "type": "predict",
+      "q": "With `students = []`, what appears?",
+      "code": "<ul>\n  @for (s of students; track s.id) {\n    <li>{{ s.name }}</li>\n  } @empty {\n    <li>None</li>\n  }\n</ul>",
+      "language": "html",
+      "answer": "None",
+      "explain": "The `@empty` block is shown when the list has no items."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `$index` give you inside a @for block?",
+      "options": [
+        "The item's id",
+        "The position of the current item, starting at 0",
+        "The total number of items",
+        "The previous item"
+      ],
+      "answer": 1,
+      "explain": "`$index` starts at 0, so people often show `$index + 1` as a row number."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "student-list.component.ts",
+    "task": "Finish the `<ul>` in `student-list.component.ts`.\n\n- Loop with `@for` over `students`, tracking by the item's `id`.\n- Each `<li>` shows `{{ $index + 1 }}` followed by the student's `name` with an interpolation.\n- Add an `@empty` block with `<li>No students</li>`.\n- Do not use `*ngFor`.",
+    "hints": [
+      "Replace the placeholder with an `@for` block inside the `<ul>`.",
+      "The header is `@for (s of students; track s.id) {`. The empty case is `} @empty { ... }`.",
+      "@for (s of students; track s.id) {\n  <li>{{ $index + 1 }}. {{ s.name }}</li>\n} @empty {\n  <li>No students</li>\n}"
+    ],
+    "checks": [
+      {
+        "name": "@for loops over students and tracks by id",
+        "hint": "Write @for (s of students; track s.id) {",
+        "regex": "@for\\s*\\(\\s*(\\w+)\\s+of\\s+students\\s*;\\s*track\\s+\\1\\.id\\s*\\)\\s*\\{"
+      },
+      {
+        "name": "Each item shows $index + 1",
+        "hint": "Use {{ $index + 1 }} in the li.",
+        "regex": "<li>[^<]*\\{\\{\\s*\\$index\\s*\\+\\s*1\\s*\\}\\}"
+      },
+      {
+        "name": "Each item shows the student's name",
+        "hint": "Use {{ s.name }} in the li.",
+        "regex": "\\{\\{\\s*\\w+\\.name\\s*\\}\\}\\s*</li>"
+      },
+      {
+        "name": "An @empty block shows No students",
+        "hint": "Add } @empty { <li>No students</li> }",
+        "regex": "\\}\\s*@empty\\s*\\{\\s*<li>\\s*No students\\s*</li>\\s*\\}"
+      },
+      {
+        "name": "The old *ngFor is not used",
+        "hint": "Remove *ngFor. Use @for.",
+        "regex": "\\*ngFor",
+        "not": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "title": "What is Node.js?",
+  "minutes": 12,
+  "summary": "Run a JavaScript file with Node.js and read command-line arguments from process.argv.",
+  "docs": [
+    { "title": "Node.js: Introduction to Node.js", "url": "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs" },
+    { "title": "Node.js API: process.argv", "url": "https://nodejs.org/api/process.html#processargv" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is Node.js?",
+      "options": [
+        "A new programming language that replaces JavaScript",
+        "A program that runs JavaScript outside the browser",
+        "A web browser for developers",
+        "A database for storing JSON"
+      ],
+      "answer": 1,
+      "explain": "Node.js is a **runtime**: a program that can run JavaScript on your computer, without a browser. The language is still JavaScript."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the command that runs the file app.js with Node.js.",
+      "template": "___ app.js",
+      "blanks": [["node"]],
+      "explain": "Type `node` followed by the file name in a terminal. Node reads the file and runs it from top to bottom."
+    },
+    {
+      "type": "predict",
+      "q": "You run `node show.js red blue`. What does this program print?",
+      "code": "console.log(process.argv[2]);",
+      "language": "js",
+      "answer": "red",
+      "explain": "`process.argv[0]` is the path of Node itself and `process.argv[1]` is the path of your file. Your own arguments start at index 2, so index 2 is `red`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which of these exists in the browser but NOT in Node.js?",
+      "options": ["console.log", "setTimeout", "document", "JSON.parse"],
+      "answer": 2,
+      "explain": "`document` belongs to the web page, so Node has no page to work with. Node adds its own tools instead, such as reading files and starting servers."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "greet.js",
+    "task": "In `greet.js`, print a greeting for the name given on the command line.\n\n- If you run `node greet.js Asha`, print `Hello, Asha!`.\n- If no name is given, print `Hello, stranger!`.\n- Print exactly one line.",
+    "hints": [
+      "The words typed after the file name are stored in `process.argv`. Your own arguments start at index 2.",
+      "Read `process.argv[2]`. If nobody typed a name, it is `undefined`, so you can use `||` to pick a default value.",
+      "// process.argv[2] is undefined when no name is typed, so || picks the default\nconst name = process.argv[2] || 'stranger';\nconsole.log(`Hello, ${name}!`);"
+    ],
+    "timeoutMs": 10000
+  }
+}

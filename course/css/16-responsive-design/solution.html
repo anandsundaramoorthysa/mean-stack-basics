@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Responsive design</title>
+    <style>
+      .layout {
+        display: flex;
+        flex-direction: column;
+      }
+      .sidebar {
+        display: block;
+      }
+      @media (min-width: 600px) {
+        .layout {
+          flex-direction: row;
+        }
+      }
+      @media (max-width: 500px) {
+        .sidebar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <main>Main content</main>
+      <aside class="sidebar">Sidebar</aside>
+    </div>
+  </body>
+</html>

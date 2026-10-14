@@ -1,0 +1,109 @@
+{
+  "title": "Templates: interpolation and property binding",
+  "minutes": 15,
+  "summary": "Show class data in a template with {{ }} and set element properties with [property] binding.",
+  "docs": [
+    {
+      "title": "Angular: Binding dynamic text, properties and attributes",
+      "url": "https://angular.dev/guide/templates/binding"
+    },
+    {
+      "title": "Angular: Templates overview",
+      "url": "https://angular.dev/guide/templates"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which template line sets the `disabled` property of a button from a class value called `locked`?",
+      "options": [
+        "<button disabled=\"locked\">",
+        "<button [disabled]=\"locked\">",
+        "<button {{disabled}}=\"locked\">",
+        "<button (disabled)=\"locked\">"
+      ],
+      "answer": 1,
+      "explain": "Square brackets bind a property to an expression. Without them, `disabled=\"locked\"` is just the fixed text 'locked', which an HTML button treats as disabled no matter what."
+    },
+    {
+      "type": "fill",
+      "q": "Bind the image source to the class property `photoUrl`.",
+      "template": "<img ___=\"photoUrl\" alt=\"Student photo\" />",
+      "blanks": [
+        [
+          "[src]"
+        ]
+      ],
+      "explain": "`[src]=\"photoUrl\"` reads `photoUrl` from the class. Plain `src=\"photoUrl\"` would look for a file called photoUrl."
+    },
+    {
+      "type": "predict",
+      "q": "The class has `marks = 70;`. What does this template show?",
+      "code": "<p>Next: {{ marks + 5 }}</p>",
+      "language": "html",
+      "answer": "Next: 75",
+      "explain": "Interpolation accepts small expressions, not only names. Angular calculates 70 + 5 and shows 75."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that will NOT show the student's name.",
+      "code": "<h1>{{ name }}</h1>\n<h2>name</h2>\n<p>Hello, {{ name }}!</p>",
+      "answerLines": [
+        2
+      ],
+      "explain": "Without curly braces `name` is plain text, so the heading shows the word 'name'."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "student-card.component.ts",
+    "task": "Finish `student-card.component.ts`.\n\n- Selector `app-student-card`.\n- The class has `name = 'Asha'`, `photoUrl = 'asha.png'` and `active = true`.\n- The template shows `<h2>{{ name }}</h2>`.\n- The image uses `[src]=\"photoUrl\"` and `[alt]=\"name\"`.\n- The button `<button>` uses `[disabled]=\"!active\"`.",
+    "hints": [
+      "Add the three properties to the class, then use them in the template.",
+      "Interpolation `{{ }}` is for text between tags. Square brackets like `[src]` are for element properties.",
+      "template: `\n  <h2>{{ name }}</h2>\n  <img [src]=\"photoUrl\" [alt]=\"name\" />\n  <button [disabled]=\"!active\">Enroll</button>\n`,"
+    ],
+    "checks": [
+      {
+        "name": "The selector is app-student-card",
+        "hint": "Add selector: 'app-student-card'.",
+        "regex": "selector\\s*:\\s*['\"]app-student-card['\"]"
+      },
+      {
+        "name": "The class has name = 'Asha'",
+        "hint": "Write name = 'Asha'; in the class.",
+        "regex": "\\bname\\s*(:\\s*string\\s*)?=\\s*['\"]Asha['\"]"
+      },
+      {
+        "name": "The class has photoUrl = 'asha.png'",
+        "hint": "Write photoUrl = 'asha.png'; in the class.",
+        "regex": "photoUrl\\s*(:\\s*string\\s*)?=\\s*['\"]asha\\.png['\"]"
+      },
+      {
+        "name": "The class has active = true",
+        "hint": "Write active = true; in the class.",
+        "regex": "\\bactive\\s*(:\\s*boolean\\s*)?=\\s*true"
+      },
+      {
+        "name": "The h2 shows {{ name }}",
+        "hint": "Write <h2>{{ name }}</h2>.",
+        "regex": "<h2>\\s*\\{\\{\\s*name\\s*\\}\\}\\s*</h2>"
+      },
+      {
+        "name": "The image src is bound to photoUrl",
+        "hint": "Write [src]=\"photoUrl\".",
+        "regex": "\\[src\\]\\s*=\\s*[\"']photoUrl[\"']"
+      },
+      {
+        "name": "The image alt is bound to name",
+        "hint": "Write [alt]=\"name\".",
+        "regex": "\\[alt\\]\\s*=\\s*[\"']name[\"']"
+      },
+      {
+        "name": "The button is disabled when active is false",
+        "hint": "Write [disabled]=\"!active\" on the button.",
+        "regex": "<button[^>]*\\[disabled\\]\\s*=\\s*[\"']!\\s*active[\"']"
+      }
+    ]
+  }
+}

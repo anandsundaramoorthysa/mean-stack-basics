@@ -1,0 +1,63 @@
+{
+  "title": "Sizing and box-sizing",
+  "minutes": 14,
+  "summary": "Set width, max-width and height, and use box-sizing so padding does not break your sizes.",
+  "docs": [
+    { "title": "MDN: Sizing items in CSS", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Sizing" },
+    { "title": "MDN: box-sizing", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing" },
+    { "title": "MDN: max-width", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/max-width" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "With the default `box-sizing: content-box`, how wide in px is the box on screen, counting padding and border?",
+      "code": ".box {\n  width: 200px;\n  padding: 20px;\n  border: 5px solid black;\n}",
+      "language": "css",
+      "answer": "250px",
+      "accept": ["250", "250 px"],
+      "explain": "The width applies to the content only: 200 + 20 + 20 for padding + 5 + 5 for border = 250px."
+    },
+    {
+      "type": "predict",
+      "q": "Now add `box-sizing: border-box`. How wide is the box on screen in px?",
+      "code": ".box {\n  box-sizing: border-box;\n  width: 200px;\n  padding: 20px;\n  border: 5px solid black;\n}",
+      "language": "css",
+      "answer": "200px",
+      "accept": ["200", "200 px"],
+      "explain": "With `border-box`, the width includes padding and border. The content shrinks to fit. This is much easier to plan with."
+    },
+    {
+      "type": "mcq",
+      "q": "Why is `max-width: 100%` useful on an image?",
+      "options": ["It makes the image always 100% wide", "It stops the image from growing wider than its container", "It stretches small images", "It hides the image"],
+      "answer": 1,
+      "explain": "`max-width` is a ceiling. The image keeps its natural size until the container is narrower, then it shrinks."
+    },
+    {
+      "type": "fill",
+      "q": "Make every element use the easier sizing model.",
+      "template": "* { box-sizing: ___; }",
+      "blanks": [["border-box"]],
+      "explain": "`* { box-sizing: border-box; }` is a common first rule in real stylesheets."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Size the `.panel` and the image placeholder. Work in `index.html`.\n\n- `.panel`: `box-sizing: border-box`, `width: 300px`, `padding: 20px`, `height: 120px`.\n- `.panel`: also `max-width: 100%` so it never overflows.\n- `.photo`: `width: 100%` and `max-width: 400px`.",
+    "hints": [
+      "Four properties for .panel and two for .photo. Declarations are separated by semicolons.",
+      "`box-sizing: border-box` makes the width include the padding. `max-width` is a limit, `width` is the target.",
+      ".panel {\n  box-sizing: border-box;\n  width: 300px;\n  max-width: 100%;\n  height: 120px;\n  padding: 20px;\n}\n.photo {\n  width: 100%;\n  max-width: 400px;\n}"
+    ],
+    "checks": [
+      { "name": ".panel uses border-box sizing", "selector": ".panel", "style": { "prop": "box-sizing", "equals": "border-box" }, "hint": "Add box-sizing: border-box; to .panel." },
+      { "name": ".panel is 300px wide", "selector": ".panel", "style": { "prop": "width", "equals": "300px" }, "hint": "Add width: 300px; to .panel." },
+      { "name": ".panel is 120px tall", "selector": ".panel", "style": { "prop": "height", "equals": "120px" }, "hint": "Add height: 120px; to .panel." },
+      { "name": ".panel has 20px padding", "selector": ".panel", "style": { "prop": "padding-left", "equals": "20px" }, "hint": "Add padding: 20px; to .panel." },
+      { "name": ".panel has max-width 100%", "selector": ".panel", "style": { "prop": "max-width", "equals": "100%" }, "hint": "Add max-width: 100%; to .panel." },
+      { "name": ".photo has a max-width of 400px", "selector": ".photo", "style": { "prop": "max-width", "equals": "400px" }, "hint": "Add max-width: 400px; to .photo." },
+      { "name": ".photo takes the width of its container, up to 400px", "selector": ".photo", "style": { "prop": "width", "equals": "400px" }, "hint": "Add width: 100%; to .photo. In a wide frame the max-width caps it at 400px." }
+    ]
+  }
+}

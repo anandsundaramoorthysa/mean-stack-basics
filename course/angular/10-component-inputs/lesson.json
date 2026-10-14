@@ -1,0 +1,116 @@
+{
+  "title": "Component inputs",
+  "minutes": 15,
+  "summary": "Pass data from a parent component into a child with the input() function.",
+  "docs": [
+    {
+      "title": "Angular: Accepting data with input properties",
+      "url": "https://angular.dev/guide/components/inputs"
+    },
+    {
+      "title": "Angular: Signals",
+      "url": "https://angular.dev/guide/signals"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does a child component use to receive data from its parent?",
+      "options": [
+        "output()",
+        "input()",
+        "inject()",
+        "effect()"
+      ],
+      "answer": 1,
+      "explain": "`input()` declares a value the parent can set from its template. `output()` is for the opposite direction."
+    },
+    {
+      "type": "fill",
+      "q": "Make `name` a required input of type string.",
+      "template": "name = input.___<string>();",
+      "blanks": [
+        [
+          "required"
+        ]
+      ],
+      "explain": "`input.required<string>()` means the parent must supply the value, or the build reports an error."
+    },
+    {
+      "type": "predict",
+      "q": "A child has `score = input(0);` and the parent writes `<app-badge />` without a score. What does `{{ score() }}` show?",
+      "code": "score = input(0);",
+      "language": "ts",
+      "answer": "0",
+      "explain": "The number in `input(0)` is the default used when the parent gives nothing."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line with the mistake. The child declares `name = input.required<string>();`.",
+      "code": "template: `\n  <h3>{{ name }}</h3>\n  <p>Welcome</p>\n`",
+      "answerLines": [
+        2
+      ],
+      "explain": "An input is a signal, so it must be read with parentheses: `{{ name() }}`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which parent template passes the number 82 to the input `score`?",
+      "options": [
+        "<app-badge score=\"82\" />",
+        "<app-badge [score]=\"82\" />",
+        "<app-badge {{score}}=\"82\" />",
+        "<app-badge (score)=\"82\" />"
+      ],
+      "answer": 1,
+      "explain": "`[score]=\"82\"` binds the number 82. Plain `score=\"82\"` would pass the text '82', which is a string."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "badge.component.ts",
+    "task": "Finish `badge.component.ts`.\n\n- Import `input` from `@angular/core`.\n- In `StudentBadgeComponent` create `name = input.required<string>()` and `score = input(0)`.\n- Its template shows `{{ name() }}` and `{{ score() }}`.\n- In `AppComponent` add `imports: [StudentBadgeComponent]`.\n- In the parent template use `<app-student-badge name=\"Asha\" [score]=\"82\" />`.",
+    "hints": [
+      "Inputs are class fields created by calling `input...()`. Read them in the template with parentheses.",
+      "A component placed in another template must be listed in that component's `imports`. Use `[score]` to pass a number.",
+      "export class StudentBadgeComponent {\n  name = input.required<string>();\n  score = input(0);\n}\n...\nimports: [StudentBadgeComponent],\ntemplate: `<app-student-badge name=\"Asha\" [score]=\"82\" />`"
+    ],
+    "checks": [
+      {
+        "name": "input is imported from @angular/core",
+        "hint": "import { Component, input } from '@angular/core';",
+        "regex": "import\\s*\\{[^}]*\\binput\\b[^}]*\\}\\s*from\\s*['\"]@angular/core['\"]"
+      },
+      {
+        "name": "name is a required string input",
+        "hint": "Write name = input.required<string>();",
+        "regex": "\\bname\\s*=\\s*input\\.required\\s*<\\s*string\\s*>\\s*\\(\\s*\\)"
+      },
+      {
+        "name": "score is an input with default 0",
+        "hint": "Write score = input(0);",
+        "regex": "\\bscore\\s*=\\s*input\\s*(<\\s*number\\s*>)?\\s*\\(\\s*0\\s*\\)"
+      },
+      {
+        "name": "The child template reads name() and score()",
+        "hint": "Use {{ name() }} and {{ score() }} with parentheses.",
+        "regex": "\\{\\{\\s*name\\(\\s*\\)\\s*\\}\\}[\\s\\S]*\\{\\{\\s*score\\(\\s*\\)\\s*\\}\\}"
+      },
+      {
+        "name": "AppComponent imports StudentBadgeComponent",
+        "hint": "Add imports: [StudentBadgeComponent] to AppComponent.",
+        "regex": "imports\\s*:\\s*\\[\\s*StudentBadgeComponent\\s*,?\\s*\\]"
+      },
+      {
+        "name": "The parent passes name=\"Asha\"",
+        "hint": "Write <app-student-badge name=\"Asha\" ... />.",
+        "regex": "<app-student-badge[^>]*\\bname\\s*=\\s*[\"']Asha[\"']"
+      },
+      {
+        "name": "The parent binds [score] to 82",
+        "hint": "Write [score]=\"82\".",
+        "regex": "<app-student-badge[^>]*\\[score\\]\\s*=\\s*[\"']82[\"']"
+      }
+    ]
+  }
+}

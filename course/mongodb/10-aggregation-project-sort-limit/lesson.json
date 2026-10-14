@@ -1,0 +1,62 @@
+{
+  "title": "Aggregation: $project, $sort, $skip and $limit",
+  "minutes": 15,
+  "summary": "Shape pipeline output by choosing fields, calculating new ones, sorting and trimming the results.",
+  "docs": [
+    { "title": "MongoDB: $project stage", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/project/" },
+    { "title": "MongoDB: $sort stage", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/sort/" },
+    { "title": "MongoDB: $limit stage", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/limit/" },
+    { "title": "MongoDB: $skip stage", "url": "https://www.mongodb.com/docs/manual/reference/operator/aggregation/skip/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "You want the 3 cheapest products. Which stage order is right?",
+      "options": [
+        "{ $limit: 3 } then { $sort: { price: 1 } }",
+        "{ $sort: { price: 1 } } then { $limit: 3 }",
+        "{ $sort: { price: -1 } } then { $limit: 3 }",
+        "{ $limit: 3 } then { $sort: { price: -1 } }"
+      ],
+      "answer": 1,
+      "explain": "Sort from smallest to largest first, then keep the first three. Limiting first would pick three arbitrary products and sort only those."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the stage so the output holds only the `name` field and no `_id`.",
+      "template": "{ $___: { _id: 0, name: 1 } }",
+      "blanks": [["project"]],
+      "explain": "`$project` selects and shapes the fields of each output document."
+    },
+    {
+      "type": "predict",
+      "q": "The collection holds prices 30, 10, 20 and 40 in that order. What does the pipeline return? Type the prices separated by spaces.",
+      "code": "[\n  { $sort: { price: 1 } },\n  { $skip: 1 },\n  { $limit: 2 },\n  { $project: { _id: 0, price: 1 } }\n]",
+      "language": "js",
+      "answer": "20 30",
+      "explain": "Sorted: 10, 20, 30, 40. Skipping 1 leaves 20, 30, 40. Limiting to 2 leaves 20 and 30."
+    },
+    {
+      "type": "mcq",
+      "q": "In `{ $project: { total: { $add: ['$price', '$tax'] } } }`, what does the `$` in `'$price'` mean?",
+      "options": [
+        "The price is in dollars",
+        "It is a pattern for a regular expression",
+        "It reads the value of the field price from the current document",
+        "It marks the last item of an array"
+      ],
+      "answer": 2,
+      "explain": "Inside an expression a string starting with `$` is a field path. Without it, `'price'` would be plain text."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "Using the `products` collection (fields `name`, `category`, `price`), write a pipeline that:\n\n- keeps only products in the `'gadget'` category\n- sorts them by `price`, highest first\n- skips the most expensive one, then keeps the next **2**\n- outputs only `name`, `price`, and a new field `priceWithDelivery` equal to `price + 50` (no `_id`)",
+    "hints": [
+      "Write five stages in this order: `$match`, `$sort`, `$skip`, `$limit`, `$project`.",
+      "The new field is `priceWithDelivery: { $add: ['$price', 50] }`. Set `_id: 0` to hide the id.",
+      "db.products.aggregate([\n  { $match: { category: 'gadget' } },\n  { $sort: { price: -1 } },\n  { $skip: 1 },\n  { $limit: 2 },\n  { $project: { _id: 0, name: 1, price: 1, priceWithDelivery: { $add: ['$price', 50] } } }\n])"
+    ]
+  }
+}

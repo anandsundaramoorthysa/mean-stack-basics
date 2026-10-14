@@ -1,0 +1,111 @@
+{
+  "title": "Component outputs",
+  "minutes": 15,
+  "summary": "Let a child tell its parent that something happened with output() and emit().",
+  "docs": [
+    {
+      "title": "Angular: Custom events with outputs",
+      "url": "https://angular.dev/guide/components/outputs"
+    },
+    {
+      "title": "Angular: Accepting data with input properties",
+      "url": "https://angular.dev/guide/components/inputs"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "How does a child component send a value to its parent?",
+      "options": [
+        "By calling output() and listening with emit",
+        "By declaring an output() and calling emit(value)",
+        "By changing the parent's class directly",
+        "By using input()"
+      ],
+      "answer": 1,
+      "explain": "The child declares `rated = output<number>()` and calls `this.rated.emit(5)`. The parent listens with `(rated)=\"...\"`."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the call that sends the number out.",
+      "template": "this.rated.___(stars);",
+      "blanks": [
+        [
+          "emit"
+        ]
+      ],
+      "explain": "`emit` sends the value to every parent listener."
+    },
+    {
+      "type": "mcq",
+      "q": "In `<app-rating (rated)=\"onRated($event)\" />`, what is `$event`?",
+      "options": [
+        "The browser's click event",
+        "The value the child passed to emit()",
+        "The name of the child",
+        "Always undefined"
+      ],
+      "answer": 1,
+      "explain": "For an `output()`, `$event` is exactly what was given to `emit`, for example the number of stars."
+    },
+    {
+      "type": "mcq",
+      "q": "Which direction does an input send data?",
+      "options": [
+        "Child to parent",
+        "Parent to child",
+        "Between two siblings",
+        "To the server"
+      ],
+      "answer": 1,
+      "explain": "Inputs go down (parent to child). Outputs go up (child to parent)."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "rating.component.ts",
+    "task": "Finish `rating.component.ts`.\n\n- Import `output` from `@angular/core`.\n- In `RatingComponent` create `rated = output<number>()`.\n- The button calls `rate(5)` on click, and `rate(stars: number)` calls `this.rated.emit(stars)`.\n- In `AppComponent` add `imports: [RatingComponent]` and use `<app-rating (rated)=\"onRated($event)\" />`.\n- `onRated(stars: number)` saves it with `this.lastRating = stars`.",
+    "hints": [
+      "The child owns the output and the emit. The parent only listens with parentheses.",
+      "`(rated)=\"onRated($event)\"` runs the parent's method with the emitted number.",
+      "export class RatingComponent {\n  rated = output<number>();\n  rate(stars: number) {\n    this.rated.emit(stars);\n  }\n}\n...\ntemplate: `<app-rating (rated)=\"onRated($event)\" />`"
+    ],
+    "checks": [
+      {
+        "name": "output is imported from @angular/core",
+        "hint": "import { Component, output } from '@angular/core';",
+        "regex": "import\\s*\\{[^}]*\\boutput\\b[^}]*\\}\\s*from\\s*['\"]@angular/core['\"]"
+      },
+      {
+        "name": "rated is an output of numbers",
+        "hint": "Write rated = output<number>();",
+        "regex": "\\brated\\s*=\\s*output\\s*<\\s*number\\s*>\\s*\\(\\s*\\)"
+      },
+      {
+        "name": "The button calls rate(5) on click",
+        "hint": "Write (click)=\"rate(5)\" on the button.",
+        "regex": "\\(click\\)\\s*=\\s*[\"']rate\\(\\s*5\\s*\\)[\"']"
+      },
+      {
+        "name": "rate() emits the stars",
+        "hint": "Write this.rated.emit(stars);",
+        "regex": "\\brate\\s*\\(\\s*stars\\s*:\\s*number\\s*\\)\\s*(:\\s*void\\s*)?\\{[^}]*this\\.rated\\.emit\\s*\\(\\s*stars\\s*\\)"
+      },
+      {
+        "name": "AppComponent imports RatingComponent",
+        "hint": "Add imports: [RatingComponent] to AppComponent.",
+        "regex": "imports\\s*:\\s*\\[\\s*RatingComponent\\s*,?\\s*\\]"
+      },
+      {
+        "name": "The parent listens with (rated)=\"onRated($event)\"",
+        "hint": "Write <app-rating (rated)=\"onRated($event)\" />.",
+        "regex": "<app-rating[^>]*\\(rated\\)\\s*=\\s*[\"']onRated\\(\\s*\\$event\\s*\\)[\"']"
+      },
+      {
+        "name": "onRated stores the stars in lastRating",
+        "hint": "Write this.lastRating = stars;",
+        "regex": "\\bonRated\\s*\\(\\s*stars\\s*:\\s*number\\s*\\)\\s*(:\\s*void\\s*)?\\{[^}]*this\\.lastRating\\s*=\\s*stars"
+      }
+    ]
+  }
+}

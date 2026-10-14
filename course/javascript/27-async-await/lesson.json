@@ -1,0 +1,64 @@
+{
+  "title": "async and await",
+  "minutes": 18,
+  "summary": "Write promise-based code that reads top to bottom using async functions, await and try...catch.",
+  "docs": [
+    { "title": "MDN: async function", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" },
+    { "title": "MDN: await", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await" },
+    { "title": "MDN: Promise.all()", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does an async function always return?",
+      "options": ["The value written after return", "A promise", "undefined", "A string"],
+      "answer": 1,
+      "explain": "Even if you `return 5`, the caller receives a promise that fulfills with 5. That is why callers use `await` or `.then`."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that must change so that both `await` lines work.",
+      "code": "function getTotal(loadA, loadB) {\n  const a = await loadA();\n  const b = await loadB();\n  return a + b;\n}",
+      "answerLines": [1],
+      "explain": "`await` can only be used inside an `async` function. The first line should read `async function getTotal(...)`."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the two words separated by a space.",
+      "code": "async function run() {\n  console.log('start');\n  await null;\n  console.log('end');\n}\nrun();\nconsole.log('after');",
+      "language": "js",
+      "answer": "start after end",
+      "accept": ["start\nafter\nend"],
+      "explain": "`await` pauses `run` and lets the rest of the program continue, so `after` prints before `end`."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the code so a rejected promise does not crash the function.",
+      "template": "async function safe(load) {\n  ___ {\n    return await load();\n  } catch (error) {\n    return 'unavailable';\n  }\n}",
+      "blanks": [["try"]],
+      "explain": "A rejected promise that you `await` throws an error at that line, so ordinary `try...catch` handles it."
+    },
+    {
+      "type": "mcq",
+      "q": "You need two independent results and want them as fast as possible. Which is best?",
+      "options": [
+        "await one, then await the other",
+        "const [a, b] = await Promise.all([loadA(), loadB()]);",
+        "Call setTimeout twice",
+        "Use two nested loops"
+      ],
+      "answer": 1,
+      "explain": "`Promise.all` starts both at once and waits for both. Two awaits in a row make the second wait for the first for no reason."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "asyncawait.js",
+    "task": "In `asyncawait.js`, write three `async` functions. Each receives functions that return promises (called loaders):\n\n- `addAsync(loadA, loadB)` awaits both loaders and returns the sum of their results.\n- `safeLoad(load, fallback)` awaits `load()`. If it rejects, return `fallback` instead (use `try...catch`).\n- `loadAll(loaders)` takes an array of loaders, runs them all at the same time with `Promise.all`, and returns the array of results.",
+    "hints": [
+      "Write `async function name(...) { ... }` and put `await` in front of every loader call.",
+      "For `safeLoad`, wrap the `await` in `try { ... } catch (error) { ... }`. For `loadAll`, map the loaders to promises: `loaders.map((load) => load())`.",
+      "async function addAsync(loadA, loadB) {\n  const a = await loadA();\n  const b = await loadB();\n  return a + b;\n}\n\nasync function safeLoad(load, fallback) {\n  try {\n    return await load();\n  } catch (error) {\n    return fallback;\n  }\n}\n\nasync function loadAll(loaders) {\n  return await Promise.all(loaders.map((load) => load()));\n}"
+    ]
+  }
+}

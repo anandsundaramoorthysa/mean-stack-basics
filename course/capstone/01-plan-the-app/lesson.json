@@ -1,0 +1,51 @@
+{
+  "title": "Plan the app",
+  "minutes": 10,
+  "summary": "Turn an idea into requirements, three tiers, a data shape and a list of REST routes.",
+  "docs": [
+    { "title": "MDN: HTTP request methods", "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods" },
+    { "title": "MDN: HTTP response status codes", "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which tier should talk to MongoDB directly in our app?",
+      "options": ["The Angular app in the browser", "The Express server", "Both of them", "Neither; MongoDB talks to itself"],
+      "answer": 1,
+      "explain": "Only the server holds the database connection. The browser calls the API, and the API reads and writes the data. This keeps database passwords off the user's machine."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the route that adds a new student.",
+      "template": "___ /students",
+      "blanks": [["POST"]],
+      "explain": "POST creates a new item. GET reads, PUT changes and DELETE removes."
+    },
+    {
+      "type": "mcq",
+      "q": "A teacher asks to delete student 99, but no student has that id. Which status should the API send?",
+      "options": ["200", "201", "404", "500"],
+      "answer": 2,
+      "explain": "404 means the thing asked for was not found. 500 would mean the server itself broke, which is not the case here."
+    },
+    {
+      "type": "order",
+      "q": "Put the steps of 'show the student list' in the order they happen.",
+      "lines": [
+        "Angular sends GET /students",
+        "Express receives the request",
+        "Express asks MongoDB for the students",
+        "MongoDB returns the documents",
+        "Angular shows them in a list"
+      ],
+      "explain": "A request travels from the browser to the server to the database, and the answer travels back the same way."
+    },
+    {
+      "type": "mcq",
+      "q": "Which path follows the REST habit of naming the thing, not the action?",
+      "options": ["/getAllStudents", "/students", "/doDeleteStudent/3", "/studentsList.php"],
+      "answer": 1,
+      "explain": "The path names the resource (`/students`). The HTTP method, such as GET or DELETE, says what to do with it."
+    }
+  ]
+}

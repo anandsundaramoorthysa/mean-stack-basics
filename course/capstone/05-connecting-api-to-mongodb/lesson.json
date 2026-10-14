@@ -1,0 +1,123 @@
+{
+  "title": "Connecting the API to MongoDB",
+  "minutes": 18,
+  "summary": "Use the official Node.js driver to connect, insert and read, with the connection string kept in an environment variable.",
+  "docs": [
+    {
+      "title": "MongoDB Node.js driver",
+      "url": "https://www.mongodb.com/docs/drivers/node/current/"
+    },
+    {
+      "title": "MongoDB: Connection strings",
+      "url": "https://www.mongodb.com/docs/manual/reference/connection-string/"
+    },
+    {
+      "title": "Node.js: process.env",
+      "url": "https://nodejs.org/api/process.html#processenv"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Why should a connection string with a password stay out of your source code?",
+      "options": [
+        "It makes the program slower",
+        "Anyone who sees the code, for example on GitHub, could use your database",
+        "Node.js refuses to run files that contain it",
+        "MongoDB rejects strings that are written in code"
+      ],
+      "answer": 1,
+      "explain": "Code is shared and copied. A secret inside it is shared too. Environment variables keep the secret on the machine that runs the program."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the line that reads the connection string from the environment.",
+      "template": "const uri = process.___.MONGODB_URI;",
+      "blanks": [
+        [
+          "env"
+        ]
+      ],
+      "explain": "`process.env` is an object holding the environment variables of the running process."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `students.find({})` return in the Node.js driver?",
+      "options": [
+        "An array of documents",
+        "A cursor, which you turn into an array with toArray()",
+        "A string of JSON",
+        "A promise of nothing"
+      ],
+      "answer": 1,
+      "explain": "`find` gives a cursor so large results can be read in pieces. Call `await ....toArray()` to get a plain array."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that will hand back a promise instead of the saved result.",
+      "code": "async function addStudent(students, data) {\n  const result = students.insertOne(data);\n  console.log(result.insertedId);\n}",
+      "answerLines": [
+        2
+      ],
+      "explain": "`insertOne` returns a promise. Without `await` the next line sees the promise, not the result, so `insertedId` is undefined."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "db.js",
+    "task": "Complete `db.js` with the official driver.\n\n- Import `MongoClient` from `mongodb`.\n- Read the connection string from `process.env.MONGODB_URI` (no password written in the file).\n- Create a client with `new MongoClient(uri)` and `await client.connect()`.\n- Get the `students` collection of the `marks` database.\n- Add a student with `insertOne` and read all students with `find({}).toArray()`.\n- Close the client with `client.close()`.",
+    "hints": [
+      "Work through the TODO comments in order. Everything after `connect()` needs the `await` keyword.",
+      "The collection comes from chaining `client.db('marks').collection('students')`. Pass a student object to `insertOne`.",
+      "const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';\nconst client = new MongoClient(uri);\n\nasync function main() {\n  try {\n    await client.connect();\n    const students = client.db('marks').collection('students');\n    await students.insertOne({ name: 'Asha', department: 'CSE', marks: 91 });\n    const all = await students.find({}).toArray();\n    console.log(all);\n  } finally {\n    await client.close();\n  }\n}"
+    ],
+    "checks": [
+      {
+        "name": "It imports MongoClient from mongodb",
+        "regex": "MongoClient[\\s\\S]*require\\s*\\(\\s*['\"]mongodb['\"]\\s*\\)|import\\s*\\{[^}]*MongoClient[^}]*\\}\\s*from\\s*['\"]mongodb['\"]",
+        "hint": "Keep: const { MongoClient } = require('mongodb');"
+      },
+      {
+        "name": "The connection string is read from process.env.MONGODB_URI",
+        "regex": "process\\.env\\.MONGODB_URI",
+        "hint": "Write: const uri = process.env.MONGODB_URI;"
+      },
+      {
+        "name": "No username and password are written in the file",
+        "regex": "mongodb(\\+srv)?:\\/\\/[^'\"\\s@]*:[^'\"\\s@]*@",
+        "not": true,
+        "hint": "Remove any mongodb://user:password@... text. Secrets belong in environment variables."
+      },
+      {
+        "name": "It creates a client with new MongoClient(uri)",
+        "regex": "new\\s+MongoClient\\s*\\(\\s*uri\\s*\\)",
+        "hint": "Create the client: const client = new MongoClient(uri);"
+      },
+      {
+        "name": "It awaits client.connect()",
+        "regex": "await\\s+client\\.connect\\s*\\(\\s*\\)",
+        "hint": "Add: await client.connect(); inside the async function."
+      },
+      {
+        "name": "It gets the students collection of the marks database",
+        "regex": "\\.db\\s*\\(\\s*['\"]marks['\"]\\s*\\)[\\s\\S]*?\\.collection\\s*\\(\\s*['\"]students['\"]",
+        "hint": "Chain: client.db('marks').collection('students')"
+      },
+      {
+        "name": "It inserts a student with insertOne",
+        "regex": "await\\s+\\w+\\.insertOne\\s*\\(\\s*\\{",
+        "hint": "Add: await students.insertOne({ name: 'Asha', department: 'CSE', marks: 91 });"
+      },
+      {
+        "name": "It reads all students with find({}).toArray()",
+        "regex": "await[^;]*\\.find\\s*\\(\\s*(\\{\\s*\\})?\\s*\\)\\s*\\.toArray\\s*\\(\\s*\\)|await\\s+\\w+\\.toArray\\s*\\(",
+        "hint": "Add: const all = await students.find({}).toArray();"
+      },
+      {
+        "name": "It closes the client",
+        "regex": "client\\.close\\s*\\(",
+        "hint": "Finish with: await client.close();"
+      }
+    ]
+  }
+}

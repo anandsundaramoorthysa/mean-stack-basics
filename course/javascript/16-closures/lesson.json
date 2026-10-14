@@ -1,0 +1,58 @@
+{
+  "title": "Closures",
+  "minutes": 15,
+  "summary": "Build functions that remember values from the place where they were created.",
+  "docs": [
+    { "title": "MDN: Closures", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures" },
+    { "title": "MDN: Functions", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the two numbers separated by a space.",
+      "code": "function makeCounter() {\n  let n = 0;\n  return () => {\n    n = n + 1;\n    return n;\n  };\n}\nconst a = makeCounter();\nconsole.log(a());\nconsole.log(a());",
+      "language": "js",
+      "answer": "1 2",
+      "accept": ["1\n2"],
+      "explain": "The inner function keeps the variable `n` alive between calls, so the second call continues from 1 and returns 2."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the two numbers separated by a space.",
+      "code": "function makeCounter() {\n  let n = 0;\n  return () => ++n;\n}\nconst a = makeCounter();\nconst b = makeCounter();\na();\na();\nconsole.log(a());\nconsole.log(b());",
+      "language": "js",
+      "answer": "3 1",
+      "accept": ["3\n1"],
+      "explain": "Every call to `makeCounter` creates a brand new `n`. Counter `a` has counted three times, counter `b` only once."
+    },
+    {
+      "type": "mcq",
+      "q": "What is a closure?",
+      "options": [
+        "A function that has finished running and can never run again",
+        "A function together with the variables from the place where it was created",
+        "A way of closing a browser window from JavaScript",
+        "A variable that cannot be changed"
+      ],
+      "answer": 1,
+      "explain": "A closure is a function plus the surrounding variables it can still reach, even after the outer function has returned."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the function so that `makeAdder(5)(2)` gives 7.",
+      "template": "function makeAdder(n) {\n  return (x) => x ___ n;\n}",
+      "blanks": [["+"]],
+      "explain": "The returned function remembers `n` from `makeAdder`, and adds it to its own argument `x`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "closures.js",
+    "task": "In `closures.js`, finish two functions that each return a new function:\n\n- `makeAdder(n)` returns a function that takes `x` and returns `x + n`.\n- `makeCounter(start)` returns a function. Each call adds 1 to a hidden number that begins at `start` and returns the new value. `start` defaults to 0, so the first call returns 1.\n\nThe hidden number must not be a property anyone can read from outside.",
+    "hints": [
+      "Both functions must `return` another function. The inner function can use the variables of the outer one.",
+      "For the counter, declare `let count = start;` inside `makeCounter`, then return a function that does `count = count + 1` and returns `count`.",
+      "function makeAdder(n) {\n  return (x) => x + n;\n}\n\nfunction makeCounter(start = 0) {\n  let count = start;\n  return () => {\n    count = count + 1;\n    return count;\n  };\n}"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "title": "Validation and error responses",
+  "minutes": 18,
+  "summary": "Check incoming data and answer with 400 for bad input and 404 for missing items.",
+  "docs": [
+    { "title": "Express 5 API: res.status", "url": "https://expressjs.com/en/5x/api.html#res.status" },
+    { "title": "Express: Error handling", "url": "https://expressjs.com/en/guide/error-handling.html" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "A client posts a student with no name. Which status fits best?",
+      "options": ["200", "400", "404", "500"],
+      "answer": 1,
+      "explain": "400 Bad Request says the client sent something invalid. 404 is for a missing resource and 500 means your own code failed."
+    },
+    {
+      "type": "mcq",
+      "q": "GET /students/99 is asked but no student has id 99. Which status fits best?",
+      "options": ["400", "401", "404", "201"],
+      "answer": 2,
+      "explain": "The request itself is fine, the thing just does not exist, which is exactly what 404 Not Found means."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the guard so a missing student gets a 404 and the route stops.",
+      "template": "const student = students.find((s) => s.id === id);\nif (!student) {\n  return res.___(404).json({ error: 'Student not found' });\n}\nres.json(student);",
+      "blanks": [["status"]],
+      "explain": "`return` matters: it stops the function so the code below does not try to send a second response."
+    },
+    {
+      "type": "mcq",
+      "q": "Why is `typeof marks === 'number'` a better check than `if (marks)` for a mark of 0?",
+      "options": [
+        "0 is a valid mark but `if (marks)` treats 0 as false",
+        "typeof is faster",
+        "if (marks) throws an error on numbers",
+        "There is no difference"
+      ],
+      "answer": 0,
+      "explain": "Zero, an empty string and `undefined` are all falsy. If 0 is allowed, test the type and the range explicitly."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that causes an error when a client posts with no JSON body at all.",
+      "code": "app.post('/students', (req, res) => {\n  const { name, marks } = req.body;\n  if (typeof name !== 'string' || name.trim() === '') {\n    return res.status(400).json({ error: 'name is required' });\n  }\n  res.status(201).json({ name, marks });\n});",
+      "answerLines": [2],
+      "explain": "In Express 5, `req.body` is `undefined` when nothing was parsed, and destructuring `undefined` throws. Write `req.body ?? {}` to fall back to an empty object."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "app.js",
+    "task": "Make the student API safe in `app.js`. `express.json()` and the `students` array are ready.\n\n- `POST /students` needs `name` (a non-empty string) and `marks` (a number from 0 to 100). If either is wrong, answer with status `400` and JSON `{ \"error\": \"...\" }` (any helpful message). Otherwise add `{ id, name, marks }` using `nextId` and answer with status `201` and the student. Also give 400 when there is no body at all.\n- `GET /students/:id` sends the student, or status `404` with `{ \"error\": \"Student not found\" }` when no student has that id.\n- If the id in the URL is not a number (for example `/students/abc`), answer with status `400` and an `error` message.\n\nLeave `GET /students` and `module.exports = app;` as they are.",
+    "hints": [
+      "Check the input first and `return` as soon as something is wrong: `return res.status(400).json({ error: '...' })`. Without `return` the function keeps running and tries to answer twice.",
+      "Read the body safely with `const { name, marks } = req.body ?? {};`. Valid marks: `typeof marks === 'number' && marks >= 0 && marks <= 100`. For the id use `Number(req.params.id)` and `Number.isNaN(id)`.",
+      "app.post('/students', (req, res) => {\n  const { name, marks } = req.body ?? {};\n  if (typeof name !== 'string' || name.trim() === '') {\n    return res.status(400).json({ error: 'name must be a non-empty string' });\n  }\n  if (typeof marks !== 'number' || marks < 0 || marks > 100) {\n    return res.status(400).json({ error: 'marks must be a number from 0 to 100' });\n  }\n  const student = { id: nextId++, name: name.trim(), marks };\n  students.push(student);\n  res.status(201).json(student);\n});\n\napp.get('/students/:id', (req, res) => {\n  const id = Number(req.params.id);\n  if (Number.isNaN(id)) {\n    return res.status(400).json({ error: 'id must be a number' });\n  }\n  const student = students.find((s) => s.id === id);\n  if (!student) {\n    return res.status(404).json({ error: 'Student not found' });\n  }\n  res.json(student);\n});"
+    ]
+  }
+}

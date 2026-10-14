@@ -1,0 +1,109 @@
+{
+  "title": "NgModule versus standalone",
+  "minutes": 10,
+  "summary": "Recognise the older NgModule style and convert it to a standalone component.",
+  "docs": [
+    {
+      "title": "Angular: NgModules",
+      "url": "https://angular.dev/guide/ngmodules/overview"
+    },
+    {
+      "title": "Angular: Importing and using components",
+      "url": "https://angular.dev/guide/components/importing"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "In a standalone component, where do you list the other components, directives and pipes its template uses?",
+      "options": [
+        "In an NgModule's declarations",
+        "In the component's own `imports`",
+        "In package.json",
+        "In the router config"
+      ],
+      "answer": 1,
+      "explain": "A standalone component carries its own dependencies in `imports`, so you can read one file and see everything it needs."
+    },
+    {
+      "type": "mcq",
+      "q": "Which function starts a standalone app?",
+      "options": [
+        "bootstrapApplication(AppComponent, appConfig)",
+        "platformBrowserDynamic().bootstrapModule(AppModule)",
+        "startApp()",
+        "new AppComponent()"
+      ],
+      "answer": 0,
+      "explain": "`bootstrapApplication` takes the root component and the app config. The second option is the old module way."
+    },
+    {
+      "type": "mcq",
+      "q": "You open an older project and see `@NgModule({ declarations: [AppComponent] })`. What does `declarations` do?",
+      "options": [
+        "Registers components that belong to that module",
+        "Declares CSS variables",
+        "Lists the npm packages",
+        "Declares routes"
+      ],
+      "answer": 0,
+      "explain": "In the module style, a component belonged to exactly one module through `declarations`. Standalone components removed that extra step."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the setting a standalone component uses to list the modules, components and pipes its template needs.",
+      "template": "@Component({ selector: 'app-root', ___: [FormsModule], template: `...` })",
+      "blanks": [
+        [
+          "imports"
+        ]
+      ],
+      "explain": "A standalone component lists its own dependencies in `imports`."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "main.ts",
+    "task": "Convert `main.ts` from the NgModule style to standalone.\n\n- Delete the `@NgModule` class `AppModule`.\n- Remove the `standalone: false` setting from `AppComponent`.\n- Give `AppComponent` `imports: [FormsModule]`.\n- Bootstrap with `bootstrapApplication(AppComponent)` imported from `@angular/platform-browser`.",
+    "hints": [
+      "A standalone component needs no module. Remove the module class and its bootstrap call.",
+      "What the module imported (`FormsModule`) moves into the component's own `imports` list.",
+      "@Component({\n  selector: 'app-root',\n  imports: [FormsModule],\n  template: `<input [(ngModel)]=\"name\" /> {{ name }}`,\n})\nexport class AppComponent {\n  name = '';\n}\n\nbootstrapApplication(AppComponent);"
+    ],
+    "checks": [
+      {
+        "name": "There is no @NgModule",
+        "hint": "Delete the AppModule class and its @NgModule decorator.",
+        "regex": "@NgModule\\s*\\(",
+        "not": true
+      },
+      {
+        "name": "AppComponent no longer says standalone: false",
+        "hint": "Remove standalone: false from the @Component settings.",
+        "regex": "standalone\\s*:\\s*false",
+        "not": true
+      },
+      {
+        "name": "AppComponent imports FormsModule itself",
+        "hint": "Add imports: [FormsModule] to the @Component settings.",
+        "regex": "imports\\s*:\\s*\\[\\s*FormsModule\\s*,?\\s*\\]"
+      },
+      {
+        "name": "The app starts with bootstrapApplication(AppComponent)",
+        "hint": "Call bootstrapApplication(AppComponent);",
+        "regex": "bootstrapApplication\\s*\\(\\s*AppComponent\\b"
+      },
+      {
+        "name": "bootstrapApplication comes from @angular/platform-browser",
+        "hint": "import { bootstrapApplication } from '@angular/platform-browser';",
+        "regex": "import\\s*\\{[^}]*\\bbootstrapApplication\\b[^}]*\\}\\s*from\\s*['\"]@angular/platform-browser['\"]"
+      },
+      {
+        "name": "The old bootstrapModule call is gone",
+        "hint": "Remove platformBrowserDynamic().bootstrapModule(AppModule).",
+        "regex": "bootstrapModule",
+        "not": true
+      }
+    ]
+  }
+}

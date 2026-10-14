@@ -1,0 +1,61 @@
+{
+  "title": "Nested and array queries",
+  "minutes": 16,
+  "summary": "Query inside embedded objects and arrays using dot notation, $size and $elemMatch.",
+  "docs": [
+    { "title": "MongoDB: Query on embedded documents", "url": "https://www.mongodb.com/docs/manual/tutorial/query-embedded-documents/" },
+    { "title": "MongoDB: Query an array", "url": "https://www.mongodb.com/docs/manual/tutorial/query-arrays/" },
+    { "title": "MongoDB: $elemMatch operator", "url": "https://www.mongodb.com/docs/manual/reference/operator/query/elemMatch/" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which filter finds students whose address has city 'Salem'?",
+      "options": [
+        "{ address.city: 'Salem' }",
+        "{ 'address.city': 'Salem' }",
+        "{ address: 'Salem' }",
+        "{ address: { city: 'Salem' } } when the address also has a pin"
+      ],
+      "answer": 1,
+      "explain": "Dot notation needs quotes: `'address.city'`. The last option asks for an address exactly equal to `{ city: 'Salem' }`, and it would miss documents that also hold a pin."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the operator to find students that have exactly three subjects.",
+      "template": "{ subjects: { $___: 3 } }",
+      "blanks": [["size"]],
+      "explain": "`$size` matches an array with exactly that many elements. It does not accept ranges like \"at least 3\"."
+    },
+    {
+      "type": "predict",
+      "q": "A student has `subjects: ['maths', 'physics']`. How many students does this query match if that is the only student? Type the number.",
+      "code": "db.students.find({ subjects: 'physics' })",
+      "language": "js",
+      "answer": "1",
+      "explain": "A plain value against an array field matches when any element equals it, so this student matches."
+    },
+    {
+      "type": "mcq",
+      "q": "Why would you use `$elemMatch` instead of two separate conditions on `scores.subject` and `scores.mark`?",
+      "options": [
+        "It runs faster",
+        "It forces one array element to satisfy all conditions together",
+        "It lets you query several arrays at once",
+        "It is the only way to read nested fields"
+      ],
+      "answer": 1,
+      "explain": "Without `$elemMatch`, different elements may satisfy different conditions, which gives false matches."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "query.js",
+    "task": "Find the students who:\n\n- live in **Madurai** (the city is inside `address`), and\n- have a score entry for **maths** with a `mark` of **80 or more**. A single entry in `scores` must satisfy both.\n\nUse dot notation for the city and `$elemMatch` for the score.",
+    "hints": [
+      "You need two conditions in one filter: one on the nested city, one on the `scores` array.",
+      "Use `'address.city': 'Madurai'`. For `scores`, use `{ $elemMatch: { ... } }` with both subject and mark inside.",
+      "db.students.find({ 'address.city': 'Madurai', scores: { $elemMatch: { subject: 'maths', mark: { $gte: 80 } } } })"
+    ]
+  }
+}

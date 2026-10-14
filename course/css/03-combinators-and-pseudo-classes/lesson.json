@@ -1,0 +1,59 @@
+{
+  "title": "Combinators and pseudo-classes",
+  "minutes": 15,
+  "summary": "Select elements by where they sit in the page and by their position or state.",
+  "docs": [
+    { "title": "MDN: Combinators", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Combinators" },
+    { "title": "MDN: Pseudo-classes", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes" },
+    { "title": "MDN: :nth-child()", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-child" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What does `nav a { ... }` select?",
+      "options": ["Only links that are direct children of nav", "Every link anywhere inside a nav, at any depth", "Every nav inside a link", "Elements with both names"],
+      "answer": 1,
+      "explain": "A space is the descendant combinator: any `a` inside `nav`, however deep."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `ul > li` select?",
+      "options": ["li elements that are direct children of a ul", "Every li inside a ul at any depth", "Every ul inside an li", "The first li only"],
+      "answer": 0,
+      "explain": "`>` is the child combinator. It only matches one level down, so it is stricter than a space."
+    },
+    {
+      "type": "fill",
+      "q": "Style a link only while the mouse is over it.",
+      "template": "a:___ { color: red; }",
+      "blanks": [["hover"]],
+      "explain": "`:hover` is a pseudo-class for a state. The browser applies it while the pointer is over the element."
+    },
+    {
+      "type": "predict",
+      "q": "A list has items A, B, C, D. Which items does `li:nth-child(2n)` match? Type the letters separated by a space.",
+      "code": "li:nth-child(2n) { color: red; }",
+      "language": "css",
+      "answer": "B D",
+      "accept": ["B, D", "B,D"],
+      "explain": "`2n` means the 2nd, 4th, 6th... children, which are B and D. `odd` and `even` are handy shortcuts."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Style the menu list. Work in `index.html`.\n\n- Make links inside the `nav` have `color: darkgreen` (descendant selector).\n- Make only the direct child `li` items of `ul.menu` have `font-weight: bold` using `>`.\n- Make the first `li` of `ul.menu` have `color: crimson` using `:first-child`.\n- Give every even `li` of `ul.menu` a `background-color` of `lightyellow` using `:nth-child`.",
+    "hints": [
+      "A space between two selectors means descendant. `>` means direct child. Pseudo-classes start with a colon.",
+      "Write `nav a`, `ul.menu > li`, `ul.menu > li:first-child` and `ul.menu > li:nth-child(even)`.",
+      "nav a {\n  color: darkgreen;\n}\nul.menu > li {\n  font-weight: bold;\n}\nul.menu > li:first-child {\n  color: crimson;\n}\nul.menu > li:nth-child(even) {\n  background-color: lightyellow;\n}"
+    ],
+    "checks": [
+      { "name": "Links in the nav are dark green", "selector": "nav a", "scope": "all", "style": { "prop": "color", "equals": "darkgreen" }, "hint": "Use nav a { color: darkgreen; }." },
+      { "name": "Menu items are bold", "selector": "ul.menu > li", "scope": "all", "style": { "prop": "font-weight", "min": 700 }, "hint": "Use ul.menu > li { font-weight: bold; }." },
+      { "name": "The first menu item is crimson", "selector": "ul.menu > li:first-child", "style": { "prop": "color", "equals": "crimson" }, "hint": "Use ul.menu > li:first-child { color: crimson; }." },
+      { "name": "The second menu item has a light yellow background", "selector": "ul.menu > li:nth-child(2)", "style": { "prop": "background-color", "equals": "lightyellow" }, "hint": "Use ul.menu > li:nth-child(even) { background-color: lightyellow; }." },
+      { "name": "The third menu item has no yellow background", "selector": "ul.menu > li:nth-child(3)", "style": { "prop": "background-color", "equals": "rgba(0, 0, 0, 0)" }, "hint": "Even only: :nth-child(even) skips the odd items." }
+    ]
+  }
+}

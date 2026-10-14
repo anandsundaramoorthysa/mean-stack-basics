@@ -1,0 +1,122 @@
+{
+  "title": "Forms basics",
+  "minutes": 16,
+  "summary": "Collect text, email and passwords with form, input, label and button.",
+  "docs": [
+    {
+      "title": "MDN: Your first form",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Your_first_form"
+    },
+    {
+      "title": "MDN: The input element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input"
+    },
+    {
+      "title": "MDN: The label element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/label"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which input type hides what the user types?",
+      "options": [
+        "text",
+        "hidden",
+        "password",
+        "secret"
+      ],
+      "answer": 2,
+      "explain": "`type=\"password\"` shows dots instead of the characters. (`hidden` is an invisible field, not a masked one.)"
+    },
+    {
+      "type": "fill",
+      "q": "Connect the label to the input.",
+      "template": "<label ___=\"age\">Age</label>\n<input id=\"age\" name=\"age\" type=\"number\">",
+      "blanks": [
+        [
+          "for"
+        ]
+      ],
+      "explain": "The label's `for` must match the input's `id`."
+    },
+    {
+      "type": "mcq",
+      "q": "An input has no `name` attribute. What happens when the form is submitted?",
+      "options": [
+        "The browser guesses a name from the id",
+        "The value is not sent",
+        "The form refuses to submit",
+        "The value is sent as \"undefined\""
+      ],
+      "answer": 1,
+      "explain": "Only inputs with a `name` are included in the data that is sent. The `id` is for labels and styling."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line with the mistake.",
+      "code": "<form action=\"/login\" method=\"post\">\n  <label for=\"user\">User</label>\n  <input id=\"username\" name=\"user\" type=\"text\">\n  <button type=\"submit\">Log in</button>\n</form>",
+      "answerLines": [
+        2,
+        3
+      ],
+      "explain": "The label points to `user` but the input's id is `username`, so they are not connected. Make them match."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Build a registration form in `index.html`.\n\n- A `<form>` with `action=\"/register\"` and `method=\"post\"`.\n- A text input with `id=\"name\"` and `name=\"name\"`, with a label that has `for=\"name\"` and the text `Name`.\n- An email input with `id=\"email\"` and `name=\"email\"`, with a matching label `Email`.\n- A password input (`type=\"password\"`) with `name=\"password\"`.\n- A submit button that says `Register`.",
+    "hints": [
+      "Start with the form element and its two attributes, then add the fields one at a time.",
+      "Each label needs for=\"x\" and the input needs id=\"x\". The input type is what makes it text, email or password.",
+      "<form action=\"/register\" method=\"post\">\n  <label for=\"name\">Name</label>\n  <input id=\"name\" name=\"name\" type=\"text\">\n  <label for=\"email\">Email</label>\n  <input id=\"email\" name=\"email\" type=\"email\">\n  <input name=\"password\" type=\"password\">\n  <button type=\"submit\">Register</button>\n</form>"
+    ],
+    "checks": [
+      {
+        "name": "The form posts to /register",
+        "hint": "Use <form action=\"/register\" method=\"post\">.",
+        "selector": "form[action=\"/register\"][method=\"post\"]"
+      },
+      {
+        "name": "A label for \"name\" says Name",
+        "hint": "Write <label for=\"name\">Name</label>.",
+        "selector": "form label[for=\"name\"]",
+        "text": {
+          "equals": "Name"
+        }
+      },
+      {
+        "name": "A text input has id and name \"name\"",
+        "hint": "Write <input id=\"name\" name=\"name\" type=\"text\">.",
+        "selector": "input#name[name=\"name\"]:is([type=\"text\"], :not([type]))"
+      },
+      {
+        "name": "A label for \"email\" says Email",
+        "hint": "Write <label for=\"email\">Email</label>.",
+        "selector": "form label[for=\"email\"]",
+        "text": {
+          "equals": "Email"
+        }
+      },
+      {
+        "name": "An email input has id and name \"email\"",
+        "hint": "Use type=\"email\" with id=\"email\" and name=\"email\".",
+        "selector": "input#email[name=\"email\"][type=\"email\"]"
+      },
+      {
+        "name": "A password input is named \"password\"",
+        "hint": "Add <input name=\"password\" type=\"password\">.",
+        "selector": "form input[type=\"password\"][name=\"password\"]"
+      },
+      {
+        "name": "A submit button says Register",
+        "hint": "Write <button type=\"submit\">Register</button>.",
+        "selector": "form button[type=\"submit\"]",
+        "text": {
+          "equals": "Register"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "title": "Form validation attributes",
+  "minutes": 15,
+  "summary": "Let the browser check input for you with required, minlength, min, max, pattern and placeholder.",
+  "docs": [
+    {
+      "title": "MDN: Client-side form validation",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation"
+    },
+    {
+      "title": "MDN: The required attribute",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/required"
+    },
+    {
+      "title": "MDN: The pattern attribute",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/pattern"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "Which attribute stops a form from being sent when a field is empty?",
+      "options": [
+        "placeholder",
+        "required",
+        "minlength",
+        "pattern"
+      ],
+      "answer": 1,
+      "explain": "`required` blocks an empty value. `minlength` only checks non-empty text, and `placeholder` is just a hint."
+    },
+    {
+      "type": "fill",
+      "q": "Limit the number to at most 100.",
+      "template": "<input type=\"number\" ___=\"100\">",
+      "blanks": [
+        [
+          "max"
+        ]
+      ],
+      "explain": "`max` sets the largest allowed number. `maxlength` is for the number of characters in text."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `pattern=\"[0-9]{4}\"` require?",
+      "options": [
+        "Any number up to 4",
+        "Exactly four digits",
+        "At least four letters",
+        "A number between 0 and 9"
+      ],
+      "answer": 1,
+      "explain": "`[0-9]` means one digit and `{4}` means four of them, so the full value must be exactly four digits."
+    },
+    {
+      "type": "mcq",
+      "q": "Why must a server still validate data even if the HTML has validation attributes?",
+      "options": [
+        "Browsers ignore these attributes",
+        "Users can bypass client-side checks",
+        "Attributes only work on phones",
+        "HTML cannot validate numbers"
+      ],
+      "answer": 1,
+      "explain": "A visitor can edit the page or send a request without a browser. Only checks on the server can be trusted."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Add validation attributes to the sign-up form in `index.html`.\n\n- `#username`: required, with `minlength=\"3\"`.\n- `#email`: required, with a `placeholder`.\n- `#age`: `type=\"number\"`, `min=\"18\"`, `max=\"60\"`.\n- `#pin`: a `pattern` that allows exactly four digits, e.g. `[0-9]{4}`, and `required`.",
+    "hints": [
+      "The inputs already exist with ids. Add attributes to their opening tags, not new elements.",
+      "required stands alone. minlength, min, max, pattern and placeholder each need =\"value\".",
+      "<input id=\"username\" name=\"username\" type=\"text\" required minlength=\"3\">\n<input id=\"email\" name=\"email\" type=\"email\" required placeholder=\"you@example.com\">\n<input id=\"age\" name=\"age\" type=\"number\" min=\"18\" max=\"60\">\n<input id=\"pin\" name=\"pin\" type=\"text\" required pattern=\"[0-9]{4}\">"
+    ],
+    "checks": [
+      {
+        "name": "#username is required",
+        "hint": "Add the required attribute to #username.",
+        "selector": "input#username",
+        "attr": {
+          "name": "required",
+          "present": true
+        }
+      },
+      {
+        "name": "#username has minlength 3",
+        "hint": "Add minlength=\"3\".",
+        "selector": "input#username",
+        "attr": {
+          "name": "minlength",
+          "equals": "3"
+        }
+      },
+      {
+        "name": "#email is required and has a placeholder",
+        "hint": "Add required and placeholder=\"...\" to #email.",
+        "selector": "input#email[required][placeholder]"
+      },
+      {
+        "name": "#age is a number input",
+        "hint": "Set type=\"number\" on #age.",
+        "selector": "input#age",
+        "attr": {
+          "name": "type",
+          "equals": "number"
+        }
+      },
+      {
+        "name": "#age has min 18",
+        "hint": "Add min=\"18\".",
+        "selector": "input#age",
+        "attr": {
+          "name": "min",
+          "equals": "18"
+        }
+      },
+      {
+        "name": "#age has max 60",
+        "hint": "Add max=\"60\".",
+        "selector": "input#age",
+        "attr": {
+          "name": "max",
+          "equals": "60"
+        }
+      },
+      {
+        "name": "#pin is required and has a four-digit pattern",
+        "hint": "Add required and pattern=\"[0-9]{4}\".",
+        "selector": "input#pin[required]",
+        "attr": {
+          "name": "pattern",
+          "regex": "^\\^?(\\[0-9\\]\\{4\\}|\\\\d\\{4\\}|\\[0-9\\]\\[0-9\\]\\[0-9\\]\\[0-9\\])\\$?$"
+        }
+      }
+    ]
+  }
+}

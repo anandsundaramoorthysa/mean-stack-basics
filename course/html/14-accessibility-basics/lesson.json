@@ -1,0 +1,129 @@
+{
+  "title": "Accessibility basics",
+  "minutes": 16,
+  "summary": "Repair a page so it works for screen-reader users: language, alt text, labels, heading order and landmarks.",
+  "docs": [
+    {
+      "title": "MDN: HTML - a good basis for accessibility",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/HTML"
+    },
+    {
+      "title": "MDN: Accessibility overview",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "What is the purpose of `lang=\"en\"` on the html element?",
+      "options": [
+        "It translates the page into English",
+        "It tells browsers and screen readers the language of the text",
+        "It makes the text bigger",
+        "It checks the spelling"
+      ],
+      "answer": 1,
+      "explain": "`lang` does not translate anything. It declares the language so software can pronounce and process the text correctly."
+    },
+    {
+      "type": "mcq",
+      "q": "Which link text is the most accessible?",
+      "options": [
+        "Click here",
+        "More",
+        "Read the admission rules",
+        "Link"
+      ],
+      "answer": 2,
+      "explain": "Screen-reader users often list all links on a page, so each link must make sense out of context."
+    },
+    {
+      "type": "bug",
+      "q": "Click the line that breaks the heading order.",
+      "code": "<h1>College</h1>\n<h2>Courses</h2>\n<h4>Computer Science</h4>",
+      "answerLines": [
+        3
+      ],
+      "explain": "The page jumps from `h2` to `h4`. Use `h3` so the outline has no gaps."
+    },
+    {
+      "type": "fill",
+      "q": "Give this decorative divider image an empty description so screen readers skip it.",
+      "template": "<img src=\"line.png\" ___=\"\">",
+      "blanks": [
+        [
+          "alt"
+        ]
+      ],
+      "explain": "An empty `alt` tells assistive technology the image is decorative. Leaving `alt` out is different, because the file name may be read out."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "The page in `index.html` has several accessibility problems. Fix them.\n\n- Add `lang=\"en\"` to the `<html>` element.\n- Give the image a meaningful `alt`.\n- Add a `<label for=\"email\">` for the email input (`id=\"email\"`).\n- Change the `<h4>` to an `<h3>` so the heading order has no gaps.\n- Wrap the page content in a `<main>` element.\n- Replace the link text `click here` with text that describes the destination.",
+    "hints": [
+      "Read the page from top to bottom and list what a screen reader would say: language, headings, the image, the field, the link.",
+      "You need: lang on html, alt on img, a label whose for matches the input id, h3 instead of h4, a main wrapper, and better link text.",
+      "<html lang=\"en\">\n<main>\n  <h1>Library</h1><h2>Opening hours</h2><h3>Weekends</h3>\n  <img src=\"library.jpg\" alt=\"Students reading in the library\">\n  <label for=\"email\">Email</label> <input id=\"email\" type=\"email\">\n  <a href=\"rules.html\">Read the library rules</a>\n</main>"
+    ],
+    "checks": [
+      {
+        "name": "The html element has a lang attribute",
+        "hint": "Write <html lang=\"en\">.",
+        "selector": "html",
+        "attr": {
+          "name": "lang",
+          "regex": "^[a-z]{2}"
+        }
+      },
+      {
+        "name": "The image has non-empty alt text",
+        "hint": "Describe the image in the alt attribute.",
+        "selector": "img",
+        "attr": {
+          "name": "alt",
+          "regex": "\\S"
+        }
+      },
+      {
+        "name": "The email input has a label",
+        "hint": "Add <label for=\"email\">Email</label> that matches the input id.",
+        "selector": "label[for=\"email\"]",
+        "text": {
+          "regex": "\\S"
+        }
+      },
+      {
+        "name": "There is no h4 (the heading order has no gaps)",
+        "hint": "Change <h4> to <h3>.",
+        "source": {
+          "notIncludes": "<h4"
+        }
+      },
+      {
+        "name": "There is an h3 after the h2",
+        "hint": "The last heading should now be an h3.",
+        "selector": "h3",
+        "count": {
+          "min": 1
+        }
+      },
+      {
+        "name": "The content is inside a main element",
+        "hint": "Wrap the content in <main>...</main>.",
+        "selector": "body main h1"
+      },
+      {
+        "name": "The link text is not \"click here\"",
+        "hint": "Use text that describes where the link goes.",
+        "selector": "a[href]",
+        "scope": "all",
+        "text": {
+          "regex": "^\\s*(?!click here\\s*$)\\S",
+          "flags": "i"
+        }
+      }
+    ]
+  }
+}

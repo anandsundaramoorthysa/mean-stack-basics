@@ -1,0 +1,67 @@
+{
+  "title": "Filters and form validation",
+  "minutes": 15,
+  "summary": "Format and sort data with filters, and validate a form with ng-required, $valid and ng-disabled.",
+  "docs": [
+    { "title": "AngularJS: Filters", "url": "https://docs.angularjs.org/guide/filter" },
+    { "title": "AngularJS: orderBy filter", "url": "https://docs.angularjs.org/api/ng/filter/orderBy" },
+    { "title": "AngularJS: currency filter", "url": "https://docs.angularjs.org/api/ng/filter/currency" },
+    { "title": "AngularJS: Forms", "url": "https://docs.angularjs.org/guide/forms" },
+    { "title": "AngularJS: ngDisabled", "url": "https://docs.angularjs.org/api/ng/directive/ngDisabled" }
+  ],
+  "quiz": [
+    {
+      "type": "predict",
+      "q": "With `$scope.city = 'pune'`, what does this show?",
+      "code": "{{ city | uppercase }}",
+      "language": "html",
+      "answer": "PUNE",
+      "explain": "A filter transforms a value for display. The pipe `|` sends `city` into the `uppercase` filter. The original scope value stays `pune`."
+    },
+    {
+      "type": "mcq",
+      "q": "Which expression sorts `items` by price from lowest to highest in an `ng-repeat`?",
+      "options": ["item in items | orderBy:'price'", "item in items | sort:'price'", "item in items.orderBy(price)", "item in items | price"],
+      "answer": 0,
+      "explain": "`orderBy` is the built-in sorting filter. Put a minus sign before the name, `'-price'`, to reverse the order."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the button so it is disabled while the form named `regForm` is invalid.",
+      "template": "<button ng-___=\"regForm.$invalid\">Register</button>",
+      "blanks": [["disabled"]],
+      "explain": "`ng-disabled` sets the real `disabled` attribute when its expression is true."
+    },
+    {
+      "type": "mcq",
+      "q": "A form is named `regForm` and has a required field that is empty. What is `regForm.$valid`?",
+      "options": ["true", "false", "undefined", "An empty string"],
+      "answer": 1,
+      "explain": "AngularJS tracks every field. If any field breaks a rule, the whole form has `$valid` false and `$invalid` true."
+    },
+    {
+      "type": "bug",
+      "q": "The form should be named so the button can check it, but `regForm` is never defined. Click the faulty line.",
+      "code": "<form>\n  <input name=\"email\" ng-model=\"email\" required>\n  <button ng-disabled=\"regForm.$invalid\">Send</button>\n</form>",
+      "answerLines": [1],
+      "explain": "AngularJS publishes the form on the scope using the form's `name` attribute. Write `<form name=\"regForm\">`."
+    }
+  ],
+  "exercise": {
+    "kind": "text",
+    "file": "index.html",
+    "task": "Complete `index.html`.\n\n- Show each product name in capitals with the `uppercase` filter.\n- Show each price with the `currency` filter.\n- Sort the `ng-repeat` by `price` with `orderBy`.\n- Make the email input required.\n- Disable the button while the form is invalid, using the form's `$invalid` or `$valid`.",
+    "hints": [
+      "Filters go inside the braces after a pipe. orderBy goes at the end of the ng-repeat expression. The form already has the name regForm.",
+      "{{ item.name | uppercase }}, {{ item.price | currency }}, item in items | orderBy:'price'. For validation, use required (or ng-required) on the input and ng-disabled on the button.",
+      "<li ng-repeat=\"item in items | orderBy:'price'\">{{ item.name | uppercase }} {{ item.price | currency }}</li>\n<input name=\"email\" ng-model=\"email\" type=\"email\" required>\n<button ng-disabled=\"regForm.$invalid\">Register</button>"
+    ],
+    "checks": [
+      { "name": "The name uses the uppercase filter", "hint": "Write {{ item.name | uppercase }}.", "regex": "\\{\\{\\s*item\\.name\\s*\\|\\s*uppercase\\s*\\}\\}" },
+      { "name": "The price uses the currency filter", "hint": "Write {{ item.price | currency }}.", "regex": "\\{\\{\\s*item\\.price\\s*\\|\\s*currency\\b[^}]*\\}\\}" },
+      { "name": "The list is sorted with orderBy on price", "hint": "Change the ng-repeat to: item in items | orderBy:'price'.", "regex": "ng-repeat\\s*=\\s*[^>]*\\|\\s*orderBy\\s*:\\s*[^a-z>]{0,8}price" },
+      { "name": "The email input is required", "hint": "Add required or ng-required=\"true\" to the email input.", "regex": "<input[^>]*name\\s*=\\s*[\"']email[\"'][^>]*(\\brequired\\b|ng-required)|<input[^>]*(\\brequired\\b|ng-required)[^>]*name\\s*=\\s*[\"']email[\"']" },
+      { "name": "The button is disabled while the form is invalid", "hint": "Add ng-disabled=\"regForm.$invalid\" to the button.", "regex": "<button[^>]*ng-disabled\\s*=\\s*[\"'][^\"']*(regForm\\.\\$invalid|!\\s*regForm\\.\\$valid)" }
+    ]
+  }
+}

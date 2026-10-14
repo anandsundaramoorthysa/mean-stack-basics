@@ -1,0 +1,69 @@
+{
+  "title": "Flexbox alignment and wrapping",
+  "minutes": 16,
+  "summary": "Space and align flex items with justify-content, align-items and gap, and let them wrap onto new lines.",
+  "docs": [
+    { "title": "MDN: Aligning items in a flex container", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Aligning_items_in_a_flex_container" },
+    { "title": "MDN: justify-content", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content" },
+    { "title": "MDN: gap", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/gap" },
+    { "title": "MDN: flex-wrap", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "In a row flex container, which property spreads items along the **horizontal** main axis?",
+      "options": ["align-items", "justify-content", "flex-wrap", "align-content"],
+      "answer": 1,
+      "explain": "`justify-content` works on the main axis (horizontal for a row). `align-items` works on the cross axis (vertical for a row)."
+    },
+    {
+      "type": "fill",
+      "q": "Push the first item to the left edge and the last to the right edge, with the rest spread between.",
+      "template": ".bar { display: flex; justify-content: ___-between; }",
+      "blanks": [["space"]],
+      "explain": "`space-between` puts equal gaps between items and none at the ends. Other values: `flex-start`, `center`, `flex-end`, `space-around`, `space-evenly`."
+    },
+    {
+      "type": "mcq",
+      "q": "Why add `flex-wrap: wrap`?",
+      "options": ["It makes items round", "It lets items move to a new line when there is not enough room", "It adds a border", "It reverses the order"],
+      "answer": 1,
+      "explain": "By default, flex items try to stay on one line and shrink. With `wrap`, extra items drop to the next line."
+    },
+    {
+      "type": "mcq",
+      "q": "What does `gap: 16px` on a flex container do?",
+      "options": ["Adds 16px margin around the container", "Adds 16px of space between the items", "Makes items 16px tall", "Nothing"],
+      "answer": 1,
+      "explain": "`gap` adds space only between items, not at the outer edges, which is simpler than margins."
+    },
+    {
+      "type": "predict",
+      "q": "In a row container, which property vertically centres the items? Type just the property and value, for example `a: b`.",
+      "code": ".bar { display: flex; height: 200px; }",
+      "language": "css",
+      "answer": "align-items: center",
+      "accept": ["align-items:center", "align-items: center;"],
+      "explain": "`align-items: center` centres items on the cross axis, which is vertical in a row."
+    }
+  ],
+  "exercise": {
+    "kind": "html",
+    "file": "index.html",
+    "task": "Style a toolbar and a tag list. Work in `index.html`.\n\n- `.toolbar`: `display: flex`, `justify-content: space-between`, `align-items: center`, `gap: 16px`.\n- `.tags`: `display: flex`, `flex-wrap: wrap`, `gap: 8px`.",
+    "hints": [
+      "Both containers need display: flex first. Then add the alignment and wrapping properties.",
+      "justify-content works along the main axis, align-items across it. flex-wrap lets items continue on a new line.",
+      ".toolbar {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 16px;\n}\n.tags {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 8px;\n}"
+    ],
+    "checks": [
+      { "name": ".toolbar is a flex container", "selector": ".toolbar", "style": { "prop": "display", "equals": "flex" }, "hint": "Add display: flex; to .toolbar." },
+      { "name": ".toolbar spaces its items with space-between", "selector": ".toolbar", "style": { "prop": "justify-content", "equals": "space-between" }, "hint": "Add justify-content: space-between;." },
+      { "name": ".toolbar centres items vertically", "selector": ".toolbar", "style": { "prop": "align-items", "equals": "center" }, "hint": "Add align-items: center;." },
+      { "name": ".toolbar has a 16px gap", "selector": ".toolbar", "style": { "prop": "column-gap", "equals": "16px" }, "hint": "Add gap: 16px;." },
+      { "name": ".tags is a flex container that wraps", "selector": ".tags", "style": { "prop": "flex-wrap", "equals": "wrap" }, "hint": "Add display: flex; and flex-wrap: wrap; to .tags." },
+      { "name": ".tags has an 8px gap", "selector": ".tags", "style": { "prop": "row-gap", "equals": "8px" }, "hint": "Add gap: 8px; to .tags." },
+      { "name": ".tags is a flex container", "selector": ".tags", "style": { "prop": "display", "equals": "flex" }, "hint": "Add display: flex; to .tags." }
+    ]
+  }
+}

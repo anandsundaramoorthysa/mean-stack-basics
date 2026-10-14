@@ -1,0 +1,68 @@
+{
+  "title": "Promises",
+  "minutes": 18,
+  "summary": "Create promises, chain results with then and handle failures with catch.",
+  "docs": [
+    { "title": "MDN: Using promises", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises" },
+    { "title": "MDN: Promise", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" }
+  ],
+  "quiz": [
+    {
+      "type": "mcq",
+      "q": "A promise can be in one of three states. Which list is correct?",
+      "options": [
+        "pending, fulfilled, rejected",
+        "start, running, stop",
+        "open, closed, locked",
+        "true, false, null"
+      ],
+      "answer": 0,
+      "explain": "A promise starts as pending. Later it becomes fulfilled (it has a value) or rejected (it has an error). After that it never changes."
+    },
+    {
+      "type": "predict",
+      "q": "What does this program print? Write the two words separated by a space.",
+      "code": "Promise.resolve(5)\n  .then((n) => n * 2)\n  .then((n) => console.log(n));\nconsole.log('first');",
+      "language": "js",
+      "answer": "first 10",
+      "accept": ["first\n10"],
+      "explain": "`then` callbacks always run later, after the current code is finished. So `first` prints, then the chain produces 10."
+    },
+    {
+      "type": "fill",
+      "q": "Complete the chain so errors are handled.",
+      "template": "loadStudent(1)\n  .then((s) => console.log(s.name))\n  .___((err) => console.log(err.message));",
+      "blanks": [["catch"]],
+      "explain": "`.catch` runs when any earlier step in the chain rejects, so one `catch` at the end covers the whole chain."
+    },
+    {
+      "type": "order",
+      "q": "Put the lines in order to build a promise that resolves after 100 ms.",
+      "lines": [
+        "const wait = new Promise((resolve) => {",
+        "  setTimeout(() => {",
+        "    resolve('done');",
+        "  }, 100);",
+        "});"
+      ],
+      "explain": "The executor function receives `resolve`. Calling it, here from inside the timer, fulfills the promise with a value."
+    },
+    {
+      "type": "mcq",
+      "q": "Inside `new Promise((resolve, reject) => ...)`, how do you signal failure?",
+      "options": ["throw resolve()", "Call reject(new Error('...'))", "return false", "Call console.error"],
+      "answer": 1,
+      "explain": "`reject(error)` marks the promise as rejected. Use an `Error` object so the message and stack are available to `catch`."
+    }
+  ],
+  "exercise": {
+    "kind": "js",
+    "file": "promises.js",
+    "task": "In `promises.js`, write three functions:\n\n- `wait(ms, value)` returns a promise that fulfills with `value` after `ms` milliseconds.\n- `checkAge(age)` returns a promise. It fulfills with `'allowed'` when `age >= 18`, otherwise it rejects with `new Error('too young')`.\n- `describeAge(age)` uses `checkAge(age)` with `.then` and `.catch` and returns a promise that always fulfills: with `'Welcome'` when allowed, or with the error's message when not.",
+    "hints": [
+      "Wrap the code in `new Promise((resolve, reject) => { ... })`. Call `resolve(...)` or `reject(...)` exactly once.",
+      "For `wait`, call `resolve(value)` inside `setTimeout`. For `describeAge`, return `checkAge(age).then(...).catch(...)`.",
+      "function wait(ms, value) {\n  return new Promise((resolve) => {\n    setTimeout(() => resolve(value), ms);\n  });\n}\n\nfunction checkAge(age) {\n  return new Promise((resolve, reject) => {\n    if (age >= 18) resolve('allowed');\n    else reject(new Error('too young'));\n  });\n}\n\nfunction describeAge(age) {\n  return checkAge(age)\n    .then(() => 'Welcome')\n    .catch((error) => error.message);\n}"
+    ]
+  }
+}
