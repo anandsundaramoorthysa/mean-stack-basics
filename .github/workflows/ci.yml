@@ -43,4 +43,4 @@ jobs:
       - run: npm ci
       - run: npm run compile
       - name: Check official documentation links
-        run: node out/tools/validate.js --links
+        run: node out/tools/validate.js --links-only

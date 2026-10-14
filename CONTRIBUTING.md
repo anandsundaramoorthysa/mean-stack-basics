@@ -60,7 +60,8 @@ npm run compile
 | `npm test` | Run the unit tests (Vitest) |
 | `npm run validate` | Check every lesson: starters fail, solutions pass |
 | `npm run validate -- --track css` | Check one track |
-| `npm run validate:links` | Also check that every documentation link loads |
+| `npm run validate:links` | Check only that every documentation link loads |
+| `npm run validate -- --links` | Check every lesson and also every documentation link |
 | `node test/e2e/runTest.js` | End-to-end test inside a real VS Code window (set `VSCODE_EXE` to use your installed VS Code) |
 | `npx vsce package` | Build the `.vsix` |
 

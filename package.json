@@ -316,7 +316,7 @@
     "watch": "tsc -watch -p ./",
     "test": "vitest run",
     "validate": "npm run compile && node out/tools/validate.js",
-    "validate:links": "npm run compile && node out/tools/validate.js --links",
+    "validate:links": "npm run compile && node out/tools/validate.js --links-only",
     "package": "vsce package"
   },
   "dependencies": {

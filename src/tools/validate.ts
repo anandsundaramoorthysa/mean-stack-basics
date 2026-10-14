@@ -15,13 +15,18 @@ const COURSE_DIR = path.join(ROOT, 'course');
 interface Args {
   track?: string;
   links: boolean;
+  linksOnly: boolean;
 }
 
 function parseArgs(argv: string[]): Args {
-  const args: Args = { links: false };
+  const args: Args = { links: false, linksOnly: false };
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === '--track') args.track = argv[++i];
     if (argv[i] === '--links') args.links = true;
+    if (argv[i] === '--links-only') {
+      args.links = true;
+      args.linksOnly = true;
+    }
   }
   return args;
 }
@@ -188,7 +193,7 @@ async function main(): Promise<void> {
   const lessons = course.lessons.filter((l) => !args.track || l.track === args.track);
   const problems: string[] = [];
   let withExercise = 0;
-  for (const lesson of lessons) {
+  for (const lesson of args.linksOnly ? [] : lessons) {
     const ex = lesson.exercise;
     lintLesson(lesson).forEach((p) => problems.push(p));
     if (!lesson.quiz.length && !ex) problems.push(`${lesson.id}: needs a quiz or an exercise`);
@@ -216,7 +221,7 @@ async function main(): Promise<void> {
     if (typeof bad !== 'string' && bad.length && bad.every((r) => r.ok)) problems.push(`${lesson.id}: starter already passes every check`);
   }
   if (browserPromise) await (await browserPromise).close();
-  (await verifyPredictions(lessons)).forEach((p) => problems.push(p));
+  if (!args.linksOnly) (await verifyPredictions(lessons)).forEach((p) => problems.push(p));
   if (args.links) {
     const urls = new Set<string>();
     for (const t of course.tracks) urls.add(t.docsHome.url);
