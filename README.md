@@ -52,6 +52,7 @@ hands-on exercise, and links to the **official documentation** so you learn to r
 - [Build From Source](#build-from-source)
 - [Contributing](#contributing)
 - [Roadmap](#roadmap)
+- [Contact](#contact)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
@@ -275,6 +276,18 @@ Contributions are welcome: corrections, clearer explanations, better checks, new
 
 ---
 
+## Contact
+
+Questions, ideas or a lesson that needs fixing? Reach out any of these ways:
+
+- **Open an issue**: [github.com/anandsundaramoorthysa/mean-stack-basics/issues](https://github.com/anandsundaramoorthysa/mean-stack-basics/issues)
+- **Start a discussion**: [github.com/anandsundaramoorthysa/mean-stack-basics/discussions](https://github.com/anandsundaramoorthysa/mean-stack-basics/discussions)
+- **Email**: [sanand03072005@gmail.com](mailto:sanand03072005@gmail.com?subject=About%20MEAN%20Stack%20Basics)
+
+Please report security problems privately, as described in [SECURITY.md](SECURITY.md).
+
+---
+
 ## License
 
 Released under the **MIT License**. See [LICENSE](LICENSE). The lesson text and exercises are original to this
@@ -300,5 +313,6 @@ are used only to describe what the lessons teach.
 <p align="center">
   <a href="https://github.com/anandsundaramoorthysa/mean-stack-basics">GitHub</a> ·
   <a href="https://marketplace.visualstudio.com/items?itemName=AnandSundaramoorthySa.mean-stack-basics">Marketplace</a> ·
-  <a href="https://github.com/anandsundaramoorthysa/mean-stack-basics/issues">Issues</a>
+  <a href="https://github.com/anandsundaramoorthysa/mean-stack-basics/issues">Issues</a> ·
+  <a href="https://github.com/anandsundaramoorthysa/mean-stack-basics/discussions">Discussions</a>
 </p>

@@ -213,6 +213,7 @@ Maintained by project maintainers:
 ## Questions?
 
 - **Open an issue**: [github.com/anandsundaramoorthysa/mean-stack-basics/issues](https://github.com/anandsundaramoorthysa/mean-stack-basics/issues)
+- **Start a discussion**: [github.com/anandsundaramoorthysa/mean-stack-basics/discussions](https://github.com/anandsundaramoorthysa/mean-stack-basics/discussions)
 - **Email**: [sanand03072005@gmail.com](mailto:sanand03072005@gmail.com?subject=About%20MEAN%20Stack%20Basics)
 
 ---
